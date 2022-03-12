@@ -8,7 +8,7 @@ export default function useData(...args) {
     return {
         data,
         reset(...fields): void {
-            if (fields.length === 0) {
+            if (!fields.length) {
                 setData(defaults)
             } else {
                 setData(

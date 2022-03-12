@@ -312,7 +312,7 @@ export default function useForm(...args) {
             transform = callback
         },
         reset(...fields) {
-            if (fields.length === 0) {
+            if (!fields.length) {
                 setData(defaults)
             } else {
                 setData(
