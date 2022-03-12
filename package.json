@@ -1,0 +1,20 @@
+{
+    "version": "1.0.0",
+    "private": true,
+    "main": "dist/main.js",
+    "source": "src/index.js",
+    "module": "dist/module.js",
+    "workspaces": [
+        "packages/*"
+    ],
+    "scripts": {
+        "build": "lerna run build",
+        "watch": "lerna run --parallel watch",
+        "serve": "lerna run --parallel serve",
+        "clean": "lerna clean"
+    },
+    "devDependencies": {
+        "lerna": "^4.0.0",
+        "parcel": "^2.3.2"
+    }
+}
