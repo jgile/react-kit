@@ -1,6 +1,5 @@
 .idea
 build
-dist
 node_modules
 .parcel-cache
 .eslintcache

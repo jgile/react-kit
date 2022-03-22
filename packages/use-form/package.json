@@ -1,5 +1,5 @@
 {
-    "name": "@react-kit/use-form",
+    "name": "@react-kit/form",
     "version": "1.0.1",
     "source": "src/index.ts",
     "main": "dist/index.js",
