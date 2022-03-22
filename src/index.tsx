@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {useData} from "@react-kit/use-form";
+import {useData} from "@react-kit/form";
 
 function App() {
     const {data, setData, reset} = useData({a: 'b'});

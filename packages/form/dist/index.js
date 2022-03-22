@@ -1,38 +1,47 @@
-import {useRef as $jOjOc$useRef, useState as $jOjOc$useState, useEffect as $jOjOc$useEffect, useCallback as $jOjOc$useCallback} from "react";
-import $jOjOc$lodashisEqual from "lodash/isEqual";
-import $jOjOc$lodashget from "lodash/get";
-import $jOjOc$axios from "axios";
-import {stringify as $jOjOc$stringify, parse as $jOjOc$parse} from "qs";
-import $jOjOc$deepmerge from "deepmerge";
+var $3lUmV$react = require("react");
+var $3lUmV$lodashisEqual = require("lodash/isEqual");
+var $3lUmV$lodashget = require("lodash/get");
+var $3lUmV$axios = require("axios");
+var $3lUmV$qs = require("qs");
+var $3lUmV$deepmerge = require("deepmerge");
+
+function $parcel$export(e, n, v, s) {
+  Object.defineProperty(e, n, {get: v, set: s, enumerable: true, configurable: true});
+}
+function $parcel$interopDefault(a) {
+  return a && a.__esModule ? a.default : a;
+}
+
+$parcel$export(module.exports, "useForm", () => $5b3063aa3fbb5758$export$2e2bcd8739ae039);
+$parcel$export(module.exports, "useData", () => $11f8d06d5ccee85c$export$2e2bcd8739ae039);
 
 
 
 
 
-
-var $1ef838d7ae804564$export$31bb55db0b3e4187;
-(function($1ef838d7ae804564$export$31bb55db0b3e4187) {
-    $1ef838d7ae804564$export$31bb55db0b3e4187["GET"] = "get";
-    $1ef838d7ae804564$export$31bb55db0b3e4187["POST"] = "post";
-    $1ef838d7ae804564$export$31bb55db0b3e4187["PUT"] = "put";
-    $1ef838d7ae804564$export$31bb55db0b3e4187["PATCH"] = "patch";
-    $1ef838d7ae804564$export$31bb55db0b3e4187["DELETE"] = "delete";
-})($1ef838d7ae804564$export$31bb55db0b3e4187 || ($1ef838d7ae804564$export$31bb55db0b3e4187 = {
+var $ed7f0e2735eeba9c$export$31bb55db0b3e4187;
+(function($ed7f0e2735eeba9c$export$31bb55db0b3e4187) {
+    $ed7f0e2735eeba9c$export$31bb55db0b3e4187["GET"] = "get";
+    $ed7f0e2735eeba9c$export$31bb55db0b3e4187["POST"] = "post";
+    $ed7f0e2735eeba9c$export$31bb55db0b3e4187["PUT"] = "put";
+    $ed7f0e2735eeba9c$export$31bb55db0b3e4187["PATCH"] = "patch";
+    $ed7f0e2735eeba9c$export$31bb55db0b3e4187["DELETE"] = "delete";
+})($ed7f0e2735eeba9c$export$31bb55db0b3e4187 || ($ed7f0e2735eeba9c$export$31bb55db0b3e4187 = {
 }));
 
 
-function $3e3dec84f08dc2a2$export$181d7b261dd21e46(href) {
+function $5f1668bda460d77e$export$181d7b261dd21e46(href) {
     return new URL(href.toString(), window.location.toString());
 }
-function $3e3dec84f08dc2a2$export$44c8c586af913ff3(method, href, data, qsArrayFormat = 'brackets') {
+function $5f1668bda460d77e$export$44c8c586af913ff3(method, href, data, qsArrayFormat = 'brackets') {
     const hasHost = /^https?:\/\//.test(href.toString());
     const hasAbsolutePath = hasHost || href.toString().startsWith('/');
     const hasRelativePath = !hasAbsolutePath && !href.toString().startsWith('#') && !href.toString().startsWith('?');
-    const hasSearch = href.toString().includes('?') || method === $1ef838d7ae804564$export$31bb55db0b3e4187.GET && Object.keys(data).length;
+    const hasSearch = href.toString().includes('?') || method === $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET && Object.keys(data).length;
     const hasHash = href.toString().includes('#');
     const url = new URL(href.toString(), 'http://localhost');
-    if (method === $1ef838d7ae804564$export$31bb55db0b3e4187.GET && Object.keys(data).length) {
-        url.search = $jOjOc$stringify($jOjOc$deepmerge($jOjOc$parse(url.search, {
+    if (method === $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET && Object.keys(data).length) {
+        url.search = $3lUmV$qs.stringify(($parcel$interopDefault($3lUmV$deepmerge))($3lUmV$qs.parse(url.search, {
             ignoreQueryPrefix: true
         }), data), {
             encodeValuesOnly: true,
@@ -52,7 +61,7 @@ function $3e3dec84f08dc2a2$export$44c8c586af913ff3(method, href, data, qsArrayFo
         data, 
     ];
 }
-function $3e3dec84f08dc2a2$export$311fc32ea47c5ee1(url) {
+function $5f1668bda460d77e$export$311fc32ea47c5ee1(url) {
     url = new URL(url.href);
     url.hash = '';
     return url;
@@ -60,24 +69,24 @@ function $3e3dec84f08dc2a2$export$311fc32ea47c5ee1(url) {
 
 
 
-function $fc990cd12e303e98$export$d75e7764e3522d6d(data) {
-    return data instanceof File || data instanceof Blob || data instanceof FileList && data.length > 0 || data instanceof FormData && Array.from(data.values()).some((value)=>$fc990cd12e303e98$export$d75e7764e3522d6d(value)
-    ) || typeof data === 'object' && data !== null && Object.values(data).some((value)=>$fc990cd12e303e98$export$d75e7764e3522d6d(value)
+function $628e11d833c5f1a6$export$d75e7764e3522d6d(data) {
+    return data instanceof File || data instanceof Blob || data instanceof FileList && data.length > 0 || data instanceof FormData && Array.from(data.values()).some((value)=>$628e11d833c5f1a6$export$d75e7764e3522d6d(value)
+    ) || typeof data === 'object' && data !== null && Object.values(data).some((value)=>$628e11d833c5f1a6$export$d75e7764e3522d6d(value)
     );
 }
 
 
-function $509f4ca9f88c6492$export$c621c6e92c748156(source, form = new FormData(), parentKey = null) {
+function $e1888736b8750eb9$export$c621c6e92c748156(source, form = new FormData(), parentKey = null) {
     source = source || {
     };
-    for(const key in source)if (Object.prototype.hasOwnProperty.call(source, key)) $509f4ca9f88c6492$var$append(form, $509f4ca9f88c6492$var$composeKey(parentKey, key), source[key]);
+    for(const key in source)if (Object.prototype.hasOwnProperty.call(source, key)) $e1888736b8750eb9$var$append(form, $e1888736b8750eb9$var$composeKey(parentKey, key), source[key]);
     return form;
 }
-function $509f4ca9f88c6492$var$composeKey(parent, key) {
+function $e1888736b8750eb9$var$composeKey(parent, key) {
     return parent ? parent + '[' + key + ']' : key;
 }
-function $509f4ca9f88c6492$var$append(form, key, value) {
-    if (Array.isArray(value)) return Array.from(value.keys()).forEach((index)=>$509f4ca9f88c6492$var$append(form, $509f4ca9f88c6492$var$composeKey(key, index.toString()), value[index])
+function $e1888736b8750eb9$var$append(form, key, value) {
+    if (Array.isArray(value)) return Array.from(value.keys()).forEach((index)=>$e1888736b8750eb9$var$append(form, $e1888736b8750eb9$var$composeKey(key, index.toString()), value[index])
     );
     else if (value instanceof Date) return form.append(key, value.toISOString());
     else if (value instanceof File) return form.append(key, value, value.name);
@@ -86,13 +95,13 @@ function $509f4ca9f88c6492$var$append(form, key, value) {
     else if (typeof value === 'string') return form.append(key, value);
     else if (typeof value === 'number') return form.append(key, `${value}`);
     else if (value === null || value === undefined) return form.append(key, '');
-    $509f4ca9f88c6492$export$c621c6e92c748156(value, form, key);
+    $e1888736b8750eb9$export$c621c6e92c748156(value, form, key);
 }
 
 
 
-const $cb45878a962ef02e$export$9d54d4ec2dd4b364 = {
-    visit (href, { method: method = $1ef838d7ae804564$export$31bb55db0b3e4187.GET , data: data = {
+const $5b3063aa3fbb5758$export$9d54d4ec2dd4b364 = {
+    visit (href, { method: method = $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET , data: data = {
     } , replace: replace = false , headers: headers = {
     } , errorBag: errorBag = '' , forceFormData: forceFormData = false , onCancelToken: onCancelToken = ()=>{
     } , onBefore: onBefore = ()=>{
@@ -103,14 +112,14 @@ const $cb45878a962ef02e$export$9d54d4ec2dd4b364 = {
         return response;
     } , onError: onError = ()=>{
     } , queryStringArrayFormat: queryStringArrayFormat = 'brackets'  }) {
-        let url = typeof href === 'string' ? $3e3dec84f08dc2a2$export$181d7b261dd21e46(href) : href;
+        let url = typeof href === 'string' ? $5f1668bda460d77e$export$181d7b261dd21e46(href) : href;
         if (this.activeVisit && this.activeVisit.processing) return;
         // Create form data if has files
-        if (($fc990cd12e303e98$export$d75e7764e3522d6d(data) || forceFormData) && !(data instanceof FormData)) data = $509f4ca9f88c6492$export$c621c6e92c748156(data);
+        if (($628e11d833c5f1a6$export$d75e7764e3522d6d(data) || forceFormData) && !(data instanceof FormData)) data = $e1888736b8750eb9$export$c621c6e92c748156(data);
         // If not FormData,
         if (!(data instanceof FormData)) {
-            const [_href, _data] = $3e3dec84f08dc2a2$export$44c8c586af913ff3(method, url, data, queryStringArrayFormat);
-            url = $3e3dec84f08dc2a2$export$181d7b261dd21e46(_href);
+            const [_href, _data] = $5f1668bda460d77e$export$44c8c586af913ff3(method, url, data, queryStringArrayFormat);
+            url = $5f1668bda460d77e$export$181d7b261dd21e46(_href);
             data = _data;
         }
         const visit = {
@@ -141,12 +150,12 @@ const $cb45878a962ef02e$export$9d54d4ec2dd4b364 = {
         onStart(visit);
         return new Promise((resolve, reject)=>{
             // @ts-ignore
-            return $jOjOc$axios({
+            return ($parcel$interopDefault($3lUmV$axios))({
                 method: method,
-                url: $3e3dec84f08dc2a2$export$311fc32ea47c5ee1(url).href,
-                data: method === $1ef838d7ae804564$export$31bb55db0b3e4187.GET ? {
+                url: $5f1668bda460d77e$export$311fc32ea47c5ee1(url).href,
+                data: method === $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET ? {
                 } : data,
-                params: method === $1ef838d7ae804564$export$31bb55db0b3e4187.GET ? data : {
+                params: method === $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET ? data : {
                 },
                 headers: Object.assign(Object.assign({
                 }, headers), {
@@ -159,7 +168,7 @@ const $cb45878a962ef02e$export$9d54d4ec2dd4b364 = {
                     }
                 }
             }).then((response)=>{
-                const errors = $jOjOc$lodashget(response, 'data.errors', {
+                const errors = ($parcel$interopDefault($3lUmV$lodashget))(response, 'data.errors', {
                 }) || {
                 };
                 if (this.activeVisit) this.finishVisit(this.activeVisit);
@@ -171,7 +180,7 @@ const $cb45878a962ef02e$export$9d54d4ec2dd4b364 = {
                 onSuccess(response.data);
                 return resolve(response.data);
             }).catch((error)=>{
-                const errors = $jOjOc$lodashget(error, 'response.data.errors', {
+                const errors = ($parcel$interopDefault($3lUmV$lodashget))(error, 'response.data.errors', {
                 });
                 if (this.activeVisit) this.finishVisit(this.activeVisit);
                 if (Object.keys(errors).length > 0) {
@@ -194,7 +203,7 @@ const $cb45878a962ef02e$export$9d54d4ec2dd4b364 = {
     }) {
         return this.visit(url, Object.assign(Object.assign({
         }, options), {
-            method: $1ef838d7ae804564$export$31bb55db0b3e4187.GET,
+            method: $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET,
             data: data
         }));
     },
@@ -204,7 +213,7 @@ const $cb45878a962ef02e$export$9d54d4ec2dd4b364 = {
         return this.visit(url, Object.assign(Object.assign({
             preserveState: true
         }, options), {
-            method: $1ef838d7ae804564$export$31bb55db0b3e4187.POST,
+            method: $ed7f0e2735eeba9c$export$31bb55db0b3e4187.POST,
             data: data
         }));
     },
@@ -214,7 +223,7 @@ const $cb45878a962ef02e$export$9d54d4ec2dd4b364 = {
         return this.visit(url, Object.assign(Object.assign({
             preserveState: true
         }, options), {
-            method: $1ef838d7ae804564$export$31bb55db0b3e4187.PUT,
+            method: $ed7f0e2735eeba9c$export$31bb55db0b3e4187.PUT,
             data: data
         }));
     },
@@ -224,7 +233,7 @@ const $cb45878a962ef02e$export$9d54d4ec2dd4b364 = {
         return this.visit(url, Object.assign(Object.assign({
             preserveState: true
         }, options), {
-            method: $1ef838d7ae804564$export$31bb55db0b3e4187.PATCH,
+            method: $ed7f0e2735eeba9c$export$31bb55db0b3e4187.PATCH,
             data: data
         }));
     },
@@ -233,35 +242,35 @@ const $cb45878a962ef02e$export$9d54d4ec2dd4b364 = {
         return this.visit(url, Object.assign(Object.assign({
             preserveState: true
         }, options), {
-            method: $1ef838d7ae804564$export$31bb55db0b3e4187.DELETE
+            method: $ed7f0e2735eeba9c$export$31bb55db0b3e4187.DELETE
         }));
     }
 };
-function $cb45878a962ef02e$export$2e2bcd8739ae039(...args) {
-    const isMounted = $jOjOc$useRef(null);
+function $5b3063aa3fbb5758$export$2e2bcd8739ae039(...args) {
+    const isMounted = $3lUmV$react.useRef(null);
     const defaults = (typeof args[0] === 'string' ? args[1] : args[0]) || {
     };
-    const cancelToken = $jOjOc$useRef(null);
-    const recentlySuccessfulTimeoutId = $jOjOc$useRef(null);
-    const [data1, setData] = $jOjOc$useState(defaults);
-    const [response1, setResponse] = $jOjOc$useState({
+    const cancelToken = $3lUmV$react.useRef(null);
+    const recentlySuccessfulTimeoutId = $3lUmV$react.useRef(null);
+    const [data1, setData] = $3lUmV$react.useState(defaults);
+    const [response1, setResponse] = $3lUmV$react.useState({
     });
-    const [errors1, setErrors] = $jOjOc$useState({
+    const [errors1, setErrors] = $3lUmV$react.useState({
     });
-    const [hasErrors, setHasErrors] = $jOjOc$useState(false);
-    const [processing, setProcessing] = $jOjOc$useState(false);
-    const [progress, setProgress] = $jOjOc$useState(null);
-    const [wasSuccessful, setWasSuccessful] = $jOjOc$useState(false);
-    const [recentlySuccessful, setRecentlySuccessful] = $jOjOc$useState(false);
+    const [hasErrors, setHasErrors] = $3lUmV$react.useState(false);
+    const [processing, setProcessing] = $3lUmV$react.useState(false);
+    const [progress, setProgress] = $3lUmV$react.useState(null);
+    const [wasSuccessful, setWasSuccessful] = $3lUmV$react.useState(false);
+    const [recentlySuccessful, setRecentlySuccessful] = $3lUmV$react.useState(false);
     let transform = (data)=>data
     ;
-    $jOjOc$useEffect(()=>{
+    $3lUmV$react.useEffect(()=>{
         isMounted.current = true;
         return ()=>{
             isMounted.current = false;
         };
     }, []);
-    const submit = $jOjOc$useCallback((method, url, options = {
+    const submit = $3lUmV$react.useCallback((method, url, options = {
     })=>{
         const _options = {
             ...options,
@@ -319,11 +328,11 @@ function $cb45878a962ef02e$export$2e2bcd8739ae039(...args) {
                 if (options.onFinish) return options.onFinish();
             }
         };
-        if (method === 'delete') return $cb45878a962ef02e$export$9d54d4ec2dd4b364.delete(url, {
+        if (method === 'delete') return $5b3063aa3fbb5758$export$9d54d4ec2dd4b364.delete(url, {
             ..._options,
             data: transform(data1)
         });
-        else return $cb45878a962ef02e$export$9d54d4ec2dd4b364[method](url, transform(data1), _options);
+        else return $5b3063aa3fbb5758$export$9d54d4ec2dd4b364[method](url, transform(data1), _options);
     }, [
         data1,
         setErrors
@@ -342,7 +351,7 @@ function $cb45878a962ef02e$export$2e2bcd8739ae039(...args) {
             else setData(key);
             return this;
         },
-        isDirty: !$jOjOc$lodashisEqual(data1, defaults),
+        isDirty: !($parcel$interopDefault($3lUmV$lodashisEqual))(data1, defaults),
         errors: errors1,
         hasErrors: hasErrors,
         processing: processing,
@@ -399,10 +408,10 @@ function $cb45878a962ef02e$export$2e2bcd8739ae039(...args) {
 
 
 
-function $ccf098f9d18c4080$export$2e2bcd8739ae039(...args) {
+function $11f8d06d5ccee85c$export$2e2bcd8739ae039(...args) {
     const defaults = (typeof args[0] === 'string' ? args[1] : args[0]) || {
     };
-    const [data1, setData] = $jOjOc$useState(defaults);
+    const [data1, setData] = $3lUmV$react.useState(defaults);
     return {
         data: data1,
         reset (...fields) {
@@ -426,12 +435,11 @@ function $ccf098f9d18c4080$export$2e2bcd8739ae039(...args) {
             else setData(key);
             return this;
         },
-        isDirty: !$jOjOc$lodashisEqual(data1, defaults)
+        isDirty: !($parcel$interopDefault($3lUmV$lodashisEqual))(data1, defaults)
     };
 }
 
 
 
 
-export {$cb45878a962ef02e$export$2e2bcd8739ae039 as useForm, $ccf098f9d18c4080$export$2e2bcd8739ae039 as useData};
-//# sourceMappingURL=module.js.map
+//# sourceMappingURL=index.js.map
