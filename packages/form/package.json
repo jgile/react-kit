@@ -4,28 +4,36 @@
     "source": "src/index.ts",
     "main": "dist/index.js",
     "module": "dist/module.js",
+    "unpkg": "dist/index.umd.js",
+    "types": "index.d.ts",
+    "scripts": {
+        "build": "parcel build",
+        "watch": "parcel watch"
+    },
     "dependencies": {
         "axios": "^0.26.1",
         "deepmerge": "^4.2.2",
-        "lodash": "^4.17.21",
+        "lodash.isequal": "^4.4.2",
+        "lodash.get": "^4.4.2",
         "prop-types": "^15.8.1",
-        "qs": "^6.10.3",
-        "react": "^17.0.2",
-        "react-dom": "^17.0.2"
+        "qs": "^6.10.3"
     },
     "peerDependencies": {
         "react": "^16.9.0 || ^17",
         "react-dom": "^16.9.0 || ^17"
     },
-    "scripts": {
-        "build": "parcel build",
-        "watch": "parcel watch"
-    },
     "devDependencies": {
+        "react": "^17.0.2",
+        "react-dom": "^17.0.2",
         "@types/react": "^17.0.39",
         "parcel": "^2.3.2",
         "react-scripts": "4.0.1",
         "typescript": "^4.5.5"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/jgile/react-kit.git",
+        "directory": "packages/form"
     },
     "gitHead": "0533558c6b23e948fecd0862396c2619dc022cde"
 }

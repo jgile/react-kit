@@ -1,6 +1,6 @@
 var $3lUmV$react = require("react");
-var $3lUmV$lodashisEqual = require("lodash/isEqual");
-var $3lUmV$lodashget = require("lodash/get");
+var $3lUmV$lodashisequal = require("lodash.isequal");
+var $3lUmV$lodashget = require("lodash.get");
 var $3lUmV$axios = require("axios");
 var $3lUmV$qs = require("qs");
 var $3lUmV$deepmerge = require("deepmerge");
@@ -26,8 +26,7 @@ var $ed7f0e2735eeba9c$export$31bb55db0b3e4187;
     $ed7f0e2735eeba9c$export$31bb55db0b3e4187["PUT"] = "put";
     $ed7f0e2735eeba9c$export$31bb55db0b3e4187["PATCH"] = "patch";
     $ed7f0e2735eeba9c$export$31bb55db0b3e4187["DELETE"] = "delete";
-})($ed7f0e2735eeba9c$export$31bb55db0b3e4187 || ($ed7f0e2735eeba9c$export$31bb55db0b3e4187 = {
-}));
+})($ed7f0e2735eeba9c$export$31bb55db0b3e4187 || ($ed7f0e2735eeba9c$export$31bb55db0b3e4187 = {}));
 
 
 function $5f1668bda460d77e$export$181d7b261dd21e46(href) {
@@ -47,8 +46,7 @@ function $5f1668bda460d77e$export$44c8c586af913ff3(method, href, data, qsArrayFo
             encodeValuesOnly: true,
             arrayFormat: qsArrayFormat
         });
-        data = {
-        };
+        data = {};
     }
     return [
         [
@@ -77,8 +75,7 @@ function $628e11d833c5f1a6$export$d75e7764e3522d6d(data) {
 
 
 function $e1888736b8750eb9$export$c621c6e92c748156(source, form = new FormData(), parentKey = null) {
-    source = source || {
-    };
+    source = source || {};
     for(const key in source)if (Object.prototype.hasOwnProperty.call(source, key)) $e1888736b8750eb9$var$append(form, $e1888736b8750eb9$var$composeKey(parentKey, key), source[key]);
     return form;
 }
@@ -101,17 +98,9 @@ function $e1888736b8750eb9$var$append(form, key, value) {
 
 
 const $5b3063aa3fbb5758$export$9d54d4ec2dd4b364 = {
-    visit (href, { method: method = $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET , data: data = {
-    } , replace: replace = false , headers: headers = {
-    } , errorBag: errorBag = '' , forceFormData: forceFormData = false , onCancelToken: onCancelToken = ()=>{
-    } , onBefore: onBefore = ()=>{
-    } , onStart: onStart = ()=>{
-    } , onProgress: onProgress = ()=>{
-    } , onFinish: onFinish = ()=>{
-    } , onSuccess: onSuccess = (response)=>{
+    visit (href, { method: method = $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET , data: data = {} , replace: replace = false , headers: headers = {} , errorBag: errorBag = '' , forceFormData: forceFormData = false , onCancelToken: onCancelToken = ()=>{} , onBefore: onBefore = ()=>{} , onStart: onStart = ()=>{} , onProgress: onProgress = ()=>{} , onFinish: onFinish = ()=>{} , onSuccess: onSuccess = (response)=>{
         return response;
-    } , onError: onError = ()=>{
-    } , queryStringArrayFormat: queryStringArrayFormat = 'brackets'  }) {
+    } , onError: onError = ()=>{} , queryStringArrayFormat: queryStringArrayFormat = 'brackets'  }) {
         let url = typeof href === 'string' ? $5f1668bda460d77e$export$181d7b261dd21e46(href) : href;
         if (this.activeVisit && this.activeVisit.processing) return;
         // Create form data if has files
@@ -135,8 +124,7 @@ const $5b3063aa3fbb5758$export$9d54d4ec2dd4b364 = {
             interrupted: false,
             cancelled: false
         };
-        this.activeVisit = Object.assign(Object.assign({
-        }, visit), {
+        this.activeVisit = Object.assign(Object.assign({}, visit), {
             onCancelToken: onCancelToken,
             onBefore: onBefore,
             onStart: onStart,
@@ -153,12 +141,9 @@ const $5b3063aa3fbb5758$export$9d54d4ec2dd4b364 = {
             return ($parcel$interopDefault($3lUmV$axios))({
                 method: method,
                 url: $5f1668bda460d77e$export$311fc32ea47c5ee1(url).href,
-                data: method === $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET ? {
-                } : data,
-                params: method === $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET ? data : {
-                },
-                headers: Object.assign(Object.assign({
-                }, headers), {
+                data: method === $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET ? {} : data,
+                params: method === $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET ? data : {},
+                headers: Object.assign(Object.assign({}, headers), {
                     'X-Requested-With': 'XMLHttpRequest'
                 }),
                 onUploadProgress: (progress)=>{
@@ -168,24 +153,19 @@ const $5b3063aa3fbb5758$export$9d54d4ec2dd4b364 = {
                     }
                 }
             }).then((response)=>{
-                const errors = ($parcel$interopDefault($3lUmV$lodashget))(response, 'data.errors', {
-                }) || {
-                };
+                const errors = ($parcel$interopDefault($3lUmV$lodashget))(response, 'data.errors', {}) || {};
                 if (this.activeVisit) this.finishVisit(this.activeVisit);
                 if (Object.keys(errors).length > 0) {
-                    const scopedErrors = errorBag ? errors[errorBag] ? errors[errorBag] : {
-                    } : errors;
+                    const scopedErrors = errorBag ? errors[errorBag] ? errors[errorBag] : {} : errors;
                     return onError(scopedErrors);
                 }
                 onSuccess(response.data);
                 return resolve(response.data);
             }).catch((error)=>{
-                const errors = ($parcel$interopDefault($3lUmV$lodashget))(error, 'response.data.errors', {
-                });
+                const errors = ($parcel$interopDefault($3lUmV$lodashget))(error, 'response.data.errors', {});
                 if (this.activeVisit) this.finishVisit(this.activeVisit);
                 if (Object.keys(errors).length > 0) {
-                    const scopedErrors = errorBag ? errors[errorBag] ? errors[errorBag] : {
-                    } : errors;
+                    const scopedErrors = errorBag ? errors[errorBag] ? errors[errorBag] : {} : errors;
                     return onError(scopedErrors);
                 }
                 return reject(error);
@@ -198,18 +178,13 @@ const $5b3063aa3fbb5758$export$9d54d4ec2dd4b364 = {
         visit.interrupted = false;
         visit.onFinish(visit);
     },
-    get (url, data = {
-    }, options = {
-    }) {
-        return this.visit(url, Object.assign(Object.assign({
-        }, options), {
+    get (url, data = {}, options = {}) {
+        return this.visit(url, Object.assign(Object.assign({}, options), {
             method: $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET,
             data: data
         }));
     },
-    post (url, data = {
-    }, options = {
-    }) {
+    post (url, data = {}, options = {}) {
         return this.visit(url, Object.assign(Object.assign({
             preserveState: true
         }, options), {
@@ -217,9 +192,7 @@ const $5b3063aa3fbb5758$export$9d54d4ec2dd4b364 = {
             data: data
         }));
     },
-    put (url, data = {
-    }, options = {
-    }) {
+    put (url, data = {}, options = {}) {
         return this.visit(url, Object.assign(Object.assign({
             preserveState: true
         }, options), {
@@ -227,9 +200,7 @@ const $5b3063aa3fbb5758$export$9d54d4ec2dd4b364 = {
             data: data
         }));
     },
-    patch (url, data = {
-    }, options = {
-    }) {
+    patch (url, data = {}, options = {}) {
         return this.visit(url, Object.assign(Object.assign({
             preserveState: true
         }, options), {
@@ -237,8 +208,7 @@ const $5b3063aa3fbb5758$export$9d54d4ec2dd4b364 = {
             data: data
         }));
     },
-    delete (url, options = {
-    }) {
+    delete (url, options = {}) {
         return this.visit(url, Object.assign(Object.assign({
             preserveState: true
         }, options), {
@@ -248,15 +218,12 @@ const $5b3063aa3fbb5758$export$9d54d4ec2dd4b364 = {
 };
 function $5b3063aa3fbb5758$export$2e2bcd8739ae039(...args) {
     const isMounted = $3lUmV$react.useRef(null);
-    const defaults = (typeof args[0] === 'string' ? args[1] : args[0]) || {
-    };
+    const defaults = (typeof args[0] === 'string' ? args[1] : args[0]) || {};
     const cancelToken = $3lUmV$react.useRef(null);
     const recentlySuccessfulTimeoutId = $3lUmV$react.useRef(null);
     const [data1, setData] = $3lUmV$react.useState(defaults);
-    const [response1, setResponse] = $3lUmV$react.useState({
-    });
-    const [errors1, setErrors] = $3lUmV$react.useState({
-    });
+    const [response1, setResponse] = $3lUmV$react.useState({});
+    const [errors1, setErrors] = $3lUmV$react.useState({});
     const [hasErrors, setHasErrors] = $3lUmV$react.useState(false);
     const [processing, setProcessing] = $3lUmV$react.useState(false);
     const [progress, setProgress] = $3lUmV$react.useState(null);
@@ -270,8 +237,7 @@ function $5b3063aa3fbb5758$export$2e2bcd8739ae039(...args) {
             isMounted.current = false;
         };
     }, []);
-    const submit = $3lUmV$react.useCallback((method, url, options = {
-    })=>{
+    const submit = $3lUmV$react.useCallback((method, url, options = {})=>{
         const _options = {
             ...options,
             onBefore: (visit)=>{
@@ -293,8 +259,7 @@ function $5b3063aa3fbb5758$export$2e2bcd8739ae039(...args) {
                 if (isMounted.current) {
                     setProcessing(false);
                     setProgress(null);
-                    setErrors({
-                    });
+                    setErrors({});
                     setHasErrors(false);
                     setWasSuccessful(true);
                     setRecentlySuccessful(true);
@@ -351,7 +316,7 @@ function $5b3063aa3fbb5758$export$2e2bcd8739ae039(...args) {
             else setData(key);
             return this;
         },
-        isDirty: !($parcel$interopDefault($3lUmV$lodashisEqual))(data1, defaults),
+        isDirty: !($parcel$interopDefault($3lUmV$lodashisequal))(data1, defaults),
         errors: errors1,
         hasErrors: hasErrors,
         processing: processing,
@@ -376,11 +341,9 @@ function $5b3063aa3fbb5758$export$2e2bcd8739ae039(...args) {
                     ...carry,
                     ...fields.length > 0 && !fields.includes(field) ? {
                         [field]: errors1[field]
-                    } : {
-                    }
+                    } : {}
                 })
-            , {
-            }));
+            , {}));
             setHasErrors(Object.keys(errors1).length > 0);
         },
         submit: submit,
@@ -409,8 +372,7 @@ function $5b3063aa3fbb5758$export$2e2bcd8739ae039(...args) {
 
 
 function $11f8d06d5ccee85c$export$2e2bcd8739ae039(...args) {
-    const defaults = (typeof args[0] === 'string' ? args[1] : args[0]) || {
-    };
+    const defaults = (typeof args[0] === 'string' ? args[1] : args[0]) || {};
     const [data1, setData] = $3lUmV$react.useState(defaults);
     return {
         data: data1,
@@ -435,7 +397,7 @@ function $11f8d06d5ccee85c$export$2e2bcd8739ae039(...args) {
             else setData(key);
             return this;
         },
-        isDirty: !($parcel$interopDefault($3lUmV$lodashisEqual))(data1, defaults)
+        isDirty: !($parcel$interopDefault($3lUmV$lodashisequal))(data1, defaults)
     };
 }
 

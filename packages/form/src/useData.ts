@@ -1,5 +1,5 @@
 import {useState} from "react";
-import isEqual from "lodash/isEqual";
+import isEqual from "lodash.isequal";
 
 export default function useData(...args) {
     const defaults = (typeof args[0] === 'string' ? args[1] : args[0]) || {};

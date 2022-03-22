@@ -1,6 +1,6 @@
 import {useRef as $4goeQ$useRef, useState as $4goeQ$useState, useEffect as $4goeQ$useEffect, useCallback as $4goeQ$useCallback} from "react";
-import $4goeQ$lodashisEqual from "lodash/isEqual";
-import $4goeQ$lodashget from "lodash/get";
+import $4goeQ$lodashisequal from "lodash.isequal";
+import $4goeQ$lodashget from "lodash.get";
 import $4goeQ$axios from "axios";
 import {stringify as $4goeQ$stringify, parse as $4goeQ$parse} from "qs";
 import $4goeQ$deepmerge from "deepmerge";
@@ -17,8 +17,7 @@ var $2d3745109575f12d$export$31bb55db0b3e4187;
     $2d3745109575f12d$export$31bb55db0b3e4187["PUT"] = "put";
     $2d3745109575f12d$export$31bb55db0b3e4187["PATCH"] = "patch";
     $2d3745109575f12d$export$31bb55db0b3e4187["DELETE"] = "delete";
-})($2d3745109575f12d$export$31bb55db0b3e4187 || ($2d3745109575f12d$export$31bb55db0b3e4187 = {
-}));
+})($2d3745109575f12d$export$31bb55db0b3e4187 || ($2d3745109575f12d$export$31bb55db0b3e4187 = {}));
 
 
 function $612bf3abab00ba2d$export$181d7b261dd21e46(href) {
@@ -38,8 +37,7 @@ function $612bf3abab00ba2d$export$44c8c586af913ff3(method, href, data, qsArrayFo
             encodeValuesOnly: true,
             arrayFormat: qsArrayFormat
         });
-        data = {
-        };
+        data = {};
     }
     return [
         [
@@ -68,8 +66,7 @@ function $d0063aff22c60270$export$d75e7764e3522d6d(data) {
 
 
 function $ce6f92d91cdc354d$export$c621c6e92c748156(source, form = new FormData(), parentKey = null) {
-    source = source || {
-    };
+    source = source || {};
     for(const key in source)if (Object.prototype.hasOwnProperty.call(source, key)) $ce6f92d91cdc354d$var$append(form, $ce6f92d91cdc354d$var$composeKey(parentKey, key), source[key]);
     return form;
 }
@@ -92,17 +89,9 @@ function $ce6f92d91cdc354d$var$append(form, key, value) {
 
 
 const $42b851bf19452363$export$9d54d4ec2dd4b364 = {
-    visit (href, { method: method = $2d3745109575f12d$export$31bb55db0b3e4187.GET , data: data = {
-    } , replace: replace = false , headers: headers = {
-    } , errorBag: errorBag = '' , forceFormData: forceFormData = false , onCancelToken: onCancelToken = ()=>{
-    } , onBefore: onBefore = ()=>{
-    } , onStart: onStart = ()=>{
-    } , onProgress: onProgress = ()=>{
-    } , onFinish: onFinish = ()=>{
-    } , onSuccess: onSuccess = (response)=>{
+    visit (href, { method: method = $2d3745109575f12d$export$31bb55db0b3e4187.GET , data: data = {} , replace: replace = false , headers: headers = {} , errorBag: errorBag = '' , forceFormData: forceFormData = false , onCancelToken: onCancelToken = ()=>{} , onBefore: onBefore = ()=>{} , onStart: onStart = ()=>{} , onProgress: onProgress = ()=>{} , onFinish: onFinish = ()=>{} , onSuccess: onSuccess = (response)=>{
         return response;
-    } , onError: onError = ()=>{
-    } , queryStringArrayFormat: queryStringArrayFormat = 'brackets'  }) {
+    } , onError: onError = ()=>{} , queryStringArrayFormat: queryStringArrayFormat = 'brackets'  }) {
         let url = typeof href === 'string' ? $612bf3abab00ba2d$export$181d7b261dd21e46(href) : href;
         if (this.activeVisit && this.activeVisit.processing) return;
         // Create form data if has files
@@ -126,8 +115,7 @@ const $42b851bf19452363$export$9d54d4ec2dd4b364 = {
             interrupted: false,
             cancelled: false
         };
-        this.activeVisit = Object.assign(Object.assign({
-        }, visit), {
+        this.activeVisit = Object.assign(Object.assign({}, visit), {
             onCancelToken: onCancelToken,
             onBefore: onBefore,
             onStart: onStart,
@@ -144,12 +132,9 @@ const $42b851bf19452363$export$9d54d4ec2dd4b364 = {
             return $4goeQ$axios({
                 method: method,
                 url: $612bf3abab00ba2d$export$311fc32ea47c5ee1(url).href,
-                data: method === $2d3745109575f12d$export$31bb55db0b3e4187.GET ? {
-                } : data,
-                params: method === $2d3745109575f12d$export$31bb55db0b3e4187.GET ? data : {
-                },
-                headers: Object.assign(Object.assign({
-                }, headers), {
+                data: method === $2d3745109575f12d$export$31bb55db0b3e4187.GET ? {} : data,
+                params: method === $2d3745109575f12d$export$31bb55db0b3e4187.GET ? data : {},
+                headers: Object.assign(Object.assign({}, headers), {
                     'X-Requested-With': 'XMLHttpRequest'
                 }),
                 onUploadProgress: (progress)=>{
@@ -159,24 +144,19 @@ const $42b851bf19452363$export$9d54d4ec2dd4b364 = {
                     }
                 }
             }).then((response)=>{
-                const errors = $4goeQ$lodashget(response, 'data.errors', {
-                }) || {
-                };
+                const errors = $4goeQ$lodashget(response, 'data.errors', {}) || {};
                 if (this.activeVisit) this.finishVisit(this.activeVisit);
                 if (Object.keys(errors).length > 0) {
-                    const scopedErrors = errorBag ? errors[errorBag] ? errors[errorBag] : {
-                    } : errors;
+                    const scopedErrors = errorBag ? errors[errorBag] ? errors[errorBag] : {} : errors;
                     return onError(scopedErrors);
                 }
                 onSuccess(response.data);
                 return resolve(response.data);
             }).catch((error)=>{
-                const errors = $4goeQ$lodashget(error, 'response.data.errors', {
-                });
+                const errors = $4goeQ$lodashget(error, 'response.data.errors', {});
                 if (this.activeVisit) this.finishVisit(this.activeVisit);
                 if (Object.keys(errors).length > 0) {
-                    const scopedErrors = errorBag ? errors[errorBag] ? errors[errorBag] : {
-                    } : errors;
+                    const scopedErrors = errorBag ? errors[errorBag] ? errors[errorBag] : {} : errors;
                     return onError(scopedErrors);
                 }
                 return reject(error);
@@ -189,18 +169,13 @@ const $42b851bf19452363$export$9d54d4ec2dd4b364 = {
         visit.interrupted = false;
         visit.onFinish(visit);
     },
-    get (url, data = {
-    }, options = {
-    }) {
-        return this.visit(url, Object.assign(Object.assign({
-        }, options), {
+    get (url, data = {}, options = {}) {
+        return this.visit(url, Object.assign(Object.assign({}, options), {
             method: $2d3745109575f12d$export$31bb55db0b3e4187.GET,
             data: data
         }));
     },
-    post (url, data = {
-    }, options = {
-    }) {
+    post (url, data = {}, options = {}) {
         return this.visit(url, Object.assign(Object.assign({
             preserveState: true
         }, options), {
@@ -208,9 +183,7 @@ const $42b851bf19452363$export$9d54d4ec2dd4b364 = {
             data: data
         }));
     },
-    put (url, data = {
-    }, options = {
-    }) {
+    put (url, data = {}, options = {}) {
         return this.visit(url, Object.assign(Object.assign({
             preserveState: true
         }, options), {
@@ -218,9 +191,7 @@ const $42b851bf19452363$export$9d54d4ec2dd4b364 = {
             data: data
         }));
     },
-    patch (url, data = {
-    }, options = {
-    }) {
+    patch (url, data = {}, options = {}) {
         return this.visit(url, Object.assign(Object.assign({
             preserveState: true
         }, options), {
@@ -228,8 +199,7 @@ const $42b851bf19452363$export$9d54d4ec2dd4b364 = {
             data: data
         }));
     },
-    delete (url, options = {
-    }) {
+    delete (url, options = {}) {
         return this.visit(url, Object.assign(Object.assign({
             preserveState: true
         }, options), {
@@ -239,15 +209,12 @@ const $42b851bf19452363$export$9d54d4ec2dd4b364 = {
 };
 function $42b851bf19452363$export$2e2bcd8739ae039(...args) {
     const isMounted = $4goeQ$useRef(null);
-    const defaults = (typeof args[0] === 'string' ? args[1] : args[0]) || {
-    };
+    const defaults = (typeof args[0] === 'string' ? args[1] : args[0]) || {};
     const cancelToken = $4goeQ$useRef(null);
     const recentlySuccessfulTimeoutId = $4goeQ$useRef(null);
     const [data1, setData] = $4goeQ$useState(defaults);
-    const [response1, setResponse] = $4goeQ$useState({
-    });
-    const [errors1, setErrors] = $4goeQ$useState({
-    });
+    const [response1, setResponse] = $4goeQ$useState({});
+    const [errors1, setErrors] = $4goeQ$useState({});
     const [hasErrors, setHasErrors] = $4goeQ$useState(false);
     const [processing, setProcessing] = $4goeQ$useState(false);
     const [progress, setProgress] = $4goeQ$useState(null);
@@ -261,8 +228,7 @@ function $42b851bf19452363$export$2e2bcd8739ae039(...args) {
             isMounted.current = false;
         };
     }, []);
-    const submit = $4goeQ$useCallback((method, url, options = {
-    })=>{
+    const submit = $4goeQ$useCallback((method, url, options = {})=>{
         const _options = {
             ...options,
             onBefore: (visit)=>{
@@ -284,8 +250,7 @@ function $42b851bf19452363$export$2e2bcd8739ae039(...args) {
                 if (isMounted.current) {
                     setProcessing(false);
                     setProgress(null);
-                    setErrors({
-                    });
+                    setErrors({});
                     setHasErrors(false);
                     setWasSuccessful(true);
                     setRecentlySuccessful(true);
@@ -342,7 +307,7 @@ function $42b851bf19452363$export$2e2bcd8739ae039(...args) {
             else setData(key);
             return this;
         },
-        isDirty: !$4goeQ$lodashisEqual(data1, defaults),
+        isDirty: !$4goeQ$lodashisequal(data1, defaults),
         errors: errors1,
         hasErrors: hasErrors,
         processing: processing,
@@ -367,11 +332,9 @@ function $42b851bf19452363$export$2e2bcd8739ae039(...args) {
                     ...carry,
                     ...fields.length > 0 && !fields.includes(field) ? {
                         [field]: errors1[field]
-                    } : {
-                    }
+                    } : {}
                 })
-            , {
-            }));
+            , {}));
             setHasErrors(Object.keys(errors1).length > 0);
         },
         submit: submit,
@@ -400,8 +363,7 @@ function $42b851bf19452363$export$2e2bcd8739ae039(...args) {
 
 
 function $2bfdf19174b51c6d$export$2e2bcd8739ae039(...args) {
-    const defaults = (typeof args[0] === 'string' ? args[1] : args[0]) || {
-    };
+    const defaults = (typeof args[0] === 'string' ? args[1] : args[0]) || {};
     const [data1, setData] = $4goeQ$useState(defaults);
     return {
         data: data1,
@@ -426,7 +388,7 @@ function $2bfdf19174b51c6d$export$2e2bcd8739ae039(...args) {
             else setData(key);
             return this;
         },
-        isDirty: !$4goeQ$lodashisEqual(data1, defaults)
+        isDirty: !$4goeQ$lodashisequal(data1, defaults)
     };
 }
 
