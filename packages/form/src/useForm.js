@@ -236,10 +236,10 @@ export const Visitor = {
             }
 
             if (method === 'delete') {
-                return this.visitor.delete(url, {..._options, data: transform(data)})
-            } else {
-                return this.visitor[method](url, transform(data), _options)
+                return this.delete(url, {..._options, data: transform(data)});
             }
+
+            return this[method](url, transform(data), _options)
         }, [data, setErrors]);
 
         return {

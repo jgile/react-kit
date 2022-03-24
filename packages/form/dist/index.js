@@ -289,11 +289,11 @@ const $11cceea5fc5ebf19$export$9d54d4ec2dd4b364 = {
                     if (options.onFinish) return options.onFinish();
                 }
             };
-            if (method === 'delete') return this.visitor.delete(url, {
+            if (method === 'delete') return this.delete(url, {
                 ..._options,
                 data: transform(data1)
             });
-            else return this.visitor[method](url, transform(data1), _options);
+            return this[method](url, transform(data1), _options);
         }, [
             data1,
             setErrors
