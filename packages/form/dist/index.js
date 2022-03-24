@@ -13,7 +13,6 @@ function $parcel$interopDefault(a) {
 }
 
 $parcel$export(module.exports, "useForm", () => $5b3063aa3fbb5758$export$2e2bcd8739ae039);
-$parcel$export(module.exports, "makeUseForm", () => $5b3063aa3fbb5758$export$686fd69990e9d05f);
 $parcel$export(module.exports, "Visitor", () => $5b3063aa3fbb5758$export$9d54d4ec2dd4b364);
 $parcel$export(module.exports, "useData", () => $11f8d06d5ccee85c$export$2e2bcd8739ae039);
 
@@ -100,133 +99,133 @@ function $e1888736b8750eb9$var$append(form, key, value) {
 
 
 const $5b3063aa3fbb5758$export$9d54d4ec2dd4b364 = {
-    visit (href, { method: method = $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET , data: data = {} , replace: replace = false , headers: headers = {} , errorBag: errorBag = '' , forceFormData: forceFormData = false , onCancelToken: onCancelToken = ()=>{} , onBefore: onBefore = ()=>{} , onStart: onStart = ()=>{} , onProgress: onProgress = ()=>{} , onFinish: onFinish = ()=>{} , onSuccess: onSuccess = (response)=>{
-        return response;
-    } , onError: onError = ()=>{} , queryStringArrayFormat: queryStringArrayFormat = 'brackets'  }) {
-        let url = typeof href === 'string' ? $5f1668bda460d77e$export$181d7b261dd21e46(href) : href;
-        if (this.activeVisit && this.activeVisit.processing) return;
-        // Create form data if has files
-        if (($628e11d833c5f1a6$export$d75e7764e3522d6d(data) || forceFormData) && !(data instanceof FormData)) data = $e1888736b8750eb9$export$c621c6e92c748156(data);
-        // If not FormData,
-        if (!(data instanceof FormData)) {
-            const [_href, _data] = $5f1668bda460d77e$export$44c8c586af913ff3(method, url, data, queryStringArrayFormat);
-            url = $5f1668bda460d77e$export$181d7b261dd21e46(_href);
-            data = _data;
-        }
-        const visit = {
-            url: url,
-            method: method,
-            data: data,
-            replace: replace,
-            headers: headers,
-            errorBag: errorBag,
-            forceFormData: forceFormData,
-            queryStringArrayFormat: queryStringArrayFormat,
-            completed: false,
-            interrupted: false,
-            cancelled: false
-        };
-        this.activeVisit = Object.assign(Object.assign({}, visit), {
-            onCancelToken: onCancelToken,
-            onBefore: onBefore,
-            onStart: onStart,
-            onProgress: onProgress,
-            onFinish: onFinish,
-            onSuccess: onSuccess,
-            onError: onError,
-            queryStringArrayFormat: queryStringArrayFormat
-        });
-        if (onBefore(visit) === false) return;
-        onStart(visit);
-        return new Promise((resolve, reject)=>{
-            let config = {
+    config: {},
+    visitor: {
+        visit (href, { method: method = $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET , data: data = {} , replace: replace = false , headers: headers = {} , errorBag: errorBag = '' , forceFormData: forceFormData = false , onCancelToken: onCancelToken = ()=>{} , onBefore: onBefore = ()=>{} , onStart: onStart = ()=>{} , onProgress: onProgress = ()=>{} , onFinish: onFinish = ()=>{} , onSuccess: onSuccess = (response)=>response
+         , onError: onError = ()=>{} , queryStringArrayFormat: queryStringArrayFormat = 'brackets'  }) {
+            let url = typeof href === 'string' ? $5f1668bda460d77e$export$181d7b261dd21e46(href) : href;
+            if (this.activeVisit && this.activeVisit.processing) return;
+            // Create form data if has files
+            if (($628e11d833c5f1a6$export$d75e7764e3522d6d(data) || forceFormData) && !(data instanceof FormData)) data = $e1888736b8750eb9$export$c621c6e92c748156(data);
+            // If not FormData,
+            if (!(data instanceof FormData)) {
+                const [_href, _data] = $5f1668bda460d77e$export$44c8c586af913ff3(method, url, data, queryStringArrayFormat);
+                url = $5f1668bda460d77e$export$181d7b261dd21e46(_href);
+                data = _data;
+            }
+            const visit = {
+                url: url,
                 method: method,
-                url: $5f1668bda460d77e$export$311fc32ea47c5ee1(url).href,
-                data: method === $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET ? {} : data,
-                params: method === $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET ? data : {},
-                headers: Object.assign(Object.assign({}, headers), {
-                    'X-Requested-With': 'XMLHttpRequest'
-                }),
-                onUploadProgress: (progress)=>{
-                    if (data instanceof FormData) {
-                        progress.percentage = Math.round(progress.loaded / progress.total * 100);
-                        onProgress(progress);
-                    }
-                }
+                data: data,
+                replace: replace,
+                headers: headers,
+                errorBag: errorBag,
+                forceFormData: forceFormData,
+                queryStringArrayFormat: queryStringArrayFormat,
+                completed: false,
+                interrupted: false,
+                cancelled: false
             };
-            // @ts-ignore
-            if (window && typeof window.useFormGlobals === 'object') config = {
-                ...config,
-                // @ts-ignore
-                ...window.useFormGlobals
-            };
-            // @ts-ignore
-            return ($parcel$interopDefault($3lUmV$axios))(config).then((response)=>{
-                const errors = ($parcel$interopDefault($3lUmV$lodashget))(response, 'data.errors', {}) || {};
-                if (this.activeVisit) this.finishVisit(this.activeVisit);
-                if (Object.keys(errors).length > 0) {
-                    const scopedErrors = errorBag ? errors[errorBag] ? errors[errorBag] : {} : errors;
-                    return onError(scopedErrors);
-                }
-                onSuccess(response.data);
-                return resolve(response.data);
-            }).catch((error)=>{
-                const errors = ($parcel$interopDefault($3lUmV$lodashget))(error, 'response.data.errors', {});
-                if (this.activeVisit) this.finishVisit(this.activeVisit);
-                if (Object.keys(errors).length > 0) {
-                    const scopedErrors = errorBag ? errors[errorBag] ? errors[errorBag] : {} : errors;
-                    return onError(scopedErrors);
-                }
-                return reject(error);
+            this.activeVisit = Object.assign(Object.assign({}, visit), {
+                onCancelToken: onCancelToken,
+                onBefore: onBefore,
+                onStart: onStart,
+                onProgress: onProgress,
+                onFinish: onFinish,
+                onSuccess: onSuccess,
+                onError: onError,
+                queryStringArrayFormat: queryStringArrayFormat
             });
-        });
+            if (onBefore(visit) === false) return;
+            onStart(visit);
+            return new Promise((resolve, reject)=>{
+                let config = {
+                    method: method,
+                    url: $5f1668bda460d77e$export$311fc32ea47c5ee1(url).href,
+                    data: method === $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET ? {} : data,
+                    params: method === $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET ? data : {},
+                    headers: Object.assign(Object.assign({}, headers), {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }),
+                    onUploadProgress: (progress)=>{
+                        if (data instanceof FormData) {
+                            progress.percentage = Math.round(progress.loaded / progress.total * 100);
+                            onProgress(progress);
+                        }
+                    }
+                };
+                // @ts-ignore
+                if (window && typeof window.useFormGlobals === 'object') config = {
+                    ...config,
+                    // @ts-ignore
+                    ...window.useFormGlobals
+                };
+                // @ts-ignore
+                return ($parcel$interopDefault($3lUmV$axios))(config).then((response)=>{
+                    const errors = ($parcel$interopDefault($3lUmV$lodashget))(response, 'data.errors', {}) || {};
+                    if (this.activeVisit) this.finishVisit(this.activeVisit);
+                    if (Object.keys(errors).length > 0) {
+                        const scopedErrors = errorBag ? errors[errorBag] ? errors[errorBag] : {} : errors;
+                        return onError(scopedErrors);
+                    }
+                    onSuccess(response.data);
+                    return resolve(response.data);
+                }).catch((error)=>{
+                    const errors = ($parcel$interopDefault($3lUmV$lodashget))(error, 'response.data.errors', {});
+                    if (this.activeVisit) this.finishVisit(this.activeVisit);
+                    if (Object.keys(errors).length > 0) {
+                        const scopedErrors = errorBag ? errors[errorBag] ? errors[errorBag] : {} : errors;
+                        return onError(scopedErrors);
+                    }
+                    return reject(error);
+                });
+            });
+        },
+        finishVisit (visit) {
+            visit.completed = true;
+            visit.cancelled = false;
+            visit.interrupted = false;
+            visit.onFinish(visit);
+        },
+        get (url, data = {}, options = {}) {
+            return this.visit(url, Object.assign(Object.assign({}, this.config, options), {
+                method: $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET,
+                data: data
+            }));
+        },
+        post (url, data = {}, options = {}) {
+            return this.visit(url, Object.assign(Object.assign({
+                preserveState: true
+            }, this.config, options), {
+                method: $ed7f0e2735eeba9c$export$31bb55db0b3e4187.POST,
+                data: data
+            }));
+        },
+        put (url, data = {}, options = {}) {
+            return this.visit(url, Object.assign(Object.assign({
+                preserveState: true
+            }, this.config, options), {
+                method: $ed7f0e2735eeba9c$export$31bb55db0b3e4187.PUT,
+                data: data
+            }));
+        },
+        patch (url, data = {}, options = {}) {
+            return this.visit(url, Object.assign(Object.assign({
+                preserveState: true
+            }, this.config, options), {
+                method: $ed7f0e2735eeba9c$export$31bb55db0b3e4187.PATCH,
+                data: data
+            }));
+        },
+        delete (url, options = {}) {
+            return this.visit(url, Object.assign(Object.assign({
+                preserveState: true
+            }, this.config, options), {
+                method: $ed7f0e2735eeba9c$export$31bb55db0b3e4187.DELETE
+            }));
+        }
     },
-    finishVisit (visit) {
-        visit.completed = true;
-        visit.cancelled = false;
-        visit.interrupted = false;
-        visit.onFinish(visit);
-    },
-    get (url, data = {}, options = {}) {
-        return this.visit(url, Object.assign(Object.assign({}, options), {
-            method: $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET,
-            data: data
-        }));
-    },
-    post (url, data = {}, options = {}) {
-        return this.visit(url, Object.assign(Object.assign({
-            preserveState: true
-        }, options), {
-            method: $ed7f0e2735eeba9c$export$31bb55db0b3e4187.POST,
-            data: data
-        }));
-    },
-    put (url, data = {}, options = {}) {
-        return this.visit(url, Object.assign(Object.assign({
-            preserveState: true
-        }, options), {
-            method: $ed7f0e2735eeba9c$export$31bb55db0b3e4187.PUT,
-            data: data
-        }));
-    },
-    patch (url, data = {}, options = {}) {
-        return this.visit(url, Object.assign(Object.assign({
-            preserveState: true
-        }, options), {
-            method: $ed7f0e2735eeba9c$export$31bb55db0b3e4187.PATCH,
-            data: data
-        }));
-    },
-    delete (url, options = {}) {
-        return this.visit(url, Object.assign(Object.assign({
-            preserveState: true
-        }, options), {
-            method: $ed7f0e2735eeba9c$export$31bb55db0b3e4187.DELETE
-        }));
-    }
-};
-function $5b3063aa3fbb5758$export$686fd69990e9d05f(visitorInstance) {
-    return (...args)=>{
+    useForm (...args) {
         const isMounted = $3lUmV$react.useRef(null);
         const defaults = (typeof args[0] === 'string' ? args[1] : args[0]) || {};
         const cancelToken = $3lUmV$react.useRef(null);
@@ -303,11 +302,11 @@ function $5b3063aa3fbb5758$export$686fd69990e9d05f(visitorInstance) {
                     if (options.onFinish) return options.onFinish();
                 }
             };
-            if (method === 'delete') return visitorInstance.delete(url, {
+            if (method === 'delete') return this.visitor.delete(url, {
                 ..._options,
                 data: transform(data1)
             });
-            else return visitorInstance[method](url, transform(data1), _options);
+            else return this.visitor[method](url, transform(data1), _options);
         }, [
             data1,
             setErrors
@@ -376,9 +375,9 @@ function $5b3063aa3fbb5758$export$686fd69990e9d05f(visitorInstance) {
                 if (cancelToken.current) cancelToken.current.cancel();
             }
         };
-    };
-}
-const $5b3063aa3fbb5758$var$useForm = $5b3063aa3fbb5758$export$686fd69990e9d05f($5b3063aa3fbb5758$export$9d54d4ec2dd4b364);
+    }
+};
+const $5b3063aa3fbb5758$var$useForm = $5b3063aa3fbb5758$export$9d54d4ec2dd4b364.useForm;
 var $5b3063aa3fbb5758$export$2e2bcd8739ae039 = $5b3063aa3fbb5758$var$useForm;
 
 
