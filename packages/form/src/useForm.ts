@@ -24,8 +24,10 @@ type VisitConfig = {
     queryStringArrayFormat: string
 };
 
-const Visitor = {
-    config: {},
+export const Visitor = {
+    config: () => {
+        return {}
+    },
     visitor: {
         visit(href, {
             method = Method.GET,
@@ -101,7 +103,7 @@ const Visitor = {
 
             onStart(visit);
 
-            return Promise.resolve(this.config).then(config => {
+            return Promise.resolve(this.config()).then(config => {
                 return new Promise((resolve, reject) => {
                     return axios({
                         method: method,
