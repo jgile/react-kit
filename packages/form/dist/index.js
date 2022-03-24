@@ -13,6 +13,8 @@ function $parcel$interopDefault(a) {
 }
 
 $parcel$export(module.exports, "useForm", () => $5b3063aa3fbb5758$export$2e2bcd8739ae039);
+$parcel$export(module.exports, "makeUseForm", () => $5b3063aa3fbb5758$export$686fd69990e9d05f);
+$parcel$export(module.exports, "Visitor", () => $5b3063aa3fbb5758$export$9d54d4ec2dd4b364);
 $parcel$export(module.exports, "useData", () => $11f8d06d5ccee85c$export$2e2bcd8739ae039);
 
 
@@ -223,157 +225,161 @@ const $5b3063aa3fbb5758$export$9d54d4ec2dd4b364 = {
         }));
     }
 };
-function $5b3063aa3fbb5758$export$2e2bcd8739ae039(...args) {
-    const isMounted = $3lUmV$react.useRef(null);
-    const defaults = (typeof args[0] === 'string' ? args[1] : args[0]) || {};
-    const cancelToken = $3lUmV$react.useRef(null);
-    const recentlySuccessfulTimeoutId = $3lUmV$react.useRef(null);
-    const [data1, setData] = $3lUmV$react.useState(defaults);
-    const [response1, setResponse] = $3lUmV$react.useState({});
-    const [errors1, setErrors] = $3lUmV$react.useState({});
-    const [hasErrors, setHasErrors] = $3lUmV$react.useState(false);
-    const [processing, setProcessing] = $3lUmV$react.useState(false);
-    const [progress, setProgress] = $3lUmV$react.useState(null);
-    const [wasSuccessful, setWasSuccessful] = $3lUmV$react.useState(false);
-    const [recentlySuccessful, setRecentlySuccessful] = $3lUmV$react.useState(false);
-    let transform = (data)=>data
-    ;
-    $3lUmV$react.useEffect(()=>{
-        isMounted.current = true;
-        return ()=>{
-            isMounted.current = false;
-        };
-    }, []);
-    const submit = $3lUmV$react.useCallback((method, url, options = {})=>{
-        const _options = {
-            ...options,
-            onBefore: (visit)=>{
-                setWasSuccessful(false);
-                setRecentlySuccessful(false);
-                clearTimeout(recentlySuccessfulTimeoutId.current);
-                if (options.onBefore) return options.onBefore(visit);
-            },
-            onStart: (visit)=>{
-                setProcessing(true);
-                if (options.onStart) return options.onStart(visit);
-            },
-            onProgress: (event)=>{
-                setProgress(event);
-                if (options.onProgress) return options.onProgress(event);
-            },
-            onSuccess: (response)=>{
-                setResponse(response);
-                if (isMounted.current) {
-                    setProcessing(false);
-                    setProgress(null);
-                    setErrors({});
-                    setHasErrors(false);
-                    setWasSuccessful(true);
-                    setRecentlySuccessful(true);
-                    recentlySuccessfulTimeoutId.current = setTimeout(()=>{
-                        if (isMounted.current) setRecentlySuccessful(false);
-                    }, 2000);
+function $5b3063aa3fbb5758$export$686fd69990e9d05f(visitorInstance) {
+    return (...args)=>{
+        const isMounted = $3lUmV$react.useRef(null);
+        const defaults = (typeof args[0] === 'string' ? args[1] : args[0]) || {};
+        const cancelToken = $3lUmV$react.useRef(null);
+        const recentlySuccessfulTimeoutId = $3lUmV$react.useRef(null);
+        const [data1, setData] = $3lUmV$react.useState(defaults);
+        const [response1, setResponse] = $3lUmV$react.useState({});
+        const [errors1, setErrors] = $3lUmV$react.useState({});
+        const [hasErrors, setHasErrors] = $3lUmV$react.useState(false);
+        const [processing, setProcessing] = $3lUmV$react.useState(false);
+        const [progress, setProgress] = $3lUmV$react.useState(null);
+        const [wasSuccessful, setWasSuccessful] = $3lUmV$react.useState(false);
+        const [recentlySuccessful, setRecentlySuccessful] = $3lUmV$react.useState(false);
+        let transform = (data)=>data
+        ;
+        $3lUmV$react.useEffect(()=>{
+            isMounted.current = true;
+            return ()=>{
+                isMounted.current = false;
+            };
+        }, []);
+        const submit = $3lUmV$react.useCallback((method, url, options = {})=>{
+            const _options = {
+                ...options,
+                onBefore: (visit)=>{
+                    setWasSuccessful(false);
+                    setRecentlySuccessful(false);
+                    clearTimeout(recentlySuccessfulTimeoutId.current);
+                    if (options.onBefore) return options.onBefore(visit);
+                },
+                onStart: (visit)=>{
+                    setProcessing(true);
+                    if (options.onStart) return options.onStart(visit);
+                },
+                onProgress: (event)=>{
+                    setProgress(event);
+                    if (options.onProgress) return options.onProgress(event);
+                },
+                onSuccess: (response)=>{
+                    setResponse(response);
+                    if (isMounted.current) {
+                        setProcessing(false);
+                        setProgress(null);
+                        setErrors({});
+                        setHasErrors(false);
+                        setWasSuccessful(true);
+                        setRecentlySuccessful(true);
+                        recentlySuccessfulTimeoutId.current = setTimeout(()=>{
+                            if (isMounted.current) setRecentlySuccessful(false);
+                        }, 2000);
+                    }
+                    if (options.onSuccess) return options.onSuccess(response);
+                },
+                onError: (errors)=>{
+                    if (isMounted.current) {
+                        setProcessing(false);
+                        setProgress(null);
+                        setErrors(errors);
+                        setHasErrors(true);
+                    }
+                    if (options.onError) return options.onError(errors);
+                },
+                onCancel: ()=>{
+                    if (isMounted.current) {
+                        setProcessing(false);
+                        setProgress(null);
+                    }
+                    if (options.onCancel) return options.onCancel();
+                },
+                onFinish: ()=>{
+                    if (isMounted.current) {
+                        setProcessing(false);
+                        setProgress(null);
+                    }
+                    if (options.onFinish) return options.onFinish();
                 }
-                if (options.onSuccess) return options.onSuccess(response);
+            };
+            if (method === 'delete') return visitorInstance.delete(url, {
+                ..._options,
+                data: transform(data1)
+            });
+            else return visitorInstance[method](url, transform(data1), _options);
+        }, [
+            data1,
+            setErrors
+        ]);
+        return {
+            data: data1,
+            response: response1,
+            setData (key, value) {
+                if (typeof value === 'object' && 'target' in value && value.target) value = value.target.value;
+                if (typeof key === 'string') setData({
+                    ...data1,
+                    [key]: value
+                });
+                else if (typeof key === 'function') setData((data)=>key(data)
+                );
+                else setData(key);
+                return this;
             },
-            onError: (errors)=>{
-                if (isMounted.current) {
-                    setProcessing(false);
-                    setProgress(null);
-                    setErrors(errors);
-                    setHasErrors(true);
-                }
-                if (options.onError) return options.onError(errors);
+            isDirty: !($parcel$interopDefault($3lUmV$lodashisequal))(data1, defaults),
+            errors: errors1,
+            hasErrors: hasErrors,
+            processing: processing,
+            progress: progress,
+            wasSuccessful: wasSuccessful,
+            recentlySuccessful: recentlySuccessful,
+            transform (callback) {
+                transform = callback;
             },
-            onCancel: ()=>{
-                if (isMounted.current) {
-                    setProcessing(false);
-                    setProgress(null);
-                }
-                if (options.onCancel) return options.onCancel();
+            reset (...fields) {
+                if (!fields.length) setData(defaults);
+                else setData(Object.keys(defaults).filter((key)=>fields.includes(key)
+                ).reduce((carry, key)=>{
+                    carry[key] = defaults[key];
+                    return carry;
+                }, {
+                    ...data1
+                }));
             },
-            onFinish: ()=>{
-                if (isMounted.current) {
-                    setProcessing(false);
-                    setProgress(null);
-                }
-                if (options.onFinish) return options.onFinish();
+            clearErrors (...fields) {
+                setErrors(Object.keys(errors1).reduce((carry, field)=>({
+                        ...carry,
+                        ...fields.length > 0 && !fields.includes(field) ? {
+                            [field]: errors1[field]
+                        } : {}
+                    })
+                , {}));
+                setHasErrors(Object.keys(errors1).length > 0);
+            },
+            submit: submit,
+            get (url, options) {
+                return submit('get', url, options);
+            },
+            post (url, options) {
+                return submit('post', url, options);
+            },
+            put (url, options) {
+                return submit('put', url, options);
+            },
+            patch (url, options) {
+                return submit('patch', url, options);
+            },
+            delete (url, options) {
+                return submit('delete', url, options);
+            },
+            cancel () {
+                if (cancelToken.current) cancelToken.current.cancel();
             }
         };
-        if (method === 'delete') return $5b3063aa3fbb5758$export$9d54d4ec2dd4b364.delete(url, {
-            ..._options,
-            data: transform(data1)
-        });
-        else return $5b3063aa3fbb5758$export$9d54d4ec2dd4b364[method](url, transform(data1), _options);
-    }, [
-        data1,
-        setErrors
-    ]);
-    return {
-        data: data1,
-        response: response1,
-        setData (key, value) {
-            if (typeof value === 'object' && 'target' in value && value.target) value = value.target.value;
-            if (typeof key === 'string') setData({
-                ...data1,
-                [key]: value
-            });
-            else if (typeof key === 'function') setData((data)=>key(data)
-            );
-            else setData(key);
-            return this;
-        },
-        isDirty: !($parcel$interopDefault($3lUmV$lodashisequal))(data1, defaults),
-        errors: errors1,
-        hasErrors: hasErrors,
-        processing: processing,
-        progress: progress,
-        wasSuccessful: wasSuccessful,
-        recentlySuccessful: recentlySuccessful,
-        transform (callback) {
-            transform = callback;
-        },
-        reset (...fields) {
-            if (!fields.length) setData(defaults);
-            else setData(Object.keys(defaults).filter((key)=>fields.includes(key)
-            ).reduce((carry, key)=>{
-                carry[key] = defaults[key];
-                return carry;
-            }, {
-                ...data1
-            }));
-        },
-        clearErrors (...fields) {
-            setErrors(Object.keys(errors1).reduce((carry, field)=>({
-                    ...carry,
-                    ...fields.length > 0 && !fields.includes(field) ? {
-                        [field]: errors1[field]
-                    } : {}
-                })
-            , {}));
-            setHasErrors(Object.keys(errors1).length > 0);
-        },
-        submit: submit,
-        get (url, options) {
-            return submit('get', url, options);
-        },
-        post (url, options) {
-            return submit('post', url, options);
-        },
-        put (url, options) {
-            return submit('put', url, options);
-        },
-        patch (url, options) {
-            return submit('patch', url, options);
-        },
-        delete (url, options) {
-            return submit('delete', url, options);
-        },
-        cancel () {
-            if (cancelToken.current) cancelToken.current.cancel();
-        }
     };
 }
+const $5b3063aa3fbb5758$var$useForm = $5b3063aa3fbb5758$export$686fd69990e9d05f($5b3063aa3fbb5758$export$9d54d4ec2dd4b364);
+var $5b3063aa3fbb5758$export$2e2bcd8739ae039 = $5b3063aa3fbb5758$var$useForm;
 
 
 
