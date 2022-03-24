@@ -5,7 +5,8 @@ import {hrefToUrl, mergeDataIntoQueryString, urlWithoutHash} from './lib/url';
 import {Method} from './lib/types';
 import {hasFiles} from "./lib/files";
 import {objectToFormData} from "./lib/formData";
-import axios from "axios";
+import * as localAxios from "axios";
+import {instanceOf} from "prop-types";
 
 type VisitConfig = {
     method: string
@@ -96,6 +97,8 @@ export const Visitor = {
 
         return new Promise((resolve, reject) => {
             // @ts-ignore
+            const axios = window.axios instanceof localAxios ? window.axios : localAxios;
+
             return axios({
                 method: method,
                 url: urlWithoutHash(url).href,

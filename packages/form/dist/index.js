@@ -138,7 +138,8 @@ const $5b3063aa3fbb5758$export$9d54d4ec2dd4b364 = {
         onStart(visit);
         return new Promise((resolve, reject)=>{
             // @ts-ignore
-            return ($parcel$interopDefault($3lUmV$axios))({
+            const axios = window.axios instanceof $3lUmV$axios ? window.axios : $3lUmV$axios;
+            return axios({
                 method: method,
                 url: $5f1668bda460d77e$export$311fc32ea47c5ee1(url).href,
                 data: method === $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET ? {} : data,
