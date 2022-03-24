@@ -5,8 +5,7 @@ import {hrefToUrl, mergeDataIntoQueryString, urlWithoutHash} from './lib/url';
 import {Method} from './lib/types';
 import {hasFiles} from "./lib/files";
 import {objectToFormData} from "./lib/formData";
-import * as localAxios from "axios";
-import {instanceOf} from "prop-types";
+import axios from "axios";
 
 type VisitConfig = {
     method: string
@@ -96,10 +95,7 @@ export const Visitor = {
         onStart(visit);
 
         return new Promise((resolve, reject) => {
-            // @ts-ignore
-            const axios = window.axios ? window.axios : localAxios;
-
-            return axios({
+            let config = {
                 method: method,
                 url: urlWithoutHash(url).href,
                 data: method === Method.GET ? {} : data,
@@ -111,7 +107,19 @@ export const Visitor = {
                         onProgress(progress);
                     }
                 },
-            }).then((response) => {
+            };
+
+            // @ts-ignore
+            if (window && typeof window.useFormGlobals === 'object') {
+                config = {
+                    ...config,
+                    // @ts-ignore
+                    ...window.useFormGlobals
+                }
+            }
+
+            // @ts-ignore
+            return axios(config).then((response) => {
                 const errors = get(response, 'data.errors', {}) || {};
 
                 if (this.activeVisit) {
