@@ -8,21 +8,22 @@ import {objectToFormData} from "./lib/formData";
 import axios from "axios";
 
 export const Visitor = {
-    onCancelToken: () => ({}),
-    onBefore: (visit) => visit,
-    onProgress: (progress) => ({}),
-    onFinish: (visit) => ({}),
-    onSuccess: (response) => response,
-    onError: (error) => ({}),
+    onBefore: (config) => config,
+    visit(href, {
+        method = Method.GET,
+        data = {},
+        headers = {},
+        errorBag = '',
+        forceFormData = false,
+        queryStringArrayFormat = 'brackets',
+        onProgress = () => ({}),
+        onFinish = () => ({}),
+        onError = () => ({}),
+        onBefore = (config) => config,
+        onSuccess = (response) => response
+    }) {
+        const self = this;
 
-    finishVisit(visit) {
-        visit.completed = true;
-        visit.cancelled = false;
-        visit.interrupted = false;
-        this.onFinish(visit);
-    },
-
-    visit(href, {method = Method.GET, data = {}, headers = {}, errorBag = '', forceFormData = false, queryStringArrayFormat = 'brackets'}) {
         let url = typeof href === 'string' ? hrefToUrl(href) : href;
 
         if (this.activeVisit && this.activeVisit.processing) {
@@ -49,14 +50,14 @@ export const Visitor = {
             errorBag,
             forceFormData,
             queryStringArrayFormat,
+            onFinish,
             completed: false,
             interrupted: false,
             cancelled: false,
         };
 
-        this.activeVisit = visit;
-
-        return Promise.resolve(this.onBefore(visit)).then(visit => {
+        return Promise.resolve(onBefore(this.onBefore(visit))).then(visit => {
+            this.activeVisit = visit;
             return new Promise((resolve, reject) => {
                 return axios({
                     method: visit.method,
@@ -67,7 +68,7 @@ export const Visitor = {
                     onUploadProgress: progress => {
                         if (visit.data instanceof FormData) {
                             progress.percentage = Math.round(progress.loaded / progress.total * 100);
-                            this.onProgress(progress);
+                            onProgress(progress);
                         }
                     },
                 }).then((response) => {
@@ -79,10 +80,10 @@ export const Visitor = {
 
                     if (Object.keys(errors).length > 0) {
                         const scopedErrors = errorBag ? (errors[errorBag] ? errors[errorBag] : {}) : errors;
-                        return this.onError(scopedErrors);
+                        return onError(scopedErrors);
                     }
 
-                    this.onSuccess(response.data);
+                    onSuccess(response.data);
 
                     return resolve(response.data);
                 }).catch((error) => {
@@ -94,13 +95,20 @@ export const Visitor = {
 
                     if (Object.keys(errors).length > 0) {
                         const scopedErrors = errorBag ? (errors[errorBag] ? errors[errorBag] : {}) : errors;
-                        return this.onError(scopedErrors);
+                        return onError(scopedErrors);
                     }
 
                     return reject(error);
                 })
             });
         });
+    },
+
+    finishVisit(visit) {
+        visit.completed = true;
+        visit.cancelled = false;
+        visit.interrupted = false;
+        visit.onFinish(visit);
     },
 
     get(url, data = {}, options = {}) {

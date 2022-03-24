@@ -99,25 +99,15 @@ function $e1888736b8750eb9$var$append(form, key, value) {
 
 
 const $11cceea5fc5ebf19$export$9d54d4ec2dd4b364 = {
-    onCancelToken: ()=>({})
+    onBefore: (config)=>config
     ,
-    onBefore: (visit)=>visit
-    ,
-    onProgress: (progress)=>({})
-    ,
-    onFinish: (visit)=>({})
-    ,
-    onSuccess: (response)=>response
-    ,
-    onError: (error)=>({})
-    ,
-    finishVisit (visit) {
-        visit.completed = true;
-        visit.cancelled = false;
-        visit.interrupted = false;
-        this.onFinish(visit);
-    },
-    visit (href, { method: method = $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET , data: data = {} , headers: headers = {} , errorBag: errorBag = '' , forceFormData: forceFormData = false , queryStringArrayFormat: queryStringArrayFormat = 'brackets'  }) {
+    visit (href, { method: method = $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET , data: data = {} , headers: headers = {} , errorBag: errorBag = '' , forceFormData: forceFormData = false , queryStringArrayFormat: queryStringArrayFormat = 'brackets' , onProgress: onProgress = ()=>({})
+     , onFinish: onFinish = ()=>({})
+     , onError: onError = ()=>({})
+     , onBefore: onBefore = (config)=>config
+     , onSuccess: onSuccess = (response)=>response
+      }) {
+        const self = this;
         let url = typeof href === 'string' ? $5f1668bda460d77e$export$181d7b261dd21e46(href) : href;
         if (this.activeVisit && this.activeVisit.processing) return;
         // Create form data if has files
@@ -136,12 +126,13 @@ const $11cceea5fc5ebf19$export$9d54d4ec2dd4b364 = {
             errorBag: errorBag,
             forceFormData: forceFormData,
             queryStringArrayFormat: queryStringArrayFormat,
+            onFinish: onFinish,
             completed: false,
             interrupted: false,
             cancelled: false
         };
-        this.activeVisit = visit1;
-        return Promise.resolve(this.onBefore(visit1)).then((visit)=>{
+        return Promise.resolve(onBefore(this.onBefore(visit1))).then((visit)=>{
+            this.activeVisit = visit;
             return new Promise((resolve, reject)=>{
                 return ($parcel$interopDefault($9vnn7$axios))({
                     method: visit.method,
@@ -154,7 +145,7 @@ const $11cceea5fc5ebf19$export$9d54d4ec2dd4b364 = {
                     onUploadProgress: (progress)=>{
                         if (visit.data instanceof FormData) {
                             progress.percentage = Math.round(progress.loaded / progress.total * 100);
-                            this.onProgress(progress);
+                            onProgress(progress);
                         }
                     }
                 }).then((response)=>{
@@ -162,21 +153,27 @@ const $11cceea5fc5ebf19$export$9d54d4ec2dd4b364 = {
                     if (this.activeVisit) this.finishVisit(this.activeVisit);
                     if (Object.keys(errors).length > 0) {
                         const scopedErrors = errorBag ? errors[errorBag] ? errors[errorBag] : {} : errors;
-                        return this.onError(scopedErrors);
+                        return onError(scopedErrors);
                     }
-                    this.onSuccess(response.data);
+                    onSuccess(response.data);
                     return resolve(response.data);
                 }).catch((error)=>{
                     const errors = ($parcel$interopDefault($9vnn7$lodashget))(error, 'response.data.errors', {});
                     if (this.activeVisit) this.finishVisit(this.activeVisit);
                     if (Object.keys(errors).length > 0) {
                         const scopedErrors = errorBag ? errors[errorBag] ? errors[errorBag] : {} : errors;
-                        return this.onError(scopedErrors);
+                        return onError(scopedErrors);
                     }
                     return reject(error);
                 });
             });
         });
+    },
+    finishVisit (visit) {
+        visit.completed = true;
+        visit.cancelled = false;
+        visit.interrupted = false;
+        visit.onFinish(visit);
     },
     get (url, data = {}, options = {}) {
         return this.visit(url, Object.assign(Object.assign({}, options), {
