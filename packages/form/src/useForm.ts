@@ -25,9 +25,7 @@ type VisitConfig = {
 };
 
 export const Visitor = {
-    config: () => {
-        return {}
-    },
+    config: () => ({}),
     visitor: {
         visit(href, {
             method = Method.GET,

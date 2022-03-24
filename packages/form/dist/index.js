@@ -99,9 +99,8 @@ function $e1888736b8750eb9$var$append(form, key, value) {
 
 
 const $5b3063aa3fbb5758$export$9d54d4ec2dd4b364 = {
-    config: ()=>{
-        return {};
-    },
+    config: ()=>({})
+    ,
     visitor: {
         visit (href, { method: method = $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET , data: data = {} , replace: replace = false , headers: headers = {} , errorBag: errorBag = '' , forceFormData: forceFormData = false , onCancelToken: onCancelToken = ()=>{} , onBefore: onBefore = ()=>{} , onStart: onStart = ()=>{} , onProgress: onProgress = ()=>{} , onFinish: onFinish = ()=>{} , onSuccess: onSuccess = (response)=>response
          , onError: onError = ()=>{} , queryStringArrayFormat: queryStringArrayFormat = 'brackets'  }) {
