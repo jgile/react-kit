@@ -13,7 +13,7 @@ function $parcel$interopDefault(a) {
 }
 
 $parcel$export(module.exports, "useForm", () => $5b3063aa3fbb5758$export$2e2bcd8739ae039);
-$parcel$export(module.exports, "Visitor", () => $5b3063aa3fbb5758$exports.Visitor);
+$parcel$export(module.exports, "Visitor", () => $5b3063aa3fbb5758$export$9d54d4ec2dd4b364);
 $parcel$export(module.exports, "useData", () => $11f8d06d5ccee85c$export$2e2bcd8739ae039);
 
 
@@ -98,8 +98,10 @@ function $e1888736b8750eb9$var$append(form, key, value) {
 
 
 
-const $5b3063aa3fbb5758$var$Visitor = {
-    config: {},
+const $5b3063aa3fbb5758$export$9d54d4ec2dd4b364 = {
+    config: ()=>{
+        return {};
+    },
     visitor: {
         visit (href, { method: method = $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET , data: data = {} , replace: replace = false , headers: headers = {} , errorBag: errorBag = '' , forceFormData: forceFormData = false , onCancelToken: onCancelToken = ()=>{} , onBefore: onBefore = ()=>{} , onStart: onStart = ()=>{} , onProgress: onProgress = ()=>{} , onFinish: onFinish = ()=>{} , onSuccess: onSuccess = (response)=>response
          , onError: onError = ()=>{} , queryStringArrayFormat: queryStringArrayFormat = 'brackets'  }) {
@@ -138,7 +140,7 @@ const $5b3063aa3fbb5758$var$Visitor = {
             });
             if (onBefore(visit) === false) return;
             onStart(visit);
-            return Promise.resolve(this.config).then((config)=>{
+            return Promise.resolve(this.config()).then((config)=>{
                 return new Promise((resolve, reject)=>{
                     return ($parcel$interopDefault($3lUmV$axios))({
                         method: method,
@@ -372,7 +374,7 @@ const $5b3063aa3fbb5758$var$Visitor = {
         };
     }
 };
-const $5b3063aa3fbb5758$var$useForm = $5b3063aa3fbb5758$var$Visitor.useForm;
+const $5b3063aa3fbb5758$var$useForm = $5b3063aa3fbb5758$export$9d54d4ec2dd4b364.useForm;
 var $5b3063aa3fbb5758$export$2e2bcd8739ae039 = $5b3063aa3fbb5758$var$useForm;
 
 
