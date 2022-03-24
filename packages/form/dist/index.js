@@ -137,9 +137,7 @@ const $5b3063aa3fbb5758$export$9d54d4ec2dd4b364 = {
         if (onBefore(visit) === false) return;
         onStart(visit);
         return new Promise((resolve, reject)=>{
-            // @ts-ignore
-            const axios = window.axios instanceof $3lUmV$axios ? window.axios : $3lUmV$axios;
-            return axios({
+            let config = {
                 method: method,
                 url: $5f1668bda460d77e$export$311fc32ea47c5ee1(url).href,
                 data: method === $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET ? {} : data,
@@ -153,7 +151,15 @@ const $5b3063aa3fbb5758$export$9d54d4ec2dd4b364 = {
                         onProgress(progress);
                     }
                 }
-            }).then((response)=>{
+            };
+            // @ts-ignore
+            if (window && typeof window.useFormGlobals === 'object') config = {
+                ...config,
+                // @ts-ignore
+                ...window.useFormGlobals
+            };
+            // @ts-ignore
+            return ($parcel$interopDefault($3lUmV$axios))(config).then((response)=>{
                 const errors = ($parcel$interopDefault($3lUmV$lodashget))(response, 'data.errors', {}) || {};
                 if (this.activeVisit) this.finishVisit(this.activeVisit);
                 if (Object.keys(errors).length > 0) {
