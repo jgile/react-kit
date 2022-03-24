@@ -97,7 +97,7 @@ export const Visitor = {
 
         return new Promise((resolve, reject) => {
             // @ts-ignore
-            const axios = window.axios instanceof localAxios ? window.axios : localAxios;
+            const axios = window.axios ? window.axios : localAxios;
 
             return axios({
                 method: method,
