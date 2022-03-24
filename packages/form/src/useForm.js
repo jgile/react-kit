@@ -9,25 +9,20 @@ import axios from "axios";
 
 export const Visitor = {
     onCancelToken: () => ({}),
-    onBefore: () => ({}),
-    onProgress: () => ({}),
-    onFinish: () => ({}),
+    onBefore: (visit) => visit,
+    onProgress: (progress) => ({}),
+    onFinish: (visit) => ({}),
     onSuccess: (response) => response,
-    onError: () => ({}),
+    onError: (error) => ({}),
+
     finishVisit(visit) {
         visit.completed = true;
         visit.cancelled = false;
         visit.interrupted = false;
         this.onFinish(visit);
     },
-    visit(href, {
-        method = Method.GET,
-        data = {},
-        headers = {},
-        errorBag = '',
-        forceFormData = false,
-        queryStringArrayFormat = 'brackets',
-    }) {
+
+    visit(href, {method = Method.GET, data = {}, headers = {}, errorBag = '', forceFormData = false, queryStringArrayFormat = 'brackets'}) {
         let url = typeof href === 'string' ? hrefToUrl(href) : href;
 
         if (this.activeVisit && this.activeVisit.processing) {
@@ -61,16 +56,16 @@ export const Visitor = {
 
         this.activeVisit = visit;
 
-        return Promise.resolve(this.onBefore(visit)).then(config => {
+        return Promise.resolve(this.onBefore(visit)).then(visit => {
             return new Promise((resolve, reject) => {
                 return axios({
-                    method: config.method,
-                    url: urlWithoutHash(config.url).href,
-                    data: config.method === Method.GET ? {} : config.data,
-                    params: config.method === Method.GET ? config.data : {},
-                    headers: Object.assign(Object.assign({}, config.headers), {'X-Requested-With': 'XMLHttpRequest'}),
+                    method: visit.method,
+                    url: urlWithoutHash(visit.url).href,
+                    data: visit.method === Method.GET ? {} : visit.data,
+                    params: visit.method === Method.GET ? visit.data : {},
+                    headers: Object.assign(Object.assign({}, visit.headers), {'X-Requested-With': 'XMLHttpRequest'}),
                     onUploadProgress: progress => {
-                        if (config.data instanceof FormData) {
+                        if (visit.data instanceof FormData) {
                             progress.percentage = Math.round(progress.loaded / progress.total * 100);
                             this.onProgress(progress);
                         }

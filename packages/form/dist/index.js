@@ -101,15 +101,15 @@ function $e1888736b8750eb9$var$append(form, key, value) {
 const $11cceea5fc5ebf19$export$9d54d4ec2dd4b364 = {
     onCancelToken: ()=>({})
     ,
-    onBefore: ()=>({})
+    onBefore: (visit)=>visit
     ,
-    onProgress: ()=>({})
+    onProgress: (progress)=>({})
     ,
-    onFinish: ()=>({})
+    onFinish: (visit)=>({})
     ,
     onSuccess: (response)=>response
     ,
-    onError: ()=>({})
+    onError: (error)=>({})
     ,
     finishVisit (visit) {
         visit.completed = true;
@@ -117,7 +117,7 @@ const $11cceea5fc5ebf19$export$9d54d4ec2dd4b364 = {
         visit.interrupted = false;
         this.onFinish(visit);
     },
-    visit (href, { method: method = $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET , data: data = {} , headers: headers = {} , errorBag: errorBag = '' , forceFormData: forceFormData = false , queryStringArrayFormat: queryStringArrayFormat = 'brackets' ,  }) {
+    visit (href, { method: method = $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET , data: data = {} , headers: headers = {} , errorBag: errorBag = '' , forceFormData: forceFormData = false , queryStringArrayFormat: queryStringArrayFormat = 'brackets'  }) {
         let url = typeof href === 'string' ? $5f1668bda460d77e$export$181d7b261dd21e46(href) : href;
         if (this.activeVisit && this.activeVisit.processing) return;
         // Create form data if has files
@@ -128,7 +128,7 @@ const $11cceea5fc5ebf19$export$9d54d4ec2dd4b364 = {
             url = $5f1668bda460d77e$export$181d7b261dd21e46(_href);
             data = _data;
         }
-        const visit = {
+        const visit1 = {
             url: url,
             method: method,
             data: data,
@@ -140,19 +140,19 @@ const $11cceea5fc5ebf19$export$9d54d4ec2dd4b364 = {
             interrupted: false,
             cancelled: false
         };
-        this.activeVisit = visit;
-        return Promise.resolve(this.onBefore(visit)).then((config)=>{
+        this.activeVisit = visit1;
+        return Promise.resolve(this.onBefore(visit1)).then((visit)=>{
             return new Promise((resolve, reject)=>{
                 return ($parcel$interopDefault($9vnn7$axios))({
-                    method: config.method,
-                    url: $5f1668bda460d77e$export$311fc32ea47c5ee1(config.url).href,
-                    data: config.method === $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET ? {} : config.data,
-                    params: config.method === $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET ? config.data : {},
-                    headers: Object.assign(Object.assign({}, config.headers), {
+                    method: visit.method,
+                    url: $5f1668bda460d77e$export$311fc32ea47c5ee1(visit.url).href,
+                    data: visit.method === $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET ? {} : visit.data,
+                    params: visit.method === $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET ? visit.data : {},
+                    headers: Object.assign(Object.assign({}, visit.headers), {
                         'X-Requested-With': 'XMLHttpRequest'
                     }),
                     onUploadProgress: (progress)=>{
-                        if (config.data instanceof FormData) {
+                        if (visit.data instanceof FormData) {
                             progress.percentage = Math.round(progress.loaded / progress.total * 100);
                             this.onProgress(progress);
                         }
