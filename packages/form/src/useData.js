@@ -7,7 +7,7 @@ export default function useData(...args) {
 
     return {
         data,
-        reset(...fields): void {
+        reset(...fields) {
             if (!fields.length) {
                 setData(defaults)
             } else {
@@ -21,7 +21,7 @@ export default function useData(...args) {
                 )
             }
         },
-        setData(key: any, value: any) {
+        setData(key, value) {
             if (typeof value === 'object' && 'target' in value && value.target) {
                 value = value.target.value;
             }

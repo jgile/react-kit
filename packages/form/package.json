@@ -1,9 +1,8 @@
 {
     "name": "@react-kit/form",
     "version": "1.0.19",
-    "source": "src/index.ts",
+    "source": "src/index.js",
     "main": "dist/index.js",
-    "types": "index.d.ts",
     "scripts": {
         "build": "parcel build",
         "watch": "parcel watch"

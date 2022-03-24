@@ -1,9 +1,9 @@
-var $3lUmV$react = require("react");
-var $3lUmV$lodashisequal = require("lodash.isequal");
-var $3lUmV$lodashget = require("lodash.get");
-var $3lUmV$axios = require("axios");
-var $3lUmV$qs = require("qs");
-var $3lUmV$deepmerge = require("deepmerge");
+var $9vnn7$react = require("react");
+var $9vnn7$lodashisequal = require("lodash.isequal");
+var $9vnn7$lodashget = require("lodash.get");
+var $9vnn7$axios = require("axios");
+var $9vnn7$qs = require("qs");
+var $9vnn7$deepmerge = require("deepmerge");
 
 function $parcel$export(e, n, v, s) {
   Object.defineProperty(e, n, {get: v, set: s, enumerable: true, configurable: true});
@@ -12,9 +12,9 @@ function $parcel$interopDefault(a) {
   return a && a.__esModule ? a.default : a;
 }
 
-$parcel$export(module.exports, "useForm", () => $5b3063aa3fbb5758$export$2e2bcd8739ae039);
-$parcel$export(module.exports, "Visitor", () => $5b3063aa3fbb5758$export$9d54d4ec2dd4b364);
-$parcel$export(module.exports, "useData", () => $11f8d06d5ccee85c$export$2e2bcd8739ae039);
+$parcel$export(module.exports, "useForm", () => $11cceea5fc5ebf19$export$2e2bcd8739ae039);
+$parcel$export(module.exports, "Visitor", () => $11cceea5fc5ebf19$export$9d54d4ec2dd4b364);
+$parcel$export(module.exports, "useData", () => $20909e36cb1e260b$export$2e2bcd8739ae039);
 
 
 
@@ -41,7 +41,7 @@ function $5f1668bda460d77e$export$44c8c586af913ff3(method, href, data, qsArrayFo
     const hasHash = href.toString().includes('#');
     const url = new URL(href.toString(), 'http://localhost');
     if (method === $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET && Object.keys(data).length) {
-        url.search = $3lUmV$qs.stringify(($parcel$interopDefault($3lUmV$deepmerge))($3lUmV$qs.parse(url.search, {
+        url.search = $9vnn7$qs.stringify(($parcel$interopDefault($9vnn7$deepmerge))($9vnn7$qs.parse(url.search, {
             ignoreQueryPrefix: true
         }), data), {
             encodeValuesOnly: true,
@@ -98,151 +98,145 @@ function $e1888736b8750eb9$var$append(form, key, value) {
 
 
 
-const $5b3063aa3fbb5758$export$9d54d4ec2dd4b364 = {
-    config: ()=>({})
+const $11cceea5fc5ebf19$export$9d54d4ec2dd4b364 = {
+    onCancelToken: ()=>({})
     ,
-    visitor: {
-        visit (href, { method: method = $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET , data: data = {} , replace: replace = false , headers: headers = {} , errorBag: errorBag = '' , forceFormData: forceFormData = false , onCancelToken: onCancelToken = ()=>{} , onBefore: onBefore = ()=>{} , onStart: onStart = ()=>{} , onProgress: onProgress = ()=>{} , onFinish: onFinish = ()=>{} , onSuccess: onSuccess = (response)=>response
-         , onError: onError = ()=>{} , queryStringArrayFormat: queryStringArrayFormat = 'brackets'  }) {
-            let url = typeof href === 'string' ? $5f1668bda460d77e$export$181d7b261dd21e46(href) : href;
-            if (this.activeVisit && this.activeVisit.processing) return;
-            // Create form data if has files
-            if (($628e11d833c5f1a6$export$d75e7764e3522d6d(data) || forceFormData) && !(data instanceof FormData)) data = $e1888736b8750eb9$export$c621c6e92c748156(data);
-            // If not FormData,
-            if (!(data instanceof FormData)) {
-                const [_href, _data] = $5f1668bda460d77e$export$44c8c586af913ff3(method, url, data, queryStringArrayFormat);
-                url = $5f1668bda460d77e$export$181d7b261dd21e46(_href);
-                data = _data;
-            }
-            const visit = {
-                url: url,
-                method: method,
-                data: data,
-                replace: replace,
-                headers: headers,
-                errorBag: errorBag,
-                forceFormData: forceFormData,
-                queryStringArrayFormat: queryStringArrayFormat,
-                completed: false,
-                interrupted: false,
-                cancelled: false
-            };
-            this.activeVisit = Object.assign(Object.assign({}, visit), {
-                onCancelToken: onCancelToken,
-                onBefore: onBefore,
-                onStart: onStart,
-                onProgress: onProgress,
-                onFinish: onFinish,
-                onSuccess: onSuccess,
-                onError: onError,
-                queryStringArrayFormat: queryStringArrayFormat
-            });
-            if (onBefore(visit) === false) return;
-            onStart(visit);
-            return Promise.resolve(this.config()).then((config)=>{
-                return new Promise((resolve, reject)=>{
-                    return ($parcel$interopDefault($3lUmV$axios))({
-                        method: method,
-                        url: $5f1668bda460d77e$export$311fc32ea47c5ee1(url).href,
-                        data: method === $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET ? {} : data,
-                        params: method === $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET ? data : {},
-                        headers: Object.assign(Object.assign({}, headers), {
-                            'X-Requested-With': 'XMLHttpRequest'
-                        }),
-                        onUploadProgress: (progress)=>{
-                            if (data instanceof FormData) {
-                                progress.percentage = Math.round(progress.loaded / progress.total * 100);
-                                onProgress(progress);
-                            }
-                        },
-                        ...config
-                    }).then((response)=>{
-                        const errors = ($parcel$interopDefault($3lUmV$lodashget))(response, 'data.errors', {}) || {};
-                        if (this.activeVisit) this.finishVisit(this.activeVisit);
-                        if (Object.keys(errors).length > 0) {
-                            const scopedErrors = errorBag ? errors[errorBag] ? errors[errorBag] : {} : errors;
-                            return onError(scopedErrors);
+    onBefore: ()=>({})
+    ,
+    onProgress: ()=>({})
+    ,
+    onFinish: ()=>({})
+    ,
+    onSuccess: (response)=>response
+    ,
+    onError: ()=>({})
+    ,
+    finishVisit (visit) {
+        visit.completed = true;
+        visit.cancelled = false;
+        visit.interrupted = false;
+        this.onFinish(visit);
+    },
+    visit (href, { method: method = $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET , data: data = {} , headers: headers = {} , errorBag: errorBag = '' , forceFormData: forceFormData = false , queryStringArrayFormat: queryStringArrayFormat = 'brackets' ,  }) {
+        let url = typeof href === 'string' ? $5f1668bda460d77e$export$181d7b261dd21e46(href) : href;
+        if (this.activeVisit && this.activeVisit.processing) return;
+        // Create form data if has files
+        if (($628e11d833c5f1a6$export$d75e7764e3522d6d(data) || forceFormData) && !(data instanceof FormData)) data = $e1888736b8750eb9$export$c621c6e92c748156(data);
+        // If not FormData,
+        if (!(data instanceof FormData)) {
+            const [_href, _data] = $5f1668bda460d77e$export$44c8c586af913ff3(method, url, data, queryStringArrayFormat);
+            url = $5f1668bda460d77e$export$181d7b261dd21e46(_href);
+            data = _data;
+        }
+        const visit = {
+            url: url,
+            method: method,
+            data: data,
+            headers: headers,
+            errorBag: errorBag,
+            forceFormData: forceFormData,
+            queryStringArrayFormat: queryStringArrayFormat,
+            completed: false,
+            interrupted: false,
+            cancelled: false
+        };
+        this.activeVisit = visit;
+        return Promise.resolve(this.onBefore(visit)).then((config)=>{
+            return new Promise((resolve, reject)=>{
+                return ($parcel$interopDefault($9vnn7$axios))({
+                    method: config.method,
+                    url: $5f1668bda460d77e$export$311fc32ea47c5ee1(config.url).href,
+                    data: config.method === $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET ? {} : config.data,
+                    params: config.method === $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET ? config.data : {},
+                    headers: Object.assign(Object.assign({}, config.headers), {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }),
+                    onUploadProgress: (progress)=>{
+                        if (config.data instanceof FormData) {
+                            progress.percentage = Math.round(progress.loaded / progress.total * 100);
+                            this.onProgress(progress);
                         }
-                        onSuccess(response.data);
-                        return resolve(response.data);
-                    }).catch((error)=>{
-                        const errors = ($parcel$interopDefault($3lUmV$lodashget))(error, 'response.data.errors', {});
-                        if (this.activeVisit) this.finishVisit(this.activeVisit);
-                        if (Object.keys(errors).length > 0) {
-                            const scopedErrors = errorBag ? errors[errorBag] ? errors[errorBag] : {} : errors;
-                            return onError(scopedErrors);
-                        }
-                        return reject(error);
-                    });
+                    }
+                }).then((response)=>{
+                    const errors = ($parcel$interopDefault($9vnn7$lodashget))(response, 'data.errors', {}) || {};
+                    if (this.activeVisit) this.finishVisit(this.activeVisit);
+                    if (Object.keys(errors).length > 0) {
+                        const scopedErrors = errorBag ? errors[errorBag] ? errors[errorBag] : {} : errors;
+                        return this.onError(scopedErrors);
+                    }
+                    this.onSuccess(response.data);
+                    return resolve(response.data);
+                }).catch((error)=>{
+                    const errors = ($parcel$interopDefault($9vnn7$lodashget))(error, 'response.data.errors', {});
+                    if (this.activeVisit) this.finishVisit(this.activeVisit);
+                    if (Object.keys(errors).length > 0) {
+                        const scopedErrors = errorBag ? errors[errorBag] ? errors[errorBag] : {} : errors;
+                        return this.onError(scopedErrors);
+                    }
+                    return reject(error);
                 });
             });
-        },
-        finishVisit (visit) {
-            visit.completed = true;
-            visit.cancelled = false;
-            visit.interrupted = false;
-            visit.onFinish(visit);
-        },
-        get (url, data = {}, options = {}) {
-            return this.visit(url, Object.assign(Object.assign({}, options), {
-                method: $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET,
-                data: data
-            }));
-        },
-        post (url, data = {}, options = {}) {
-            return this.visit(url, Object.assign(Object.assign({
-                preserveState: true
-            }, options), {
-                method: $ed7f0e2735eeba9c$export$31bb55db0b3e4187.POST,
-                data: data
-            }));
-        },
-        put (url, data = {}, options = {}) {
-            return this.visit(url, Object.assign(Object.assign({
-                preserveState: true
-            }, options), {
-                method: $ed7f0e2735eeba9c$export$31bb55db0b3e4187.PUT,
-                data: data
-            }));
-        },
-        patch (url, data = {}, options = {}) {
-            return this.visit(url, Object.assign(Object.assign({
-                preserveState: true
-            }, options), {
-                method: $ed7f0e2735eeba9c$export$31bb55db0b3e4187.PATCH,
-                data: data
-            }));
-        },
-        delete (url, options = {}) {
-            return this.visit(url, Object.assign(Object.assign({
-                preserveState: true
-            }, options), {
-                method: $ed7f0e2735eeba9c$export$31bb55db0b3e4187.DELETE
-            }));
-        }
+        });
+    },
+    get (url, data = {}, options = {}) {
+        return this.visit(url, Object.assign(Object.assign({}, options), {
+            method: $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET,
+            data: data
+        }));
+    },
+    post (url, data = {}, options = {}) {
+        return this.visit(url, Object.assign(Object.assign({
+            preserveState: true
+        }, options), {
+            method: $ed7f0e2735eeba9c$export$31bb55db0b3e4187.POST,
+            data: data
+        }));
+    },
+    put (url, data = {}, options = {}) {
+        return this.visit(url, Object.assign(Object.assign({
+            preserveState: true
+        }, options), {
+            method: $ed7f0e2735eeba9c$export$31bb55db0b3e4187.PUT,
+            data: data
+        }));
+    },
+    patch (url, data = {}, options = {}) {
+        return this.visit(url, Object.assign(Object.assign({
+            preserveState: true
+        }, options), {
+            method: $ed7f0e2735eeba9c$export$31bb55db0b3e4187.PATCH,
+            data: data
+        }));
+    },
+    delete (url, options = {}) {
+        return this.visit(url, Object.assign(Object.assign({
+            preserveState: true
+        }, options), {
+            method: $ed7f0e2735eeba9c$export$31bb55db0b3e4187.DELETE
+        }));
     },
     useForm (...args) {
-        const isMounted = $3lUmV$react.useRef(null);
+        const isMounted = $9vnn7$react.useRef(null);
         const defaults = (typeof args[0] === 'string' ? args[1] : args[0]) || {};
-        const cancelToken = $3lUmV$react.useRef(null);
-        const recentlySuccessfulTimeoutId = $3lUmV$react.useRef(null);
-        const [data1, setData] = $3lUmV$react.useState(defaults);
-        const [response1, setResponse] = $3lUmV$react.useState({});
-        const [errors1, setErrors] = $3lUmV$react.useState({});
-        const [hasErrors, setHasErrors] = $3lUmV$react.useState(false);
-        const [processing, setProcessing] = $3lUmV$react.useState(false);
-        const [progress, setProgress] = $3lUmV$react.useState(null);
-        const [wasSuccessful, setWasSuccessful] = $3lUmV$react.useState(false);
-        const [recentlySuccessful, setRecentlySuccessful] = $3lUmV$react.useState(false);
+        const cancelToken = $9vnn7$react.useRef(null);
+        const recentlySuccessfulTimeoutId = $9vnn7$react.useRef(null);
+        const [data1, setData] = $9vnn7$react.useState(defaults);
+        const [response1, setResponse] = $9vnn7$react.useState({});
+        const [errors1, setErrors] = $9vnn7$react.useState({});
+        const [hasErrors, setHasErrors] = $9vnn7$react.useState(false);
+        const [processing, setProcessing] = $9vnn7$react.useState(false);
+        const [progress, setProgress] = $9vnn7$react.useState(null);
+        const [wasSuccessful, setWasSuccessful] = $9vnn7$react.useState(false);
+        const [recentlySuccessful, setRecentlySuccessful] = $9vnn7$react.useState(false);
         let transform = (data)=>data
         ;
-        $3lUmV$react.useEffect(()=>{
+        $9vnn7$react.useEffect(()=>{
             isMounted.current = true;
             return ()=>{
                 isMounted.current = false;
             };
         }, []);
-        const submit = $3lUmV$react.useCallback((method, url, options = {})=>{
+        const submit = $9vnn7$react.useCallback((method, url, options = {})=>{
             const _options = {
                 ...options,
                 onBefore: (visit)=>{
@@ -321,7 +315,7 @@ const $5b3063aa3fbb5758$export$9d54d4ec2dd4b364 = {
                 else setData(key);
                 return this;
             },
-            isDirty: !($parcel$interopDefault($3lUmV$lodashisequal))(data1, defaults),
+            isDirty: !($parcel$interopDefault($9vnn7$lodashisequal))(data1, defaults),
             errors: errors1,
             hasErrors: hasErrors,
             processing: processing,
@@ -373,15 +367,15 @@ const $5b3063aa3fbb5758$export$9d54d4ec2dd4b364 = {
         };
     }
 };
-const $5b3063aa3fbb5758$var$useForm = $5b3063aa3fbb5758$export$9d54d4ec2dd4b364.useForm;
-var $5b3063aa3fbb5758$export$2e2bcd8739ae039 = $5b3063aa3fbb5758$var$useForm;
+const $11cceea5fc5ebf19$var$useForm = $11cceea5fc5ebf19$export$9d54d4ec2dd4b364.useForm;
+var $11cceea5fc5ebf19$export$2e2bcd8739ae039 = $11cceea5fc5ebf19$var$useForm;
 
 
 
 
-function $11f8d06d5ccee85c$export$2e2bcd8739ae039(...args) {
+function $20909e36cb1e260b$export$2e2bcd8739ae039(...args) {
     const defaults = (typeof args[0] === 'string' ? args[1] : args[0]) || {};
-    const [data1, setData] = $3lUmV$react.useState(defaults);
+    const [data1, setData] = $9vnn7$react.useState(defaults);
     return {
         data: data1,
         reset (...fields) {
@@ -405,7 +399,7 @@ function $11f8d06d5ccee85c$export$2e2bcd8739ae039(...args) {
             else setData(key);
             return this;
         },
-        isDirty: !($parcel$interopDefault($3lUmV$lodashisequal))(data1, defaults)
+        isDirty: !($parcel$interopDefault($9vnn7$lodashisequal))(data1, defaults)
     };
 }
 
