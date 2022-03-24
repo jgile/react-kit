@@ -24,7 +24,7 @@ type VisitConfig = {
     queryStringArrayFormat: string
 };
 
-export const Visitor = {
+const Visitor = {
     config: {},
     visitor: {
         visit(href, {
@@ -101,60 +101,51 @@ export const Visitor = {
 
             onStart(visit);
 
-            return new Promise((resolve, reject) => {
-                let config = {
-                    method: method,
-                    url: urlWithoutHash(url).href,
-                    data: method === Method.GET ? {} : data,
-                    params: method === Method.GET ? data : {},
-                    headers: Object.assign(Object.assign({}, headers), {'X-Requested-With': 'XMLHttpRequest'}),
-                    onUploadProgress: progress => {
-                        if (data instanceof FormData) {
-                            progress.percentage = Math.round(progress.loaded / progress.total * 100);
-                            onProgress(progress);
+            return Promise.resolve(this.config).then(config => {
+                return new Promise((resolve, reject) => {
+                    return axios({
+                        method: method,
+                        url: urlWithoutHash(url).href,
+                        data: method === Method.GET ? {} : data,
+                        params: method === Method.GET ? data : {},
+                        headers: Object.assign(Object.assign({}, headers), {'X-Requested-With': 'XMLHttpRequest'}),
+                        onUploadProgress: progress => {
+                            if (data instanceof FormData) {
+                                progress.percentage = Math.round(progress.loaded / progress.total * 100);
+                                onProgress(progress);
+                            }
+                        },
+                        ...config
+                    }).then((response) => {
+                        const errors = get(response, 'data.errors', {}) || {};
+
+                        if (this.activeVisit) {
+                            this.finishVisit(this.activeVisit);
                         }
-                    },
-                };
 
-                // @ts-ignore
-                if (window && typeof window.useFormGlobals === 'object') {
-                    config = {
-                        ...config,
-                        // @ts-ignore
-                        ...window.useFormGlobals
-                    }
-                }
+                        if (Object.keys(errors).length > 0) {
+                            const scopedErrors = errorBag ? (errors[errorBag] ? errors[errorBag] : {}) : errors;
+                            return onError(scopedErrors);
+                        }
 
-                // @ts-ignore
-                return axios(config).then((response) => {
-                    const errors = get(response, 'data.errors', {}) || {};
+                        onSuccess(response.data);
 
-                    if (this.activeVisit) {
-                        this.finishVisit(this.activeVisit);
-                    }
+                        return resolve(response.data);
+                    }).catch((error) => {
+                        const errors = get(error, 'response.data.errors', {});
 
-                    if (Object.keys(errors).length > 0) {
-                        const scopedErrors = errorBag ? (errors[errorBag] ? errors[errorBag] : {}) : errors;
-                        return onError(scopedErrors);
-                    }
+                        if (this.activeVisit) {
+                            this.finishVisit(this.activeVisit);
+                        }
 
-                    onSuccess(response.data);
+                        if (Object.keys(errors).length > 0) {
+                            const scopedErrors = errorBag ? (errors[errorBag] ? errors[errorBag] : {}) : errors;
+                            return onError(scopedErrors);
+                        }
 
-                    return resolve(response.data);
-                }).catch((error) => {
-                    const errors = get(error, 'response.data.errors', {});
-
-                    if (this.activeVisit) {
-                        this.finishVisit(this.activeVisit);
-                    }
-
-                    if (Object.keys(errors).length > 0) {
-                        const scopedErrors = errorBag ? (errors[errorBag] ? errors[errorBag] : {}) : errors;
-                        return onError(scopedErrors);
-                    }
-
-                    return reject(error);
-                })
+                        return reject(error);
+                    })
+                });
             });
         },
 
@@ -166,23 +157,23 @@ export const Visitor = {
         },
 
         get(url, data = {}, options = {}) {
-            return this.visit(url, Object.assign(Object.assign({}, this.config, options), {method: Method.GET, data}));
+            return this.visit(url, Object.assign(Object.assign({}, options), {method: Method.GET, data}));
         },
 
         post(url, data = {}, options = {}) {
-            return this.visit(url, Object.assign(Object.assign({preserveState: true}, this.config, options), {method: Method.POST, data}));
+            return this.visit(url, Object.assign(Object.assign({preserveState: true}, options), {method: Method.POST, data}));
         },
 
         put(url, data = {}, options = {}) {
-            return this.visit(url, Object.assign(Object.assign({preserveState: true}, this.config, options), {method: Method.PUT, data}));
+            return this.visit(url, Object.assign(Object.assign({preserveState: true}, options), {method: Method.PUT, data}));
         },
 
         patch(url, data = {}, options = {}) {
-            return this.visit(url, Object.assign(Object.assign({preserveState: true}, this.config, options), {method: Method.PATCH, data}));
+            return this.visit(url, Object.assign(Object.assign({preserveState: true}, options), {method: Method.PATCH, data}));
         },
 
         delete(url, options = {}) {
-            return this.visit(url, Object.assign(Object.assign({preserveState: true}, this.config, options), {method: Method.DELETE}));
+            return this.visit(url, Object.assign(Object.assign({preserveState: true}, options), {method: Method.DELETE}));
         }
     },
     useForm(...args) {

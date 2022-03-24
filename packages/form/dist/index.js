@@ -13,7 +13,7 @@ function $parcel$interopDefault(a) {
 }
 
 $parcel$export(module.exports, "useForm", () => $5b3063aa3fbb5758$export$2e2bcd8739ae039);
-$parcel$export(module.exports, "Visitor", () => $5b3063aa3fbb5758$export$9d54d4ec2dd4b364);
+$parcel$export(module.exports, "Visitor", () => $5b3063aa3fbb5758$exports.Visitor);
 $parcel$export(module.exports, "useData", () => $11f8d06d5ccee85c$export$2e2bcd8739ae039);
 
 
@@ -98,7 +98,7 @@ function $e1888736b8750eb9$var$append(form, key, value) {
 
 
 
-const $5b3063aa3fbb5758$export$9d54d4ec2dd4b364 = {
+const $5b3063aa3fbb5758$var$Visitor = {
     config: {},
     visitor: {
         visit (href, { method: method = $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET , data: data = {} , replace: replace = false , headers: headers = {} , errorBag: errorBag = '' , forceFormData: forceFormData = false , onCancelToken: onCancelToken = ()=>{} , onBefore: onBefore = ()=>{} , onStart: onStart = ()=>{} , onProgress: onProgress = ()=>{} , onFinish: onFinish = ()=>{} , onSuccess: onSuccess = (response)=>response
@@ -138,46 +138,41 @@ const $5b3063aa3fbb5758$export$9d54d4ec2dd4b364 = {
             });
             if (onBefore(visit) === false) return;
             onStart(visit);
-            return new Promise((resolve, reject)=>{
-                let config = {
-                    method: method,
-                    url: $5f1668bda460d77e$export$311fc32ea47c5ee1(url).href,
-                    data: method === $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET ? {} : data,
-                    params: method === $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET ? data : {},
-                    headers: Object.assign(Object.assign({}, headers), {
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }),
-                    onUploadProgress: (progress)=>{
-                        if (data instanceof FormData) {
-                            progress.percentage = Math.round(progress.loaded / progress.total * 100);
-                            onProgress(progress);
+            return Promise.resolve(this.config).then((config)=>{
+                return new Promise((resolve, reject)=>{
+                    return ($parcel$interopDefault($3lUmV$axios))({
+                        method: method,
+                        url: $5f1668bda460d77e$export$311fc32ea47c5ee1(url).href,
+                        data: method === $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET ? {} : data,
+                        params: method === $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET ? data : {},
+                        headers: Object.assign(Object.assign({}, headers), {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }),
+                        onUploadProgress: (progress)=>{
+                            if (data instanceof FormData) {
+                                progress.percentage = Math.round(progress.loaded / progress.total * 100);
+                                onProgress(progress);
+                            }
+                        },
+                        ...config
+                    }).then((response)=>{
+                        const errors = ($parcel$interopDefault($3lUmV$lodashget))(response, 'data.errors', {}) || {};
+                        if (this.activeVisit) this.finishVisit(this.activeVisit);
+                        if (Object.keys(errors).length > 0) {
+                            const scopedErrors = errorBag ? errors[errorBag] ? errors[errorBag] : {} : errors;
+                            return onError(scopedErrors);
                         }
-                    }
-                };
-                // @ts-ignore
-                if (window && typeof window.useFormGlobals === 'object') config = {
-                    ...config,
-                    // @ts-ignore
-                    ...window.useFormGlobals
-                };
-                // @ts-ignore
-                return ($parcel$interopDefault($3lUmV$axios))(config).then((response)=>{
-                    const errors = ($parcel$interopDefault($3lUmV$lodashget))(response, 'data.errors', {}) || {};
-                    if (this.activeVisit) this.finishVisit(this.activeVisit);
-                    if (Object.keys(errors).length > 0) {
-                        const scopedErrors = errorBag ? errors[errorBag] ? errors[errorBag] : {} : errors;
-                        return onError(scopedErrors);
-                    }
-                    onSuccess(response.data);
-                    return resolve(response.data);
-                }).catch((error)=>{
-                    const errors = ($parcel$interopDefault($3lUmV$lodashget))(error, 'response.data.errors', {});
-                    if (this.activeVisit) this.finishVisit(this.activeVisit);
-                    if (Object.keys(errors).length > 0) {
-                        const scopedErrors = errorBag ? errors[errorBag] ? errors[errorBag] : {} : errors;
-                        return onError(scopedErrors);
-                    }
-                    return reject(error);
+                        onSuccess(response.data);
+                        return resolve(response.data);
+                    }).catch((error)=>{
+                        const errors = ($parcel$interopDefault($3lUmV$lodashget))(error, 'response.data.errors', {});
+                        if (this.activeVisit) this.finishVisit(this.activeVisit);
+                        if (Object.keys(errors).length > 0) {
+                            const scopedErrors = errorBag ? errors[errorBag] ? errors[errorBag] : {} : errors;
+                            return onError(scopedErrors);
+                        }
+                        return reject(error);
+                    });
                 });
             });
         },
@@ -188,7 +183,7 @@ const $5b3063aa3fbb5758$export$9d54d4ec2dd4b364 = {
             visit.onFinish(visit);
         },
         get (url, data = {}, options = {}) {
-            return this.visit(url, Object.assign(Object.assign({}, this.config, options), {
+            return this.visit(url, Object.assign(Object.assign({}, options), {
                 method: $ed7f0e2735eeba9c$export$31bb55db0b3e4187.GET,
                 data: data
             }));
@@ -196,7 +191,7 @@ const $5b3063aa3fbb5758$export$9d54d4ec2dd4b364 = {
         post (url, data = {}, options = {}) {
             return this.visit(url, Object.assign(Object.assign({
                 preserveState: true
-            }, this.config, options), {
+            }, options), {
                 method: $ed7f0e2735eeba9c$export$31bb55db0b3e4187.POST,
                 data: data
             }));
@@ -204,7 +199,7 @@ const $5b3063aa3fbb5758$export$9d54d4ec2dd4b364 = {
         put (url, data = {}, options = {}) {
             return this.visit(url, Object.assign(Object.assign({
                 preserveState: true
-            }, this.config, options), {
+            }, options), {
                 method: $ed7f0e2735eeba9c$export$31bb55db0b3e4187.PUT,
                 data: data
             }));
@@ -212,7 +207,7 @@ const $5b3063aa3fbb5758$export$9d54d4ec2dd4b364 = {
         patch (url, data = {}, options = {}) {
             return this.visit(url, Object.assign(Object.assign({
                 preserveState: true
-            }, this.config, options), {
+            }, options), {
                 method: $ed7f0e2735eeba9c$export$31bb55db0b3e4187.PATCH,
                 data: data
             }));
@@ -220,7 +215,7 @@ const $5b3063aa3fbb5758$export$9d54d4ec2dd4b364 = {
         delete (url, options = {}) {
             return this.visit(url, Object.assign(Object.assign({
                 preserveState: true
-            }, this.config, options), {
+            }, options), {
                 method: $ed7f0e2735eeba9c$export$31bb55db0b3e4187.DELETE
             }));
         }
@@ -377,7 +372,7 @@ const $5b3063aa3fbb5758$export$9d54d4ec2dd4b364 = {
         };
     }
 };
-const $5b3063aa3fbb5758$var$useForm = $5b3063aa3fbb5758$export$9d54d4ec2dd4b364.useForm;
+const $5b3063aa3fbb5758$var$useForm = $5b3063aa3fbb5758$var$Visitor.useForm;
 var $5b3063aa3fbb5758$export$2e2bcd8739ae039 = $5b3063aa3fbb5758$var$useForm;
 
 
