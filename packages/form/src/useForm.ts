@@ -25,162 +25,167 @@ type VisitConfig = {
 };
 
 export const Visitor = {
-    visit(href, {
-        method = Method.GET,
-        data = {},
-        replace = false,
-        headers = {},
-        errorBag = '',
-        forceFormData = false,
-        onCancelToken = () => {
-        }, onBefore = () => {
-        }, onStart = () => {
-        }, onProgress = () => {
-        }, onFinish = () => {
-        }, onSuccess = (response) => {
-            return response;
-        }, onError = () => {
-        }, queryStringArrayFormat = 'brackets',
-    }: VisitConfig) {
-        let url = typeof href === 'string' ? hrefToUrl(href) : href;
+    config: {},
+    visitor: {
+        visit(href, {
+            method = Method.GET,
+            data = {},
+            replace = false,
+            headers = {},
+            errorBag = '',
+            forceFormData = false,
+            onCancelToken = () => {
+            },
+            onBefore = () => {
+            },
+            onStart = () => {
+            },
+            onProgress = () => {
+            },
+            onFinish = () => {
+            },
+            onSuccess = (response) => response,
+            onError = () => {
+            },
+            queryStringArrayFormat = 'brackets',
+        }: VisitConfig) {
+            let url = typeof href === 'string' ? hrefToUrl(href) : href;
 
-        if (this.activeVisit && this.activeVisit.processing) {
-            return;
-        }
-
-        // Create form data if has files
-        if ((hasFiles(data) || forceFormData) && !(data instanceof FormData)) {
-            data = objectToFormData(data);
-        }
-
-        // If not FormData,
-        if (!(data instanceof FormData)) {
-            const [_href, _data] = mergeDataIntoQueryString(method, url, data, queryStringArrayFormat);
-            url = hrefToUrl(_href);
-            data = _data
-        }
-
-        const visit: {
-            url: string,
-            method: string,
-            data: any,
-            replace: any,
-            headers: any,
-            errorBag: any,
-            forceFormData: boolean,
-            queryStringArrayFormat: string,
-            completed: boolean,
-            interrupted: boolean,
-            cancelled: boolean,
-        } = {
-            url,
-            method,
-            data,
-            replace,
-            headers,
-            errorBag,
-            forceFormData,
-            queryStringArrayFormat,
-            completed: false,
-            interrupted: false,
-            cancelled: false,
-        };
-
-        this.activeVisit = Object.assign(Object.assign({}, visit), {onCancelToken, onBefore, onStart, onProgress, onFinish, onSuccess, onError, queryStringArrayFormat});
-
-        if (onBefore(visit) === false) {
-            return;
-        }
-
-        onStart(visit);
-
-        return new Promise((resolve, reject) => {
-            let config = {
-                method: method,
-                url: urlWithoutHash(url).href,
-                data: method === Method.GET ? {} : data,
-                params: method === Method.GET ? data : {},
-                headers: Object.assign(Object.assign({}, headers), {'X-Requested-With': 'XMLHttpRequest'}),
-                onUploadProgress: progress => {
-                    if (data instanceof FormData) {
-                        progress.percentage = Math.round(progress.loaded / progress.total * 100);
-                        onProgress(progress);
-                    }
-                },
-            };
-
-            // @ts-ignore
-            if (window && typeof window.useFormGlobals === 'object') {
-                config = {
-                    ...config,
-                    // @ts-ignore
-                    ...window.useFormGlobals
-                }
+            if (this.activeVisit && this.activeVisit.processing) {
+                return;
             }
 
-            // @ts-ignore
-            return axios(config).then((response) => {
-                const errors = get(response, 'data.errors', {}) || {};
+            // Create form data if has files
+            if ((hasFiles(data) || forceFormData) && !(data instanceof FormData)) {
+                data = objectToFormData(data);
+            }
 
-                if (this.activeVisit) {
-                    this.finishVisit(this.activeVisit);
+            // If not FormData,
+            if (!(data instanceof FormData)) {
+                const [_href, _data] = mergeDataIntoQueryString(method, url, data, queryStringArrayFormat);
+                url = hrefToUrl(_href);
+                data = _data
+            }
+
+            const visit: {
+                url: string,
+                method: string,
+                data: any,
+                replace: any,
+                headers: any,
+                errorBag: any,
+                forceFormData: boolean,
+                queryStringArrayFormat: string,
+                completed: boolean,
+                interrupted: boolean,
+                cancelled: boolean,
+            } = {
+                url,
+                method,
+                data,
+                replace,
+                headers,
+                errorBag,
+                forceFormData,
+                queryStringArrayFormat,
+                completed: false,
+                interrupted: false,
+                cancelled: false,
+            };
+
+            this.activeVisit = Object.assign(Object.assign({}, visit), {onCancelToken, onBefore, onStart, onProgress, onFinish, onSuccess, onError, queryStringArrayFormat});
+
+            if (onBefore(visit) === false) {
+                return;
+            }
+
+            onStart(visit);
+
+            return new Promise((resolve, reject) => {
+                let config = {
+                    method: method,
+                    url: urlWithoutHash(url).href,
+                    data: method === Method.GET ? {} : data,
+                    params: method === Method.GET ? data : {},
+                    headers: Object.assign(Object.assign({}, headers), {'X-Requested-With': 'XMLHttpRequest'}),
+                    onUploadProgress: progress => {
+                        if (data instanceof FormData) {
+                            progress.percentage = Math.round(progress.loaded / progress.total * 100);
+                            onProgress(progress);
+                        }
+                    },
+                };
+
+                // @ts-ignore
+                if (window && typeof window.useFormGlobals === 'object') {
+                    config = {
+                        ...config,
+                        // @ts-ignore
+                        ...window.useFormGlobals
+                    }
                 }
 
-                if (Object.keys(errors).length > 0) {
-                    const scopedErrors = errorBag ? (errors[errorBag] ? errors[errorBag] : {}) : errors;
-                    return onError(scopedErrors);
-                }
+                // @ts-ignore
+                return axios(config).then((response) => {
+                    const errors = get(response, 'data.errors', {}) || {};
 
-                onSuccess(response.data);
+                    if (this.activeVisit) {
+                        this.finishVisit(this.activeVisit);
+                    }
 
-                return resolve(response.data);
-            }).catch((error) => {
-                const errors = get(error, 'response.data.errors', {});
+                    if (Object.keys(errors).length > 0) {
+                        const scopedErrors = errorBag ? (errors[errorBag] ? errors[errorBag] : {}) : errors;
+                        return onError(scopedErrors);
+                    }
 
-                if (this.activeVisit) {
-                    this.finishVisit(this.activeVisit);
-                }
+                    onSuccess(response.data);
 
-                if (Object.keys(errors).length > 0) {
-                    const scopedErrors = errorBag ? (errors[errorBag] ? errors[errorBag] : {}) : errors;
-                    return onError(scopedErrors);
-                }
+                    return resolve(response.data);
+                }).catch((error) => {
+                    const errors = get(error, 'response.data.errors', {});
 
-                return reject(error);
-            })
-        });
+                    if (this.activeVisit) {
+                        this.finishVisit(this.activeVisit);
+                    }
+
+                    if (Object.keys(errors).length > 0) {
+                        const scopedErrors = errorBag ? (errors[errorBag] ? errors[errorBag] : {}) : errors;
+                        return onError(scopedErrors);
+                    }
+
+                    return reject(error);
+                })
+            });
+        },
+
+        finishVisit(visit) {
+            visit.completed = true;
+            visit.cancelled = false;
+            visit.interrupted = false;
+            visit.onFinish(visit);
+        },
+
+        get(url, data = {}, options = {}) {
+            return this.visit(url, Object.assign(Object.assign({}, this.config, options), {method: Method.GET, data}));
+        },
+
+        post(url, data = {}, options = {}) {
+            return this.visit(url, Object.assign(Object.assign({preserveState: true}, this.config, options), {method: Method.POST, data}));
+        },
+
+        put(url, data = {}, options = {}) {
+            return this.visit(url, Object.assign(Object.assign({preserveState: true}, this.config, options), {method: Method.PUT, data}));
+        },
+
+        patch(url, data = {}, options = {}) {
+            return this.visit(url, Object.assign(Object.assign({preserveState: true}, this.config, options), {method: Method.PATCH, data}));
+        },
+
+        delete(url, options = {}) {
+            return this.visit(url, Object.assign(Object.assign({preserveState: true}, this.config, options), {method: Method.DELETE}));
+        }
     },
-
-    finishVisit(visit) {
-        visit.completed = true;
-        visit.cancelled = false;
-        visit.interrupted = false;
-        visit.onFinish(visit);
-    },
-
-    get(url, data = {}, options = {}) {
-        return this.visit(url, Object.assign(Object.assign({}, options), {method: Method.GET, data}));
-    },
-
-    post(url, data = {}, options = {}) {
-        return this.visit(url, Object.assign(Object.assign({preserveState: true}, options), {method: Method.POST, data}));
-    },
-
-    put(url, data = {}, options = {}) {
-        return this.visit(url, Object.assign(Object.assign({preserveState: true}, options), {method: Method.PUT, data}));
-    },
-
-    patch(url, data = {}, options = {}) {
-        return this.visit(url, Object.assign(Object.assign({preserveState: true}, options), {method: Method.PATCH, data}));
-    },
-
-    delete(url, options = {}) {
-        return this.visit(url, Object.assign(Object.assign({preserveState: true}, options), {method: Method.DELETE}));
-    }
-};
-
-export function makeUseForm(visitorInstance) {
-    return (...args) => {
+    useForm(...args) {
         const isMounted = useRef(null)
         const defaults = (typeof args[0] === 'string' ? args[1] : args[0]) || {}
         const cancelToken = useRef(null)
@@ -286,9 +291,9 @@ export function makeUseForm(visitorInstance) {
                 }
 
                 if (method === 'delete') {
-                    return visitorInstance.delete(url, {..._options, data: transform(data)})
+                    return this.visitor.delete(url, {..._options, data: transform(data)})
                 } else {
-                    return visitorInstance[method](url, transform(data), _options)
+                    return this.visitor[method](url, transform(data), _options)
                 }
             },
             [data, setErrors],
@@ -371,8 +376,8 @@ export function makeUseForm(visitorInstance) {
             },
         }
     }
-}
+};
 
-const useForm = makeUseForm(Visitor);
+const useForm = Visitor.useForm;
 
 export default useForm;
