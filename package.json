@@ -8,7 +8,6 @@
         "serve": "parcel serve",
         "build": "lerna run build",
         "watch": "lerna run --parallel watch",
-        "version": "lerna version",
         "clean": "lerna clean -y"
     },
     "devDependencies": {
