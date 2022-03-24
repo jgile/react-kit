@@ -158,7 +158,6 @@ export const Visitor = {
         visit.onFinish(visit);
     },
 
-
     get(url, data = {}, options = {}) {
         return this.visit(url, Object.assign(Object.assign({}, options), {method: Method.GET, data}));
     },
@@ -180,194 +179,200 @@ export const Visitor = {
     }
 };
 
-export default function useForm(...args) {
-    const isMounted = useRef(null)
-    const defaults = (typeof args[0] === 'string' ? args[1] : args[0]) || {}
-    const cancelToken = useRef(null)
-    const recentlySuccessfulTimeoutId = useRef(null)
-    const [data, setData] = useState(defaults)
-    const [response, setResponse] = useState({})
-    const [errors, setErrors] = useState({})
-    const [hasErrors, setHasErrors] = useState(false)
-    const [processing, setProcessing] = useState(false)
-    const [progress, setProgress] = useState(null)
-    const [wasSuccessful, setWasSuccessful] = useState(false)
-    const [recentlySuccessful, setRecentlySuccessful] = useState(false)
+export function makeUseForm(visitorInstance) {
+    return (...args) => {
+        const isMounted = useRef(null)
+        const defaults = (typeof args[0] === 'string' ? args[1] : args[0]) || {}
+        const cancelToken = useRef(null)
+        const recentlySuccessfulTimeoutId = useRef(null)
+        const [data, setData] = useState(defaults)
+        const [response, setResponse] = useState({})
+        const [errors, setErrors] = useState({})
+        const [hasErrors, setHasErrors] = useState(false)
+        const [processing, setProcessing] = useState(false)
+        const [progress, setProgress] = useState(null)
+        const [wasSuccessful, setWasSuccessful] = useState(false)
+        const [recentlySuccessful, setRecentlySuccessful] = useState(false)
 
-    let transform = (data) => data
+        let transform = (data) => data
 
-    useEffect(() => {
-        isMounted.current = true
-        return () => {
-            isMounted.current = false
-        }
-    }, [])
-
-    const submit = useCallback(
-        (method, url, options = {}) => {
-            const _options = {
-                ...options,
-                onBefore: (visit) => {
-                    setWasSuccessful(false)
-                    setRecentlySuccessful(false)
-                    clearTimeout(recentlySuccessfulTimeoutId.current)
-
-                    if (options.onBefore) {
-                        return options.onBefore(visit)
-                    }
-                },
-                onStart: (visit) => {
-                    setProcessing(true)
-
-                    if (options.onStart) {
-                        return options.onStart(visit)
-                    }
-                },
-                onProgress: (event) => {
-                    setProgress(event)
-
-                    if (options.onProgress) {
-                        return options.onProgress(event)
-                    }
-                },
-                onSuccess: (response) => {
-                    setResponse(response);
-
-                    if (isMounted.current) {
-                        setProcessing(false)
-                        setProgress(null)
-                        setErrors({})
-                        setHasErrors(false)
-                        setWasSuccessful(true)
-                        setRecentlySuccessful(true)
-                        recentlySuccessfulTimeoutId.current = setTimeout(() => {
-                            if (isMounted.current) {
-                                setRecentlySuccessful(false)
-                            }
-                        }, 2000)
-                    }
-
-                    if (options.onSuccess) {
-                        return options.onSuccess(response)
-                    }
-                },
-                onError: (errors) => {
-                    if (isMounted.current) {
-                        setProcessing(false)
-                        setProgress(null)
-                        setErrors(errors)
-                        setHasErrors(true)
-                    }
-
-                    if (options.onError) {
-                        return options.onError(errors)
-                    }
-                },
-                onCancel: () => {
-                    if (isMounted.current) {
-                        setProcessing(false)
-                        setProgress(null)
-                    }
-
-                    if (options.onCancel) {
-                        return options.onCancel()
-                    }
-                },
-                onFinish: () => {
-                    if (isMounted.current) {
-                        setProcessing(false)
-                        setProgress(null)
-                    }
-
-                    if (options.onFinish) {
-                        return options.onFinish()
-                    }
-                },
+        useEffect(() => {
+            isMounted.current = true
+            return () => {
+                isMounted.current = false
             }
+        }, [])
 
-            if (method === 'delete') {
-                return Visitor.delete(url, {..._options, data: transform(data)})
-            } else {
-                return Visitor[method](url, transform(data), _options)
-            }
-        },
-        [data, setErrors],
-    )
+        const submit = useCallback(
+            (method, url, options = {}) => {
+                const _options = {
+                    ...options,
+                    onBefore: (visit) => {
+                        setWasSuccessful(false)
+                        setRecentlySuccessful(false)
+                        clearTimeout(recentlySuccessfulTimeoutId.current)
 
-    return {
-        data,
-        response,
-        setData(key, value) {
-            if (typeof value === 'object' && 'target' in value && value.target) {
-                value = value.target.value;
-            }
+                        if (options.onBefore) {
+                            return options.onBefore(visit)
+                        }
+                    },
+                    onStart: (visit) => {
+                        setProcessing(true)
 
-            if (typeof key === 'string') {
-                setData({...data, [key]: value})
-            } else if (typeof key === 'function') {
-                setData(data => key(data))
-            } else {
-                setData(key)
-            }
+                        if (options.onStart) {
+                            return options.onStart(visit)
+                        }
+                    },
+                    onProgress: (event) => {
+                        setProgress(event)
 
-            return this;
-        },
-        isDirty: !isEqual(data, defaults),
-        errors,
-        hasErrors,
-        processing,
-        progress,
-        wasSuccessful,
-        recentlySuccessful,
-        transform(callback) {
-            transform = callback
-        },
-        reset(...fields) {
-            if (!fields.length) {
-                setData(defaults)
-            } else {
-                setData(
-                    Object.keys(defaults)
-                        .filter((key) => fields.includes(key))
-                        .reduce((carry, key) => {
-                            carry[key] = defaults[key]
-                            return carry
-                        }, {...data}),
+                        if (options.onProgress) {
+                            return options.onProgress(event)
+                        }
+                    },
+                    onSuccess: (response) => {
+                        setResponse(response);
+
+                        if (isMounted.current) {
+                            setProcessing(false)
+                            setProgress(null)
+                            setErrors({})
+                            setHasErrors(false)
+                            setWasSuccessful(true)
+                            setRecentlySuccessful(true)
+                            recentlySuccessfulTimeoutId.current = setTimeout(() => {
+                                if (isMounted.current) {
+                                    setRecentlySuccessful(false)
+                                }
+                            }, 2000)
+                        }
+
+                        if (options.onSuccess) {
+                            return options.onSuccess(response)
+                        }
+                    },
+                    onError: (errors) => {
+                        if (isMounted.current) {
+                            setProcessing(false)
+                            setProgress(null)
+                            setErrors(errors)
+                            setHasErrors(true)
+                        }
+
+                        if (options.onError) {
+                            return options.onError(errors)
+                        }
+                    },
+                    onCancel: () => {
+                        if (isMounted.current) {
+                            setProcessing(false)
+                            setProgress(null)
+                        }
+
+                        if (options.onCancel) {
+                            return options.onCancel()
+                        }
+                    },
+                    onFinish: () => {
+                        if (isMounted.current) {
+                            setProcessing(false)
+                            setProgress(null)
+                        }
+
+                        if (options.onFinish) {
+                            return options.onFinish()
+                        }
+                    },
+                }
+
+                if (method === 'delete') {
+                    return visitorInstance.delete(url, {..._options, data: transform(data)})
+                } else {
+                    return visitorInstance[method](url, transform(data), _options)
+                }
+            },
+            [data, setErrors],
+        )
+
+        return {
+            data,
+            response,
+            setData(key, value) {
+                if (typeof value === 'object' && 'target' in value && value.target) {
+                    value = value.target.value;
+                }
+
+                if (typeof key === 'string') {
+                    setData({...data, [key]: value})
+                } else if (typeof key === 'function') {
+                    setData(data => key(data))
+                } else {
+                    setData(key)
+                }
+
+                return this;
+            },
+            isDirty: !isEqual(data, defaults),
+            errors,
+            hasErrors,
+            processing,
+            progress,
+            wasSuccessful,
+            recentlySuccessful,
+            transform(callback) {
+                transform = callback
+            },
+            reset(...fields) {
+                if (!fields.length) {
+                    setData(defaults)
+                } else {
+                    setData(
+                        Object.keys(defaults)
+                            .filter((key) => fields.includes(key))
+                            .reduce((carry, key) => {
+                                carry[key] = defaults[key]
+                                return carry
+                            }, {...data}),
+                    )
+                }
+            },
+            clearErrors(...fields) {
+                setErrors(
+                    Object.keys(errors).reduce(
+                        (carry, field) => ({
+                            ...carry,
+                            ...(fields.length > 0 && !fields.includes(field) ? {[field]: errors[field]} : {}),
+                        }),
+                        {},
+                    ),
                 )
-            }
-        },
-        clearErrors(...fields) {
-            setErrors(
-                Object.keys(errors).reduce(
-                    (carry, field) => ({
-                        ...carry,
-                        ...(fields.length > 0 && !fields.includes(field) ? {[field]: errors[field]} : {}),
-                    }),
-                    {},
-                ),
-            )
-            setHasErrors(Object.keys(errors).length > 0)
-        },
-        submit,
-        get(url, options) {
-            return submit('get', url, options)
-        },
-        post(url, options) {
-            return submit('post', url, options)
-        },
-        put(url, options) {
-            return submit('put', url, options)
-        },
-        patch(url, options) {
-            return submit('patch', url, options)
-        },
-        delete(url, options) {
-            return submit('delete', url, options)
-        },
-        cancel() {
-            if (cancelToken.current) {
-                cancelToken.current.cancel()
-            }
-        },
+                setHasErrors(Object.keys(errors).length > 0)
+            },
+            submit,
+            get(url, options) {
+                return submit('get', url, options)
+            },
+            post(url, options) {
+                return submit('post', url, options)
+            },
+            put(url, options) {
+                return submit('put', url, options)
+            },
+            patch(url, options) {
+                return submit('patch', url, options)
+            },
+            delete(url, options) {
+                return submit('delete', url, options)
+            },
+            cancel() {
+                if (cancelToken.current) {
+                    cancelToken.current.cancel()
+                }
+            },
+        }
     }
 }
+
+const useForm = makeUseForm(Visitor);
+
+export default useForm;
