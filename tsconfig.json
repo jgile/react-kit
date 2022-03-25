@@ -1,7 +1,0 @@
-{
-    "compilerOptions": {
-        "allowSyntheticDefaultImports": true,
-        "isolatedModules": true,
-        "jsx": "react"
-    }
-}

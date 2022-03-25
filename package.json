@@ -1,6 +1,4 @@
 {
-    "private": true,
-    "source": "public/index.html",
     "workspaces": [
         "packages/*"
     ],
@@ -16,6 +14,5 @@
         "lerna": "^4.0.0",
         "parcel": "^2.3.2",
         "typescript": ">=3.0.0"
-    },
-    "version": "0.0.0"
+    }
 }
