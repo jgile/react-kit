@@ -9,6 +9,34 @@ import axios from "axios";
 
 export const Visitor = {
     onBefore: (config) => config,
+
+    finishVisit(visit) {
+        visit.completed = true;
+        visit.cancelled = false;
+        visit.interrupted = false;
+        visit.onFinish(visit);
+    },
+
+    get(url, data = {}, options = {}) {
+        return this.visit(url, Object.assign(Object.assign({}, options), {method: Method.GET, data}));
+    },
+
+    post(url, data = {}, options = {}) {
+        return this.visit(url, Object.assign(Object.assign({preserveState: true}, options), {method: Method.POST, data}));
+    },
+
+    put(url, data = {}, options = {}) {
+        return this.visit(url, Object.assign(Object.assign({preserveState: true}, options), {method: Method.PUT, data}));
+    },
+
+    patch(url, data = {}, options = {}) {
+        return this.visit(url, Object.assign(Object.assign({preserveState: true}, options), {method: Method.PATCH, data}));
+    },
+
+    delete(url, options = {}) {
+        return this.visit(url, Object.assign(Object.assign({preserveState: true}, options), {method: Method.DELETE}));
+    },
+
     visit(href, {
         method = Method.GET,
         data = {},
@@ -19,11 +47,9 @@ export const Visitor = {
         onProgress = () => ({}),
         onFinish = () => ({}),
         onError = () => ({}),
-        onBefore = (config) => config,
+        onBefore = () => ({}),
         onSuccess = (response) => response
     }) {
-        const self = this;
-
         let url = typeof href === 'string' ? hrefToUrl(href) : href;
 
         if (this.activeVisit && this.activeVisit.processing) {
@@ -56,7 +82,9 @@ export const Visitor = {
             cancelled: false,
         };
 
-        return Promise.resolve(onBefore(this.onBefore(visit))).then(visit => {
+        onBefore(visit)
+
+        return Promise.resolve(this.onBefore(visit)).then(visit => {
             this.activeVisit = visit;
             return new Promise((resolve, reject) => {
                 return axios({
@@ -103,35 +131,10 @@ export const Visitor = {
             });
         });
     },
+};
 
-    finishVisit(visit) {
-        visit.completed = true;
-        visit.cancelled = false;
-        visit.interrupted = false;
-        visit.onFinish(visit);
-    },
-
-    get(url, data = {}, options = {}) {
-        return this.visit(url, Object.assign(Object.assign({}, options), {method: Method.GET, data}));
-    },
-
-    post(url, data = {}, options = {}) {
-        return this.visit(url, Object.assign(Object.assign({preserveState: true}, options), {method: Method.POST, data}));
-    },
-
-    put(url, data = {}, options = {}) {
-        return this.visit(url, Object.assign(Object.assign({preserveState: true}, options), {method: Method.PUT, data}));
-    },
-
-    patch(url, data = {}, options = {}) {
-        return this.visit(url, Object.assign(Object.assign({preserveState: true}, options), {method: Method.PATCH, data}));
-    },
-
-    delete(url, options = {}) {
-        return this.visit(url, Object.assign(Object.assign({preserveState: true}, options), {method: Method.DELETE}));
-    },
-
-    useForm(...args) {
+export function createNewForm(http) {
+    return function (...args) {
         const isMounted = useRef(null)
         const defaults = (typeof args[0] === 'string' ? args[1] : args[0]) || {}
         const cancelToken = useRef(null)
@@ -144,8 +147,6 @@ export const Visitor = {
         const [progress, setProgress] = useState(null)
         const [wasSuccessful, setWasSuccessful] = useState(false)
         const [recentlySuccessful, setRecentlySuccessful] = useState(false)
-
-        let transform = (data) => data
 
         useEffect(() => {
             isMounted.current = true
@@ -236,15 +237,23 @@ export const Visitor = {
             }
 
             if (method === 'delete') {
-                return this.delete(url, {..._options, data: transform(data)});
+                return http.delete(url, {..._options, data: data});
             }
 
-            return this[method](url, transform(data), _options)
+            return http[method](url, data, _options)
         }, [data, setErrors]);
 
         return {
             data,
             response,
+            isDirty: !isEqual(data, defaults),
+            errors,
+            hasErrors,
+            processing,
+            progress,
+            wasSuccessful,
+            recentlySuccessful,
+            submit,
             setData(key, value) {
                 if (typeof value === 'object' && 'target' in value && value.target) {
                     value = value.target.value;
@@ -259,16 +268,6 @@ export const Visitor = {
                 }
 
                 return this;
-            },
-            isDirty: !isEqual(data, defaults),
-            errors,
-            hasErrors,
-            processing,
-            progress,
-            wasSuccessful,
-            recentlySuccessful,
-            transform(callback) {
-                transform = callback
             },
             reset(...fields) {
                 if (!fields.length) {
@@ -296,7 +295,6 @@ export const Visitor = {
                 )
                 setHasErrors(Object.keys(errors).length > 0)
             },
-            submit,
             get(url, options) {
                 return submit('get', url, options)
             },
@@ -319,8 +317,8 @@ export const Visitor = {
             },
         }
     }
-};
+}
 
-const useForm = Visitor.useForm;
+const useForm = createNewForm(Visitor);
 
 export default useForm;
