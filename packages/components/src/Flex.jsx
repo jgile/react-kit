@@ -11,6 +11,7 @@ function Flex(props = {
     xCenter: false,
     center: false,
     wrap: false,
+    between: false,
     style: {}
 }) {
     const styles = {
@@ -18,6 +19,7 @@ function Flex(props = {
         flexDirection: 'row',
         flexWrap: 'nowrap'
     };
+
     if (props.vertical) {
         styles['flexDirection'] = 'column';
 
@@ -76,6 +78,10 @@ function Flex(props = {
         if (props.yCenter || props.center) {
             styles['alignItems'] = 'center';
         }
+    }
+    
+    if (props.between) {
+        styles['justifyContent'] = 'space-between';
     }
 
     if (props.wrap) {

@@ -40,7 +40,6 @@ function FlexItem(props) {
         styles['order'] = props.nth;
     }
 
-
     return (
         <div style={{...styles, ...props.style}}>
             {props.children}
