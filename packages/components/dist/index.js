@@ -22,6 +22,7 @@ function $e4774276c20de6bd$var$Flex(props = {
     xCenter: false,
     center: false,
     wrap: false,
+    between: false,
     style: {}
 }) {
     const styles = {
@@ -47,6 +48,7 @@ function $e4774276c20de6bd$var$Flex(props = {
         if (props.xCenter) styles['justifyContent'] = 'center';
         if (props.yCenter || props.center) styles['alignItems'] = 'center';
     }
+    if (props.between) styles['justifyContent'] = 'space-between';
     if (props.wrap) styles['flexWrap'] = 'wrap';
     return /*#__PURE__*/ ($parcel$interopDefault($6Ag90$react)).createElement("div", {
         style: {
