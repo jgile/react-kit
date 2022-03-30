@@ -1,0 +1,68 @@
+export declare const Visitor: {
+    activeVisit: {
+        processing: boolean;
+    };
+    onBefore: (config: any) => any;
+    finishVisit(visit: any): void;
+    get(url: any, data?: {}, options?: {}): Promise<unknown> | undefined;
+    post(url: any, data?: {}, options?: {}): Promise<unknown> | undefined;
+    put(url: any, data?: {}, options?: {}): Promise<unknown> | undefined;
+    patch(url: any, data?: {}, options?: {}): Promise<unknown> | undefined;
+    delete(url: any, options?: {}): Promise<unknown> | undefined;
+    visit(href: any, { method, data, headers, errorBag, forceFormData, queryStringArrayFormat, onProgress, onFinish, onError, onBefore, onSuccess }: {
+        method?: any;
+        data?: {} | undefined;
+        headers?: {} | undefined;
+        errorBag?: string | undefined;
+        forceFormData?: boolean | undefined;
+        queryStringArrayFormat?: string | undefined;
+        onProgress?: ((progress: any) => any) | undefined;
+        onFinish?: (() => {}) | undefined;
+        onError?: ((errors: any) => any) | undefined;
+        onBefore?: ((visit: any) => any) | undefined;
+        onSuccess?: ((response: any) => any) | undefined;
+    }): Promise<unknown> | undefined;
+};
+export declare function createNewForm(http: any): (...args: any) => {
+    data: any;
+    response: {};
+    isDirty: boolean;
+    errors: {};
+    hasErrors: boolean;
+    processing: boolean;
+    progress: null;
+    wasSuccessful: boolean;
+    recentlySuccessful: boolean;
+    submit: (method: any, url: any, options?: any) => any;
+    setData(key: any, value: any): any;
+    reset(...fields: any): void;
+    clearErrors(...fields: any): void;
+    get(url: any, options?: any): any;
+    post(url: any, options?: any): any;
+    put(url: any, options?: any): any;
+    patch(url: any, options?: any): any;
+    delete(url: any, options?: any): any;
+    cancel(): void;
+};
+declare const useForm: (...args: any) => {
+    data: any;
+    response: {};
+    isDirty: boolean;
+    errors: {};
+    hasErrors: boolean;
+    processing: boolean;
+    progress: null;
+    wasSuccessful: boolean;
+    recentlySuccessful: boolean;
+    submit: (method: any, url: any, options?: any) => any;
+    setData(key: any, value: any): any;
+    reset(...fields: any): void;
+    clearErrors(...fields: any): void;
+    get(url: any, options?: any): any;
+    post(url: any, options?: any): any;
+    put(url: any, options?: any): any;
+    patch(url: any, options?: any): any;
+    delete(url: any, options?: any): any;
+    cancel(): void;
+};
+export default useForm;

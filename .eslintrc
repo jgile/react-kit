@@ -1,13 +1,47 @@
 {
     "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-        "sourceType": "module",
-        "ecmaVersion": 2016
-    },
-    "plugins": [
-        "react-hooks"
+    "extends": [
+        "standard",
+        "standard-react",
+        "plugin:@typescript-eslint/eslint-recommended"
     ],
+    "env": {
+        "node": true
+    },
+    "parserOptions": {
+        "ecmaVersion": 2020,
+        "ecmaFeatures": {
+            "legacyDecorators": true,
+            "jsx": true
+        }
+    },
+    "settings": {
+        "react": {
+            "version": "16"
+        }
+    },
     "rules": {
-        "react-hooks/rules-of-hooks": "error"
+        "indent": [
+            "error",
+            4
+        ],
+        "react/jsx-indent": [
+            "error",
+            4
+        ],
+        "react/jsx-indent-props": [
+            "error",
+            4
+        ],
+        "jsx-quotes": "off",
+        "semi": "off",
+        "dot-notation": "off",
+        "no-undef": "off",
+        "space-before-function-paren": 0,
+        "react/prop-types": 0,
+        "react/jsx-handler-names": 0,
+        "react/jsx-fragments": 0,
+        "react/no-unused-prop-types": 0,
+        "import/export": 0
     }
 }

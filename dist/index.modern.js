@@ -1,12 +1,9 @@
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
-
-var React = require('react');
-var React__default = _interopDefault(React);
-var isEqual = _interopDefault(require('lodash/isEqual'));
-var get = _interopDefault(require('lodash/get'));
-var qs = require('qs');
-var deepmerge = _interopDefault(require('deepmerge'));
-var axios = _interopDefault(require('axios'));
+import React, { useRef, useState, useEffect, useCallback } from 'react';
+import isEqual from 'lodash/isEqual';
+import get from 'lodash/get';
+import { stringify, parse } from 'qs';
+import deepmerge from 'deepmerge';
+import axios from 'axios';
 
 function _extends() {
   _extends = Object.assign || function (target) {
@@ -52,7 +49,7 @@ function mergeDataIntoQueryString(method, href, data, qsArrayFormat) {
   var url = new URL(href.toString(), 'http://localhost');
 
   if (method === Method.GET && Object.keys(data).length) {
-    url.search = qs.stringify(deepmerge(qs.parse(url.search, {
+    url.search = stringify(deepmerge(parse(url.search, {
       ignoreQueryPrefix: true
     }), data), {
       encodeValuesOnly: true,
@@ -330,50 +327,50 @@ var Visitor = {
 };
 function createNewForm(http) {
   return function () {
-    var isMounted = React.useRef(null);
+    var isMounted = useRef(null);
     var defaults = (typeof (arguments.length <= 0 ? undefined : arguments[0]) === 'string' ? arguments.length <= 1 ? undefined : arguments[1] : arguments.length <= 0 ? undefined : arguments[0]) || {};
-    var cancelToken = React.useRef(null);
-    var recentlySuccessfulTimeoutId = React.useRef(null);
+    var cancelToken = useRef(null);
+    var recentlySuccessfulTimeoutId = useRef(null);
 
-    var _useState = React.useState(defaults),
+    var _useState = useState(defaults),
         data = _useState[0],
         _setData = _useState[1];
 
-    var _useState2 = React.useState({}),
+    var _useState2 = useState({}),
         response = _useState2[0],
         setResponse = _useState2[1];
 
-    var _useState3 = React.useState({}),
+    var _useState3 = useState({}),
         errors = _useState3[0],
         setErrors = _useState3[1];
 
-    var _useState4 = React.useState(false),
+    var _useState4 = useState(false),
         hasErrors = _useState4[0],
         setHasErrors = _useState4[1];
 
-    var _useState5 = React.useState(false),
+    var _useState5 = useState(false),
         processing = _useState5[0],
         setProcessing = _useState5[1];
 
-    var _useState6 = React.useState(null),
+    var _useState6 = useState(null),
         progress = _useState6[0],
         setProgress = _useState6[1];
 
-    var _useState7 = React.useState(false),
+    var _useState7 = useState(false),
         wasSuccessful = _useState7[0],
         setWasSuccessful = _useState7[1];
 
-    var _useState8 = React.useState(false),
+    var _useState8 = useState(false),
         recentlySuccessful = _useState8[0],
         setRecentlySuccessful = _useState8[1];
 
-    React.useEffect(function () {
+    useEffect(function () {
       isMounted.current = true;
       return function () {
         isMounted.current = false;
       };
     }, []);
-    var submit = React.useCallback(function (method, url, options) {
+    var submit = useCallback(function (method, url, options) {
       if (options === void 0) {
         options = {};
       }
@@ -571,7 +568,7 @@ var useForm = createNewForm(Visitor);
 function useData() {
   var defaults = (typeof (arguments.length <= 0 ? undefined : arguments[0]) === 'string' ? arguments.length <= 1 ? undefined : arguments[1] : arguments.length <= 0 ? undefined : arguments[0]) || {};
 
-  var _useState = React.useState(defaults),
+  var _useState = useState(defaults),
       data = _useState[0],
       _setData = _useState[1];
 
@@ -709,7 +706,7 @@ function Flex(props) {
     styles.flexWrap = 'wrap';
   }
 
-  return React__default.createElement("div", {
+  return React.createElement("div", {
     style: _extends({}, styles, props.style)
   }, props.children);
 }
@@ -770,15 +767,10 @@ function FlexItem(props) {
     styles['order'] = props.nth;
   }
 
-  return React__default.createElement("div", {
+  return React.createElement("div", {
     style: _extends({}, styles, props.style)
   }, props.children);
 }
 
-exports.Flex = Flex;
-exports.FlexItem = FlexItem;
-exports.Visitor = Visitor;
-exports.createNewForm = createNewForm;
-exports.useData = useData;
-exports.useForm = useForm;
-//# sourceMappingURL=index.js.map
+export { Flex, FlexItem, Visitor, createNewForm, useData, useForm };
+//# sourceMappingURL=index.modern.js.map

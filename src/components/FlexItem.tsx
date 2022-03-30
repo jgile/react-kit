@@ -1,7 +1,38 @@
 import React from 'react';
-import PropTypes from "prop-types";
 
-function FlexItem(props) {
+interface Keyable {
+    [key: string]: any;
+}
+
+interface FlexItemProps {
+    flex: boolean
+    stretch: boolean
+    grow: boolean
+    shrink: boolean
+    first: boolean
+    right: boolean,
+    left: boolean,
+    center: boolean,
+    last: boolean,
+    nth: number | null,
+    style: Keyable | null,
+    children: React.ReactNode | null
+}
+
+function FlexItem(props: FlexItemProps = {
+    flex: false,
+    right: false,
+    left: false,
+    shrink: false,
+    center: false,
+    stretch: false,
+    first: false,
+    last: false,
+    grow: false,
+    nth: null,
+    style: {},
+    children: null
+}) {
     const styles = {};
 
     if (props.flex) {
@@ -41,37 +72,10 @@ function FlexItem(props) {
     }
 
     return (
-        <div style={{...styles, ...props.style}}>
+        <div style={{ ...styles, ...props.style }}>
             {props.children}
         </div>
     );
 }
-
-FlexItem.defaultProps = {
-    flex: false,
-    right: false,
-    left: false,
-    shrink: false,
-    center: false,
-    stretch: false,
-    first: false,
-    last: false,
-    grow: false,
-    nth: null,
-    style: {},
-};
-
-FlexItem.propTypes = {
-    right: PropTypes.bool,
-    left: PropTypes.bool,
-    shrink: PropTypes.bool,
-    center: PropTypes.bool,
-    stretch: PropTypes.bool,
-    first: PropTypes.bool,
-    last: PropTypes.bool,
-    grow: PropTypes.bool,
-    nth: PropTypes.any,
-    style: PropTypes.object
-};
 
 export default FlexItem;

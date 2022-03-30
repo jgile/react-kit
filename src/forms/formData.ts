@@ -1,4 +1,4 @@
-export function objectToFormData(source, form = new FormData(), parentKey = null) {
+export function objectToFormData(source: any, form = new FormData(), parentKey = null): any {
     source = source || {};
     for (const key in source) {
         if (Object.prototype.hasOwnProperty.call(source, key)) {
@@ -8,11 +8,11 @@ export function objectToFormData(source, form = new FormData(), parentKey = null
     return form;
 }
 
-function composeKey(parent, key) {
+function composeKey(parent: any, key: any): any {
     return parent ? parent + '[' + key + ']' : key;
 }
 
-function append(form, key, value) {
+function append(form: any, key: any, value: any): any {
     if (Array.isArray(value)) {
         return Array.from(value.keys()).forEach(index => append(form, composeKey(key, index.toString()), value[index]));
     } else if (value instanceof Date) {
