@@ -1,10 +1,10 @@
 import {useCallback, useEffect, useRef, useState} from 'react'
 import isEqual from 'lodash.isequal';
 import get from 'lodash.get';
-import {hrefToUrl, mergeDataIntoQueryString, urlWithoutHash} from './lib/url';
-import {Method} from './lib/types';
-import {hasFiles} from "./lib/files";
-import {objectToFormData} from "./lib/formData";
+import {hrefToUrl, mergeDataIntoQueryString, urlWithoutHash} from './url';
+import {Method} from './types';
+import {hasFiles} from "./files";
+import {objectToFormData} from "./formData";
 import axios from "axios";
 
 export const Visitor = {

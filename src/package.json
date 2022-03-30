@@ -1,12 +1,12 @@
 {
     "license": "MIT",
-    "name": "@react-kit/form",
+    "name": "@johngile/react-kit",
     "version": "1.0.27",
     "source": "src/index.js",
-    "main": "dist/index.js",
+    "main": "../packages/form/dist/index.js",
     "scripts": {
-        "build": "parcel build",
-        "watch": "parcel watch"
+        "build": "../packages/form/node_modules/.bin/parcel build",
+        "watch": "../packages/form/node_modules/.bin/parcel watch"
     },
     "dependencies": {
         "axios": "^0.26.1",
