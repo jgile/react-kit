@@ -20,7 +20,7 @@ export declare class Router {
     delete(url: URL | string, options?: Exclude<VisitParams, 'method'>): void;
     on<TEventName extends GlobalEventNames>(type: TEventName, callback: (event: GlobalEvent<TEventName>) => GlobalEventResult<TEventName>): VoidFunction;
 }
-export default function useForm(...args: any): {
+export default function useForm(...args: any[]): {
     data: any;
     setData(key: any, value: any): void;
     isDirty: boolean;

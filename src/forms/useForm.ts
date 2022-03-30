@@ -220,7 +220,8 @@ export class Router {
 
 const router = new Router();
 
-export default function useForm(...args: any) {
+// @ts-ignore
+export default function useForm(...args) {
     const isMounted = useRef(null)
     const [defaults, setDefaults] = useState((typeof args[0] === 'string' ? args[1] : args[0]) || {})
     const cancelToken = useRef(null)
