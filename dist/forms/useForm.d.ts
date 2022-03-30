@@ -35,10 +35,10 @@ export default function useForm(...args: any[]): {
     reset(...fields: any): void;
     setError(key: any, value: any): void;
     clearErrors(...fields: any): void;
-    submit: (method: any, url: any, options?: any) => void;
-    get(url: any, options: any): void;
-    post(url: any, options: any): void;
-    put(url: any, options: any): void;
-    patch(url: any, options: any): void;
-    delete(url: any, options: any): void;
+    submit: (method: any, url: any, options?: any) => any;
+    get(url: any, options: any): any;
+    post(url: any, options: any): any;
+    put(url: any, options: any): any;
+    patch(url: any, options: any): any;
+    delete(url: any, options: any): any;
 };

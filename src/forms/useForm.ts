@@ -327,13 +327,11 @@ export default function useForm(...args) {
             }
 
             if (method === 'delete') {
-                router.delete(url, {..._options, data: transform(data)})
+                return router.delete(url, {..._options, data: transform(data)})
             } else {
-                router[method](url, transform(data), _options)
+                return router[method](url, transform(data), _options)
             }
-        },
-        [data, setErrors],
-    )
+        }, [data, setErrors]);
 
     return {
         data,
@@ -405,19 +403,19 @@ export default function useForm(...args) {
         },
         submit,
         get(url: any, options: any) {
-            submit('get', url, options)
+            return submit('get', url, options)
         },
         post(url: any, options: any) {
-            submit('post', url, options)
+            return submit('post', url, options)
         },
         put(url: any, options: any) {
-            submit('put', url, options)
+            return submit('put', url, options)
         },
         patch(url: any, options: any) {
-            submit('patch', url, options)
+            return submit('patch', url, options)
         },
         delete(url: any, options: any) {
-            submit('delete', url, options)
+            return submit('delete', url, options)
         }
     }
 }

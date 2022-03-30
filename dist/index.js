@@ -618,11 +618,11 @@ function useForm() {
     });
 
     if (method === 'delete') {
-      router["delete"](url, _extends({}, _options, {
+      return router["delete"](url, _extends({}, _options, {
         data: _transform(data)
       }));
     } else {
-      router[method](url, _transform(data), _options);
+      return router[method](url, _transform(data), _options);
     }
   }, [data, setErrors]);
   return {
@@ -706,19 +706,19 @@ function useForm() {
     },
     submit: submit,
     get: function get(url, options) {
-      submit('get', url, options);
+      return submit('get', url, options);
     },
     post: function post(url, options) {
-      submit('post', url, options);
+      return submit('post', url, options);
     },
     put: function put(url, options) {
-      submit('put', url, options);
+      return submit('put', url, options);
     },
     patch: function patch(url, options) {
-      submit('patch', url, options);
+      return submit('patch', url, options);
     },
     "delete": function _delete(url, options) {
-      submit('delete', url, options);
+      return submit('delete', url, options);
     }
   };
 }
