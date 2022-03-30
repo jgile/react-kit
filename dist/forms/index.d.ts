@@ -1,2 +1,2 @@
-export { default as useForm, Visitor, createNewForm } from './useForm';
+export { default as useForm, Router } from './useForm';
 export { default as useData } from './useData';

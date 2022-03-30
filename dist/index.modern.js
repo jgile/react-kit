@@ -1,9 +1,8 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import isEqual from 'lodash/isEqual';
-import get from 'lodash/get';
+import Axios from 'axios';
 import { stringify, parse } from 'qs';
 import deepmerge from 'deepmerge';
-import axios from 'axios';
 
 function _extends() {
   _extends = Object.assign || function (target) {
@@ -26,11 +25,11 @@ function _extends() {
 var Method;
 
 (function (Method) {
-  Method['GET'] = 'get';
-  Method['POST'] = 'post';
-  Method['PUT'] = 'put';
-  Method['PATCH'] = 'patch';
-  Method['DELETE'] = 'delete';
+  Method["GET"] = "get";
+  Method["POST"] = "post";
+  Method["PUT"] = "put";
+  Method["PATCH"] = "patch";
+  Method["DELETE"] = "delete";
 })(Method || (Method = {}));
 
 function hrefToUrl(href) {
@@ -66,13 +65,69 @@ function urlWithoutHash(url) {
   return url;
 }
 
-function hasFiles(data) {
-  return data instanceof File || data instanceof Blob || data instanceof FileList && data.length > 0 || data instanceof FormData && Array.from(data.values()).some(function (value) {
-    return hasFiles(value);
-  }) || typeof data === 'object' && data !== null && Object.values(data).some(function (value) {
-    return hasFiles(value);
-  });
+function fireEvent(name, options) {
+  return document.dispatchEvent(new CustomEvent("form:" + name, options));
 }
+
+var fireBeforeEvent = function fireBeforeEvent(visit) {
+  return fireEvent('before', {
+    cancelable: true,
+    detail: {
+      visit: visit
+    }
+  });
+};
+var fireErrorEvent = function fireErrorEvent(errors) {
+  return fireEvent('error', {
+    detail: {
+      errors: errors
+    }
+  });
+};
+var fireExceptionEvent = function fireExceptionEvent(exception) {
+  return fireEvent('exception', {
+    cancelable: true,
+    detail: {
+      exception: exception
+    }
+  });
+};
+var fireFinishEvent = function fireFinishEvent(visit) {
+  return fireEvent('finish', {
+    detail: {
+      visit: visit
+    }
+  });
+};
+var fireInvalidEvent = function fireInvalidEvent(response) {
+  return fireEvent('invalid', {
+    cancelable: true,
+    detail: {
+      response: response
+    }
+  });
+};
+var fireProgressEvent = function fireProgressEvent(progress) {
+  return fireEvent('progress', {
+    detail: {
+      progress: progress
+    }
+  });
+};
+var fireStartEvent = function fireStartEvent(visit) {
+  return fireEvent('start', {
+    detail: {
+      visit: visit
+    }
+  });
+};
+var fireSuccessEvent = function fireSuccessEvent(response) {
+  return fireEvent('success', {
+    detail: {
+      response: response
+    }
+  });
+};
 
 function objectToFormData(source, form, parentKey) {
   if (form === void 0) {
@@ -122,134 +177,89 @@ function append(form, key, value) {
   objectToFormData(value, form, key);
 }
 
-var Visitor = {
-  activeVisit: {
-    processing: false
-  },
-  onBefore: function onBefore(config) {
-    return config;
-  },
-  finishVisit: function finishVisit(visit) {
-    visit.completed = true;
-    visit.cancelled = false;
-    visit.interrupted = false;
-    visit.onFinish(visit);
-  },
-  get: function get(url, data, options) {
-    if (data === void 0) {
-      data = {};
-    }
+var Router = /*#__PURE__*/function () {
+  function Router() {}
 
-    if (options === void 0) {
-      options = {};
-    }
+  var _proto = Router.prototype;
 
-    return this.visit(url, Object.assign(Object.assign({}, options), {
-      method: Method.GET,
-      data: data
-    }));
-  },
-  post: function post(url, data, options) {
-    if (data === void 0) {
-      data = {};
-    }
+  _proto.init = function init(_ref) {
+    var visitOptions = _ref.visitOptions;
+    this.visitOptions = visitOptions;
+  };
 
-    if (options === void 0) {
-      options = {};
-    }
+  _proto.cancelVisit = function cancelVisit(activeVisit, _ref2) {
+    var _ref2$cancelled = _ref2.cancelled,
+        cancelled = _ref2$cancelled === void 0 ? false : _ref2$cancelled,
+        _ref2$interrupted = _ref2.interrupted,
+        interrupted = _ref2$interrupted === void 0 ? false : _ref2$interrupted;
 
-    return this.visit(url, Object.assign(Object.assign({
-      preserveState: true
-    }, options), {
-      method: Method.POST,
-      data: data
-    }));
-  },
-  put: function put(url, data, options) {
-    if (data === void 0) {
-      data = {};
+    if (activeVisit && !activeVisit.completed && !activeVisit.cancelled && !activeVisit.interrupted) {
+      activeVisit.cancelToken.cancel();
+      activeVisit.onCancel();
+      activeVisit.completed = false;
+      activeVisit.cancelled = cancelled;
+      activeVisit.interrupted = interrupted;
+      fireFinishEvent(activeVisit);
+      activeVisit.onFinish(activeVisit);
     }
+  };
 
-    if (options === void 0) {
-      options = {};
+  _proto.finishVisit = function finishVisit(visit) {
+    if (!visit.cancelled && !visit.interrupted) {
+      visit.completed = true;
+      visit.cancelled = false;
+      visit.interrupted = false;
+      fireFinishEvent(visit);
+      visit.onFinish(visit);
     }
+  };
 
-    return this.visit(url, Object.assign(Object.assign({
-      preserveState: true
-    }, options), {
-      method: Method.PUT,
-      data: data
-    }));
-  },
-  patch: function patch(url, data, options) {
-    if (data === void 0) {
-      data = {};
-    }
-
-    if (options === void 0) {
-      options = {};
-    }
-
-    return this.visit(url, Object.assign(Object.assign({
-      preserveState: true
-    }, options), {
-      method: Method.PATCH,
-      data: data
-    }));
-  },
-  "delete": function _delete(url, options) {
-    if (options === void 0) {
-      options = {};
-    }
-
-    return this.visit(url, Object.assign(Object.assign({
-      preserveState: true
-    }, options), {
-      method: Method.DELETE
-    }));
-  },
-  visit: function visit(href, _ref) {
+  _proto.visit = function visit(href, params) {
     var _this = this;
 
-    var _ref$method = _ref.method,
-        method = _ref$method === void 0 ? Method.GET : _ref$method,
-        _ref$data = _ref.data,
-        data = _ref$data === void 0 ? {} : _ref$data,
-        _ref$headers = _ref.headers,
-        headers = _ref$headers === void 0 ? {} : _ref$headers,
-        _ref$errorBag = _ref.errorBag,
-        errorBag = _ref$errorBag === void 0 ? '' : _ref$errorBag,
-        _ref$forceFormData = _ref.forceFormData,
-        forceFormData = _ref$forceFormData === void 0 ? false : _ref$forceFormData,
-        _ref$queryStringArray = _ref.queryStringArrayFormat,
-        queryStringArrayFormat = _ref$queryStringArray === void 0 ? 'brackets' : _ref$queryStringArray,
-        _ref$onProgress = _ref.onProgress,
-        onProgress = _ref$onProgress === void 0 ? function (progress) {
-      return progress;
-    } : _ref$onProgress,
-        _ref$onFinish = _ref.onFinish,
-        onFinish = _ref$onFinish === void 0 ? function () {
-      return {};
-    } : _ref$onFinish,
-        _ref$onError = _ref.onError,
-        onError = _ref$onError === void 0 ? function (errors) {
-      return errors;
-    } : _ref$onError,
-        _ref$onBefore = _ref.onBefore,
-        onBefore = _ref$onBefore === void 0 ? function (visit) {
-      return visit;
-    } : _ref$onBefore,
-        _ref$onSuccess = _ref.onSuccess,
-        onSuccess = _ref$onSuccess === void 0 ? function (response) {
-      return response;
-    } : _ref$onSuccess;
-    var url = typeof href === 'string' ? hrefToUrl(href) : href;
-
-    if (this.activeVisit && this.activeVisit.processing) {
-      return;
+    if (params === void 0) {
+      params = {};
     }
 
-    if ((hasFiles(data) || forceFormData) && !(data instanceof FormData)) {
+    var options = _extends({
+      method: Method.GET,
+      data: {},
+      replace: false,
+      only: [],
+      headers: {},
+      errorBag: '',
+      forceFormData: false,
+      queryStringArrayFormat: 'brackets',
+      onCancelToken: function onCancelToken() {},
+      onBefore: function onBefore() {},
+      onStart: function onStart() {},
+      onProgress: function onProgress() {},
+      onFinish: function onFinish() {},
+      onCancel: function onCancel() {},
+      onSuccess: function onSuccess() {},
+      onError: function onError() {}
+    }, params);
+
+    var url = typeof href === 'string' ? hrefToUrl(href) : href;
+    var prepared = this.visitOptions(options, url) || options;
+    var method = prepared.method,
+        replace = prepared.replace,
+        only = prepared.only,
+        headers = prepared.headers,
+        errorBag = prepared.errorBag,
+        forceFormData = prepared.forceFormData,
+        queryStringArrayFormat = prepared.queryStringArrayFormat,
+        onCancelToken = prepared.onCancelToken,
+        onBefore = prepared.onBefore,
+        onStart = prepared.onStart,
+        onProgress = prepared.onProgress,
+        onFinish = prepared.onFinish,
+        onCancel = prepared.onCancel,
+        onSuccess = prepared.onSuccess,
+        onError = prepared.onError;
+    var data = prepared.data;
+
+    if ((data || forceFormData) && !(data instanceof FormData)) {
       data = objectToFormData(data);
     }
 
@@ -266,304 +276,449 @@ var Visitor = {
       url: url,
       method: method,
       data: data,
+      replace: replace,
+      only: only,
       headers: headers,
       errorBag: errorBag,
       forceFormData: forceFormData,
       queryStringArrayFormat: queryStringArrayFormat,
-      onFinish: onFinish,
+      cancelled: false,
       completed: false,
-      interrupted: false,
-      cancelled: false
+      interrupted: false
     };
-    onBefore(visit);
-    return Promise.resolve(this.onBefore(visit)).then(function (visit) {
-      _this.activeVisit = visit;
-      return new Promise(function (resolve, reject) {
-        return axios({
-          method: visit.method,
-          url: urlWithoutHash(visit.url).href,
-          data: visit.method === Method.GET ? {} : visit.data,
-          params: visit.method === Method.GET ? visit.data : {},
-          headers: Object.assign(Object.assign({}, visit.headers), {
-            'X-Requested-With': 'XMLHttpRequest'
-          }),
-          onUploadProgress: function onUploadProgress(progress) {
-            if (visit.data instanceof FormData) {
-              progress.percentage = Math.round(progress.loaded / progress.total * 100);
-              onProgress(progress);
-            }
-          }
-        }).then(function (response) {
-          var errors = get(response, 'data.errors', {}) || {};
 
-          if (_this.activeVisit) {
-            _this.finishVisit(_this.activeVisit);
-          }
+    if (onBefore(visit) === false || !fireBeforeEvent(visit)) {
+      return;
+    }
 
-          if (Object.keys(errors).length > 0) {
-            var scopedErrors = errorBag ? errors[errorBag] ? errors[errorBag] : {} : errors;
-            return onError(scopedErrors);
-          }
-
-          onSuccess(response.data);
-          return resolve(response.data);
-        })["catch"](function (error) {
-          var errors = get(error, 'response.data.errors', {});
-
-          if (_this.activeVisit) {
-            _this.finishVisit(_this.activeVisit);
-          }
-
-          if (Object.keys(errors).length > 0) {
-            var scopedErrors = errorBag ? errors[errorBag] ? errors[errorBag] : {} : errors;
-            return onError(scopedErrors);
-          }
-
-          return reject(error);
-        });
+    if (this.activeVisit) {
+      this.cancelVisit(this.activeVisit, {
+        interrupted: true
       });
+    }
+
+    this.activeVisit = _extends({}, visit, {
+      onCancelToken: onCancelToken,
+      onBefore: onBefore,
+      onStart: onStart,
+      onProgress: onProgress,
+      onFinish: onFinish,
+      onCancel: onCancel,
+      onSuccess: onSuccess,
+      onError: onError,
+      queryStringArrayFormat: queryStringArrayFormat,
+      cancelToken: Axios.CancelToken.source()
     });
-  }
-};
-function createNewForm(http) {
-  return function () {
-    var isMounted = useRef(null);
-    var defaults = (typeof (arguments.length <= 0 ? undefined : arguments[0]) === 'string' ? arguments.length <= 1 ? undefined : arguments[1] : arguments.length <= 0 ? undefined : arguments[0]) || {};
-    var cancelToken = useRef(null);
-    var recentlySuccessfulTimeoutId = useRef(null);
-
-    var _useState = useState(defaults),
-        data = _useState[0],
-        _setData = _useState[1];
-
-    var _useState2 = useState({}),
-        response = _useState2[0],
-        setResponse = _useState2[1];
-
-    var _useState3 = useState({}),
-        errors = _useState3[0],
-        setErrors = _useState3[1];
-
-    var _useState4 = useState(false),
-        hasErrors = _useState4[0],
-        setHasErrors = _useState4[1];
-
-    var _useState5 = useState(false),
-        processing = _useState5[0],
-        setProcessing = _useState5[1];
-
-    var _useState6 = useState(null),
-        progress = _useState6[0],
-        setProgress = _useState6[1];
-
-    var _useState7 = useState(false),
-        wasSuccessful = _useState7[0],
-        setWasSuccessful = _useState7[1];
-
-    var _useState8 = useState(false),
-        recentlySuccessful = _useState8[0],
-        setRecentlySuccessful = _useState8[1];
-
-    useEffect(function () {
-      isMounted.current = true;
-      return function () {
-        isMounted.current = false;
-      };
-    }, []);
-    var submit = useCallback(function (method, url, options) {
-      if (options === void 0) {
-        options = {};
-      }
-
-      var _options = _extends({}, options, {
-        onBefore: function onBefore(visit) {
-          setWasSuccessful(false);
-          setRecentlySuccessful(false);
-          clearTimeout(recentlySuccessfulTimeoutId.current);
-
-          if (options.onBefore) {
-            return options.onBefore(visit);
-          }
-        },
-        onStart: function onStart(visit) {
-          setProcessing(true);
-
-          if (options.onStart) {
-            return options.onStart(visit);
-          }
-        },
-        onProgress: function onProgress(event) {
-          setProgress(event);
-
-          if (options.onProgress) {
-            return options.onProgress(event);
-          }
-        },
-        onSuccess: function onSuccess(response) {
-          setResponse(response);
-
-          if (isMounted.current) {
-            setProcessing(false);
-            setProgress(null);
-            setErrors({});
-            setHasErrors(false);
-            setWasSuccessful(true);
-            setRecentlySuccessful(true);
-            recentlySuccessfulTimeoutId.current = setTimeout(function () {
-              if (isMounted.current) {
-                setRecentlySuccessful(false);
-              }
-            }, 2000);
-          }
-
-          if (options.onSuccess) {
-            return options.onSuccess(response);
-          }
-        },
-        onError: function onError(errors) {
-          if (isMounted.current) {
-            setProcessing(false);
-            setProgress(null);
-            setErrors(errors);
-            setHasErrors(true);
-          }
-
-          if (options.onError) {
-            return options.onError(errors);
-          }
-        },
-        onCancel: function onCancel() {
-          if (isMounted.current) {
-            setProcessing(false);
-            setProgress(null);
-          }
-
-          if (options.onCancel) {
-            return options.onCancel();
-          }
-        },
-        onFinish: function onFinish() {
-          if (isMounted.current) {
-            setProcessing(false);
-            setProgress(null);
-          }
-
-          if (options.onFinish) {
-            return options.onFinish();
-          }
-        }
-      });
-
-      if (method === 'delete') {
-        return http["delete"](url, _extends({}, _options, {
-          data: data
-        }));
-      }
-
-      return http[method](url, data, _options);
-    }, [data, setErrors]);
-    return {
-      data: data,
-      response: response,
-      isDirty: !isEqual(data, defaults),
-      errors: errors,
-      hasErrors: hasErrors,
-      processing: processing,
-      progress: progress,
-      wasSuccessful: wasSuccessful,
-      recentlySuccessful: recentlySuccessful,
-      submit: submit,
-      setData: function setData(key, value) {
-        if (typeof value === 'object' && 'target' in value && value.target) {
-          value = value.target.value;
-        }
-
-        if (typeof key === 'string') {
-          var _extends2;
-
-          _setData(_extends({}, data, (_extends2 = {}, _extends2[key] = value, _extends2)));
-        } else if (typeof key === 'function') {
-          _setData(function (data) {
-            return key(data);
-          });
-        } else {
-          _setData(key);
-        }
-
-        return this;
-      },
-      reset: function reset() {
-        for (var _len = arguments.length, fields = new Array(_len), _key = 0; _key < _len; _key++) {
-          fields[_key] = arguments[_key];
-        }
-
-        if (!fields.length) {
-          _setData(defaults);
-        } else {
-          _setData(Object.keys(defaults).filter(function (key) {
-            return fields.includes(key);
-          }).reduce(function (carry, key) {
-            carry[key] = defaults[key];
-            return carry;
-          }, _extends({}, data)));
-        }
-      },
-      clearErrors: function clearErrors() {
-        for (var _len2 = arguments.length, fields = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-          fields[_key2] = arguments[_key2];
-        }
-
-        setErrors(Object.keys(errors).reduce(function (carry, field) {
-          var _ref2;
-
-          return _extends({}, carry, fields.length > 0 && !fields.includes(field) ? (_ref2 = {}, _ref2[field] = errors[field], _ref2) : {});
-        }, {}));
-        setHasErrors(Object.keys(errors).length > 0);
-      },
-      get: function get(url, options) {
-        if (options === void 0) {
-          options = {};
-        }
-
-        return submit('get', url, options);
-      },
-      post: function post(url, options) {
-        if (options === void 0) {
-          options = {};
-        }
-
-        return submit('post', url, options);
-      },
-      put: function put(url, options) {
-        if (options === void 0) {
-          options = {};
-        }
-
-        return submit('put', url, options);
-      },
-      patch: function patch(url, options) {
-        if (options === void 0) {
-          options = {};
-        }
-
-        return submit('patch', url, options);
-      },
-      "delete": function _delete(url, options) {
-        if (options === void 0) {
-          options = {};
-        }
-
-        return submit('delete', url, options);
-      },
+    onCancelToken({
       cancel: function cancel() {
-        if (cancelToken.current) {
-          cancelToken.current.cancel();
+        if (_this.activeVisit) {
+          _this.cancelVisit(_this.activeVisit, {
+            cancelled: true
+          });
         }
       }
+    });
+    fireStartEvent(visit);
+    onStart(visit);
+    Axios({
+      method: method,
+      url: urlWithoutHash(url).href,
+      data: method === Method.GET ? {} : data,
+      params: method === Method.GET ? data : {},
+      cancelToken: this.activeVisit.cancelToken.token,
+      headers: _extends({}, headers, {
+        Accept: 'text/html, application/xhtml+xml',
+        'X-Requested-With': 'XMLHttpRequest'
+      }),
+      onUploadProgress: function onUploadProgress(progress) {
+        if (data instanceof FormData) {
+          progress.percentage = Math.round(progress.loaded / progress.total * 100);
+          fireProgressEvent(progress);
+          onProgress(progress);
+        }
+      }
+    }).then(function (response) {
+      var errors = response.data.errors || {};
+
+      if (Object.keys(errors).length > 0) {
+        var scopedErrors = errorBag ? errors[errorBag] ? errors[errorBag] : {} : errors;
+        fireErrorEvent(scopedErrors);
+        return onError(scopedErrors);
+      }
+
+      fireSuccessEvent(response);
+      return onSuccess(response);
+    })["catch"](function (error) {
+      if (error.response) {
+        fireInvalidEvent(error.response);
+      } else {
+        return Promise.reject(error);
+      }
+    }).then(function () {
+      if (_this.activeVisit) {
+        _this.finishVisit(_this.activeVisit);
+      }
+    })["catch"](function (error) {
+      if (!Axios.isCancel(error)) {
+        var throwException = fireExceptionEvent(error);
+
+        if (_this.activeVisit) {
+          _this.finishVisit(_this.activeVisit);
+        }
+
+        if (throwException) {
+          return Promise.reject(error);
+        }
+      }
+    });
+  };
+
+  _proto.get = function get(url, data, options) {
+    if (data === void 0) {
+      data = {};
+    }
+
+    if (options === void 0) {
+      options = {};
+    }
+
+    return this.visit(url, _extends({}, options, {
+      method: Method.GET,
+      data: data
+    }));
+  };
+
+  _proto.reload = function reload(options) {
+    if (options === void 0) {
+      options = {};
+    }
+
+    return this.visit(window.location.href, _extends({}, options));
+  };
+
+  _proto.replace = function replace(url, options) {
+    var _options$method;
+
+    if (options === void 0) {
+      options = {};
+    }
+
+    console.warn("Inertia.replace() has been deprecated and will be removed in a future release. Please use Inertia." + ((_options$method = options.method) != null ? _options$method : 'get') + "() instead.");
+    return this.visit(url, _extends({}, options, {
+      replace: true
+    }));
+  };
+
+  _proto.post = function post(url, data, options) {
+    if (data === void 0) {
+      data = {};
+    }
+
+    if (options === void 0) {
+      options = {};
+    }
+
+    return this.visit(url, _extends({}, options, {
+      method: Method.POST,
+      data: data
+    }));
+  };
+
+  _proto.put = function put(url, data, options) {
+    if (data === void 0) {
+      data = {};
+    }
+
+    if (options === void 0) {
+      options = {};
+    }
+
+    return this.visit(url, _extends({}, options, {
+      method: Method.PUT,
+      data: data
+    }));
+  };
+
+  _proto.patch = function patch(url, data, options) {
+    if (data === void 0) {
+      data = {};
+    }
+
+    if (options === void 0) {
+      options = {};
+    }
+
+    return this.visit(url, _extends({}, options, {
+      method: Method.PATCH,
+      data: data
+    }));
+  };
+
+  _proto["delete"] = function _delete(url, options) {
+    if (options === void 0) {
+      options = {};
+    }
+
+    return this.visit(url, _extends({}, options, {
+      method: Method.DELETE
+    }));
+  };
+
+  _proto.on = function on(type, callback) {
+    var listener = function listener(event) {
+      var response = callback(event);
+
+      if (event.cancelable && !event.defaultPrevented && response === false) {
+        event.preventDefault();
+      }
+    };
+
+    document.addEventListener("inertia:" + type, listener);
+    return function () {
+      return document.removeEventListener("inertia:" + type, listener);
     };
   };
+
+  return Router;
+}();
+var router = new Router();
+function useForm() {
+  var isMounted = useRef(null);
+
+  var _useState = useState((typeof (arguments.length <= 0 ? undefined : arguments[0]) === 'string' ? arguments.length <= 1 ? undefined : arguments[1] : arguments.length <= 0 ? undefined : arguments[0]) || {}),
+      defaults = _useState[0],
+      _setDefaults = _useState[1];
+
+  var cancelToken = useRef(null);
+
+  var _useState2 = useState(defaults),
+      data = _useState2[0],
+      _setData = _useState2[1];
+
+  var _useState3 = useState({}),
+      errors = _useState3[0],
+      setErrors = _useState3[1];
+
+  var _useState4 = useState(false),
+      hasErrors = _useState4[0],
+      setHasErrors = _useState4[1];
+
+  var _useState5 = useState(false),
+      processing = _useState5[0],
+      setProcessing = _useState5[1];
+
+  var _useState6 = useState(null),
+      progress = _useState6[0],
+      setProgress = _useState6[1];
+
+  var _useState7 = useState(false),
+      wasSuccessful = _useState7[0],
+      setWasSuccessful = _useState7[1];
+
+  var _useState8 = useState(false),
+      recentlySuccessful = _useState8[0],
+      setRecentlySuccessful = _useState8[1];
+
+  var _transform = function transform(data) {
+    return data;
+  };
+
+  useEffect(function () {
+    isMounted.current = true;
+    return function () {
+      isMounted.current = false;
+    };
+  }, []);
+  var submit = useCallback(function (method, url, options) {
+    if (options === void 0) {
+      options = {};
+    }
+
+    var _options = _extends({}, options, {
+      onCancelToken: function onCancelToken(token) {
+        cancelToken.current = token;
+
+        if (options.onCancelToken) {
+          return options.onCancelToken(token);
+        }
+      },
+      onBefore: function onBefore(visit) {
+        setWasSuccessful(false);
+        setRecentlySuccessful(false);
+
+        if (options.onBefore) {
+          return options.onBefore(visit);
+        }
+      },
+      onStart: function onStart(visit) {
+        setProcessing(true);
+
+        if (options.onStart) {
+          return options.onStart(visit);
+        }
+      },
+      onProgress: function onProgress(event) {
+        setProgress(event);
+
+        if (options.onProgress) {
+          return options.onProgress(event);
+        }
+      },
+      onSuccess: function onSuccess(page) {
+        if (isMounted.current) {
+          setProcessing(false);
+          setProgress(null);
+          setErrors({});
+          setHasErrors(false);
+          setWasSuccessful(true);
+          setRecentlySuccessful(true);
+        }
+
+        if (options.onSuccess) {
+          return options.onSuccess(page);
+        }
+      },
+      onError: function onError(errors) {
+        if (isMounted.current) {
+          setProcessing(false);
+          setProgress(null);
+          setErrors(errors);
+          setHasErrors(true);
+        }
+
+        if (options.onError) {
+          return options.onError(errors);
+        }
+      },
+      onCancel: function onCancel() {
+        if (isMounted.current) {
+          setProcessing(false);
+          setProgress(null);
+        }
+
+        if (options.onCancel) {
+          return options.onCancel();
+        }
+      },
+      onFinish: function onFinish() {
+        if (isMounted.current) {
+          setProcessing(false);
+          setProgress(null);
+        }
+
+        cancelToken.current = null;
+
+        if (options.onFinish) {
+          return options.onFinish();
+        }
+      }
+    });
+
+    if (method === 'delete') {
+      router["delete"](url, _extends({}, _options, {
+        data: _transform(data)
+      }));
+    } else {
+      router[method](url, _transform(data), _options);
+    }
+  }, [data, setErrors]);
+  return {
+    data: data,
+    setData: function setData(key, value) {
+      if (typeof key === 'string') {
+        var _extends2;
+
+        _setData(_extends({}, data, (_extends2 = {}, _extends2[key] = value, _extends2)));
+      } else if (typeof key === 'function') {
+        _setData(function (data) {
+          return key(data);
+        });
+      } else {
+        _setData(key);
+      }
+    },
+    isDirty: !isEqual(data, defaults),
+    errors: errors,
+    hasErrors: hasErrors,
+    processing: processing,
+    progress: progress,
+    wasSuccessful: wasSuccessful,
+    recentlySuccessful: recentlySuccessful,
+    transform: function transform(callback) {
+      _transform = callback;
+    },
+    setDefaults: function setDefaults(key, value) {
+      if (typeof key === 'undefined') {
+        _setDefaults(function () {
+          return data;
+        });
+      } else {
+        _setDefaults(function (defaults) {
+          var _ref3;
+
+          return _extends({}, defaults, value ? (_ref3 = {}, _ref3[key] = value, _ref3) : key);
+        });
+      }
+    },
+    reset: function reset() {
+      for (var _len = arguments.length, fields = new Array(_len), _key = 0; _key < _len; _key++) {
+        fields[_key] = arguments[_key];
+      }
+
+      if (fields.length === 0) {
+        _setData(defaults);
+      } else {
+        _setData(Object.keys(defaults).filter(function (key) {
+          return fields.includes(key);
+        }).reduce(function (carry, key) {
+          carry[key] = defaults[key];
+          return carry;
+        }, _extends({}, data)));
+      }
+    },
+    setError: function setError(key, value) {
+      setErrors(function (errors) {
+        var _ref4;
+
+        var newErrors = _extends({}, errors, value ? (_ref4 = {}, _ref4[key] = value, _ref4) : key);
+
+        setHasErrors(Object.keys(newErrors).length > 0);
+        return newErrors;
+      });
+    },
+    clearErrors: function clearErrors() {
+      for (var _len2 = arguments.length, fields = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        fields[_key2] = arguments[_key2];
+      }
+
+      setErrors(function (errors) {
+        var newErrors = Object.keys(errors).reduce(function (carry, field) {
+          var _ref5;
+
+          return _extends({}, carry, fields.length > 0 && !fields.includes(field) ? (_ref5 = {}, _ref5[field] = errors[field], _ref5) : {});
+        }, {});
+        setHasErrors(Object.keys(newErrors).length > 0);
+        return newErrors;
+      });
+    },
+    submit: submit,
+    get: function get(url, options) {
+      submit('get', url, options);
+    },
+    post: function post(url, options) {
+      submit('post', url, options);
+    },
+    put: function put(url, options) {
+      submit('put', url, options);
+    },
+    patch: function patch(url, options) {
+      submit('patch', url, options);
+    },
+    "delete": function _delete(url, options) {
+      submit('delete', url, options);
+    }
+  };
 }
-var useForm = createNewForm(Visitor);
 
 function useData() {
   var defaults = (typeof (arguments.length <= 0 ? undefined : arguments[0]) === 'string' ? arguments.length <= 1 ? undefined : arguments[1] : arguments.length <= 0 ? undefined : arguments[0]) || {};
@@ -772,5 +927,5 @@ function FlexItem(props) {
   }, props.children);
 }
 
-export { Flex, FlexItem, Visitor, createNewForm, useData, useForm };
+export { Flex, FlexItem, Router, useData, useForm };
 //# sourceMappingURL=index.modern.js.map

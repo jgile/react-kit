@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import isEqual from 'lodash/isEqual';
+import {useState} from "react";
+import isEqual from "lodash/isEqual";
 
 export default function useData(...args: any) {
     const defaults = (typeof args[0] === 'string' ? args[1] : args[0]) || {};
@@ -9,16 +9,16 @@ export default function useData(...args: any) {
         data,
         reset(...fields: any) {
             if (!fields.length) {
-                setData(defaults);
+                setData(defaults)
             } else {
                 setData(
                     Object.keys(defaults)
                         .filter((key) => fields.includes(key))
                         .reduce((carry, key) => {
-                            carry[key] = defaults[key];
-                            return carry;
-                        }, { ...data })
-                );
+                            carry[key] = defaults[key]
+                            return carry
+                        }, {...data}),
+                )
             }
         },
         setData(key: any, value: any) {
@@ -27,15 +27,15 @@ export default function useData(...args: any) {
             }
 
             if (typeof key === 'string') {
-                setData({ ...data, [key]: value });
+                setData({...data, [key]: value})
             } else if (typeof key === 'function') {
-                setData((data: any) => key(data));
+                setData((data: any) => key(data))
             } else {
-                setData(key);
+                setData(key)
             }
 
             return this;
         },
         isDirty: !isEqual(data, defaults)
-    };
+    }
 }
