@@ -6,7 +6,7 @@ import {ActiveVisit, VisitOptions, VisitParams, Method, PendingVisit, RequestPay
 import {fireBeforeEvent, fireSuccessEvent, fireErrorEvent, fireExceptionEvent, fireFinishEvent, fireInvalidEvent, fireProgressEvent, fireStartEvent} from "./events";
 import {objectToFormData} from "./formData";
 
-export class Visitor {
+export class Router {
     protected activeVisit?: ActiveVisit
     protected visitOptions!: VisitOptions
 
@@ -217,7 +217,7 @@ export class Visitor {
     }
 }
 
-const router = new Visitor();
+const visitor = new Router();
 
 // @ts-ignore
 export default function useForm(...args) {
@@ -326,9 +326,9 @@ export default function useForm(...args) {
             }
 
             if (method === 'delete') {
-                return router.delete(url, {..._options, data: transform(data)})
+                return visitor.delete(url, {..._options, data: transform(data)})
             } else {
-                return router[method](url, transform(data), _options)
+                return visitor[method](url, transform(data), _options)
             }
         }, [data, setErrors]);
 
