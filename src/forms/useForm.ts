@@ -6,9 +6,9 @@ import {ActiveVisit, VisitOptions, VisitParams, Method, PendingVisit, RequestPay
 import {fireBeforeEvent, fireSuccessEvent, fireErrorEvent, fireExceptionEvent, fireFinishEvent, fireInvalidEvent, fireProgressEvent, fireStartEvent} from "./events";
 import {objectToFormData} from "./formData";
 
-export class Router {
-    protected visitOptions!: VisitOptions
+export class Visitor {
     protected activeVisit?: ActiveVisit
+    protected visitOptions!: VisitOptions
 
     public init({visitOptions}: { visitOptions: VisitOptions }): void {
         this.visitOptions = visitOptions
@@ -121,7 +121,6 @@ export class Router {
         onStart(visit)
 
         // @ts-ignore
-        // @ts-ignore
         Axios({
             method,
             url: urlWithoutHash(url).href,
@@ -218,7 +217,7 @@ export class Router {
     }
 }
 
-const router = new Router();
+const router = new Visitor();
 
 // @ts-ignore
 export default function useForm(...args) {
