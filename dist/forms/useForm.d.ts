@@ -1,44 +1,25 @@
-import { ActiveVisit, VisitOptions, VisitParams, RequestPayload, GlobalEventNames, GlobalEvent, GlobalEventResult } from "./types";
-export declare class Router {
-    protected activeVisit?: ActiveVisit;
-    protected visitOptions: VisitOptions;
-    init({ visitOptions }: {
-        visitOptions: VisitOptions;
-    }): void;
-    protected cancelVisit(activeVisit: ActiveVisit, { cancelled, interrupted }: {
-        cancelled?: boolean;
-        interrupted?: boolean;
-    }): void;
-    protected finishVisit(visit: ActiveVisit): void;
-    visit(href: string | URL, params?: VisitParams): void;
-    get(url: URL | string, data?: RequestPayload, options?: Exclude<VisitParams, 'method' | 'data'>): void;
-    reload(options?: Exclude<VisitParams, 'preserveScroll' | 'preserveState'>): void;
-    replace(url: URL | string, options?: Exclude<VisitParams, 'replace'>): void;
-    post(url: URL | string, data?: RequestPayload, options?: Exclude<VisitParams, 'method' | 'data'>): void;
-    put(url: URL | string, data?: RequestPayload, options?: Exclude<VisitParams, 'method' | 'data'>): void;
-    patch(url: URL | string, data?: RequestPayload, options?: Exclude<VisitParams, 'method' | 'data'>): void;
-    delete(url: URL | string, options?: Exclude<VisitParams, 'method'>): void;
-    on<TEventName extends GlobalEventNames>(type: TEventName, callback: (event: GlobalEvent<TEventName>) => GlobalEventResult<TEventName>): VoidFunction;
-}
-export default function useForm(...args: any[]): {
-    data: any;
-    setData(key: any, value: any): void;
-    isDirty: boolean;
+import { Method } from "./types";
+export default function useForm(args?: object, options?: object, requestOptions?: object): {
+    submit: (method: Method, href: any, options?: object, requestOptions?: object) => Promise<any>;
+    data: object;
     errors: {};
     hasErrors: boolean;
     processing: boolean;
     progress: null;
     wasSuccessful: boolean;
     recentlySuccessful: boolean;
+    isDirty: boolean;
+    setOptions(options?: any): void;
+    setRequestOptions(options?: any): void;
+    setData(key: any, value: any): void;
     transform(callback: any): void;
     setDefaults(key: any, value: any): void;
     reset(...fields: any): void;
     setError(key: any, value: any): void;
     clearErrors(...fields: any): void;
-    submit: (method: any, url: any, options?: any) => any;
-    get(url: any, options: any): any;
-    post(url: any, options: any): any;
-    put(url: any, options: any): any;
-    patch(url: any, options: any): any;
-    delete(url: any, options: any): any;
+    get(url: any, options?: any, requestOptions?: any): Promise<any>;
+    post(url: any, options?: any, requestOptions?: any): Promise<any>;
+    put(url: any, options?: any, requestOptions?: any): Promise<any>;
+    patch(url: any, options?: any, requestOptions?: any): Promise<any>;
+    delete(url: any, options?: any, requestOptions?: any): Promise<any>;
 };

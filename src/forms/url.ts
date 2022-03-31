@@ -1,5 +1,5 @@
 import * as qs from 'qs'
-import {default as deepmerge} from 'deepmerge'
+import {default as deepmerge} from "deepmerge";
 import {FormDataConvertible, Method} from './types'
 
 export function hrefToUrl(href: string | URL): URL {
@@ -21,6 +21,7 @@ export function mergeDataIntoQueryString(
     const url = new URL(href.toString(), 'http://localhost')
 
     if (method === Method.GET && Object.keys(data).length) {
+        //@ts-ignore
         url.search = qs.stringify(deepmerge(qs.parse(url.search, {ignoreQueryPrefix: true}), data), {
             encodeValuesOnly: true,
             arrayFormat: qsArrayFormat,

@@ -1,2 +1,2 @@
-export { default as useForm, Router } from './useForm';
+export { default as useForm } from './useForm';
 export { default as useData } from './useData';

@@ -7,6 +7,7 @@ export default function useData(...args: any) {
 
     return {
         data,
+        isDirty: !isEqual(data, defaults),
         reset(...fields: any) {
             if (!fields.length) {
                 setData(defaults)
@@ -36,6 +37,5 @@ export default function useData(...args: any) {
 
             return this;
         },
-        isDirty: !isEqual(data, defaults)
     }
 }
