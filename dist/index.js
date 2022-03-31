@@ -326,6 +326,10 @@ function useForm(args, options, requestOptions) {
       if (typeof key === 'string') {
         var _extends2;
 
+        if (value && value.target && value.target.value) {
+          value = value.target.value;
+        }
+
         _setData(_extends({}, data, (_extends2 = {}, _extends2[key] = value, _extends2)));
       } else if (typeof key === 'function') {
         _setData(function (data) {
