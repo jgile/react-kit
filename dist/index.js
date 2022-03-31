@@ -244,7 +244,9 @@ function useForm(args, options, requestOptions) {
       data: method === Method.GET ? {} : transformedData,
       params: method === Method.GET ? transformedData : {},
       headers: {
-        'X-Requested-With': 'XMLHttpRequest'
+        'X-Requested-With': 'XMLHttpRequest',
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
       },
       onUploadProgress: function onUploadProgress(progress) {
         if (data instanceof FormData) {
