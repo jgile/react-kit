@@ -147,7 +147,9 @@ export default function useForm(args: object = {}, options: object = {}, request
         },
         setData(key: any, value: any) {
             if (typeof key === 'string') {
-                // @ts-ignore
+                if (value && value.target && value.target.value) {
+                    value = value.target.value;
+                }
                 setData({...data, [key]: value})
             } else if (typeof key === 'function') {
                 setData((data: any) => key(data))
