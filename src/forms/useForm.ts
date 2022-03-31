@@ -65,7 +65,6 @@ export default function useForm(args: object = {}, options: object = {}, request
             data: method === Method.GET ? {} : transformedData,
             params: method === Method.GET ? transformedData : {},
             headers: {
-                'Accept': 'text/html, application/xhtml+xml',
                 'X-Requested-With': 'XMLHttpRequest'
             },
             onUploadProgress: (progress: Progress) => {
