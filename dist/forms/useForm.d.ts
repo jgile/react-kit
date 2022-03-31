@@ -1,7 +1,7 @@
 import { ActiveVisit, VisitOptions, VisitParams, RequestPayload, GlobalEventNames, GlobalEvent, GlobalEventResult } from "./types";
 export declare class Router {
-    protected visitOptions: VisitOptions;
     protected activeVisit?: ActiveVisit;
+    protected visitOptions: VisitOptions;
     init({ visitOptions }: {
         visitOptions: VisitOptions;
     }): void;

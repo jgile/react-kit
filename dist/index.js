@@ -484,7 +484,7 @@ var Router = /*#__PURE__*/function () {
 
   return Router;
 }();
-var router = new Router();
+var visitor = new Router();
 function useForm() {
   var isMounted = React.useRef(null);
 
@@ -618,11 +618,11 @@ function useForm() {
     });
 
     if (method === 'delete') {
-      return router["delete"](url, _extends({}, _options, {
+      return visitor["delete"](url, _extends({}, _options, {
         data: _transform(data)
       }));
     } else {
-      return router[method](url, _transform(data), _options);
+      return visitor[method](url, _transform(data), _options);
     }
   }, [data, setErrors]);
   return {
