@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import isEqual from 'lodash/isEqual';
+import get from 'lodash/get';
 import Axios from 'axios';
 import { stringify, parse } from 'qs';
 import deepmerge from 'deepmerge';
@@ -263,12 +264,12 @@ function useForm(args, options, requestOptions) {
 
           setProcessing(false);
           setProgress(null);
-          setErrors({});
+          setErrors(_errors);
 
           if (Object.keys(_errors).length > 0) {
-            setErrors(_errors);
             setHasErrors(true);
-            return mergedOptions.onError(_errors);
+            mergedOptions.onError(_errors);
+            return response;
           }
 
           setHasErrors(false);
@@ -279,12 +280,12 @@ function useForm(args, options, requestOptions) {
         mergedOptions.onSuccess(response);
         return response.data;
       })["catch"](function (error) {
-        setErrors(errors);
         setHasErrors(true);
         setProcessing(false);
         setProgress(null);
 
         if (error.response) {
+          setErrors(get(errors.response, 'data.errors', {}));
           mergedOptions.onCatch(errors);
         } else {
           return Promise.reject(error);

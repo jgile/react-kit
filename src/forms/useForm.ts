@@ -1,8 +1,10 @@
 import {useCallback, useEffect, useRef, useState} from 'react';
 import isEqual from 'lodash/isEqual';
+import get from 'lodash/get';
 import {default as Axios} from 'axios'
 import {hrefToUrl, mergeDataIntoQueryString, urlWithoutHash} from './url'
-import {Errors, Method, Progress, VisitParams} from "./types";
+import {Errors, Method, Progress, VisitParams,} from "./types";
+import {AxiosError} from 'axios';
 import {objectToFormData} from "./formData";
 import {hasFiles} from "./files";
 
@@ -39,7 +41,7 @@ export default function useForm(args: object = {}, options: object = {}, request
             onStart: (config: object) => config,
             onProgress: (progress: Progress) => progress,
             onSuccess: (response: any) => response,
-            onCatch: (errors: Errors) => errors,
+            onCatch: (errors: AxiosError) => errors,
             onError: (errors: Errors) => errors,
             onFinish: () => ({}),
             ...defaultOptions,
@@ -91,13 +93,13 @@ export default function useForm(args: object = {}, options: object = {}, request
                     const errors = response.data.errors || {}
                     setProcessing(false)
                     setProgress(null)
-                    setErrors({})
+                    setErrors(errors)
 
                     if (Object.keys(errors).length > 0) {
-                        setErrors(errors)
                         setHasErrors(true)
                         // @ts-ignore
-                        return mergedOptions.onError(errors)
+                        mergedOptions.onError(errors)
+                        return response;
                     }
 
                     setHasErrors(false)
@@ -109,13 +111,14 @@ export default function useForm(args: object = {}, options: object = {}, request
                 mergedOptions.onSuccess(response);
 
                 return response.data;
-            }).catch(error => {
-                setErrors(errors)
+            }).catch((error: AxiosError) => {
                 setHasErrors(true)
                 setProcessing(false)
                 setProgress(null)
 
                 if (error.response) {
+                    // @ts-ignore
+                    setErrors(get(errors.response, 'data.errors', {}))
                     // @ts-ignore
                     mergedOptions.onCatch(errors);
                 } else {

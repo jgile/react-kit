@@ -1,4 +1,4 @@
-import {ResponseType} from 'axios';
+import {ResponseType, AxiosError} from 'axios';
 
 export type Errors = Record<string, string>
 
@@ -30,7 +30,7 @@ export type Visit = {
 // export type GlobalEventCallback<TEventName extends GlobalEventNames> = (...params: GlobalEventParameters<TEventName>) => GlobalEventResult<TEventName>
 
 export type VisitParams = Partial<Visit & {
-    onCatch: { (errors: Errors): Errors },
+    onCatch: { (errors: AxiosError): AxiosError },
     onStart: { (config: any): any },
     onProgress: { (progress: Progress): void },
     onFinish: { (): void },

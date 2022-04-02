@@ -1,4 +1,4 @@
-import { ResponseType } from 'axios';
+import { ResponseType, AxiosError } from 'axios';
 export declare type Errors = Record<string, string>;
 export declare type FormDataConvertible = Array<FormDataConvertible> | Blob | FormDataEntryValue | Date | boolean | number | null;
 export declare enum Method {
@@ -24,7 +24,7 @@ export declare type Visit = {
 };
 export declare type VisitParams = Partial<Visit & {
     onCatch: {
-        (errors: Errors): Errors;
+        (errors: AxiosError): AxiosError;
     };
     onStart: {
         (config: any): any;
