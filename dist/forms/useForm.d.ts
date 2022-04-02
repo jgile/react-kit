@@ -1,6 +1,6 @@
 import { Method } from "./types";
 export default function useForm(args?: object, options?: object, requestOptions?: object): {
-    submit: (method: Method, href: any, options?: object, requestOptions?: object) => Promise<any>;
+    submit: (method: Method, href: any, options?: object, requestOptions?: object) => Promise<import("axios").AxiosResponse<any, any>>;
     data: object;
     errors: {};
     hasErrors: boolean;
@@ -17,9 +17,9 @@ export default function useForm(args?: object, options?: object, requestOptions?
     reset(...fields: any): void;
     setError(key: any, value: any): void;
     clearErrors(...fields: any): void;
-    get(url: any, options?: any, requestOptions?: any): Promise<any>;
-    post(url: any, options?: any, requestOptions?: any): Promise<any>;
-    put(url: any, options?: any, requestOptions?: any): Promise<any>;
-    patch(url: any, options?: any, requestOptions?: any): Promise<any>;
-    delete(url: any, options?: any, requestOptions?: any): Promise<any>;
+    get(url: any, options?: any, requestOptions?: any): Promise<import("axios").AxiosResponse<any, any>>;
+    post(url: any, options?: any, requestOptions?: any): Promise<import("axios").AxiosResponse<any, any>>;
+    put(url: any, options?: any, requestOptions?: any): Promise<import("axios").AxiosResponse<any, any>>;
+    patch(url: any, options?: any, requestOptions?: any): Promise<import("axios").AxiosResponse<any, any>>;
+    delete(url: any, options?: any, requestOptions?: any): Promise<import("axios").AxiosResponse<any, any>>;
 };

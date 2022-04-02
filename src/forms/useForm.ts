@@ -109,7 +109,7 @@ export default function useForm(args: object = {}, options: object = {}, request
                 // @ts-ignore
                 mergedOptions.onSuccess(response);
 
-                return response.data;
+                return response;
             }).catch((error: AxiosError) => {
                 setHasErrors(true)
                 setProcessing(false)

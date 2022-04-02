@@ -277,7 +277,7 @@ function useForm(args, options, requestOptions) {
         }
 
         mergedOptions.onSuccess(response);
-        return response.data;
+        return response;
       })["catch"](function (error) {
         setHasErrors(true);
         setProcessing(false);
