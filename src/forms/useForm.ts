@@ -117,15 +117,13 @@ export default function useForm(args: object = {}, options: object = {}, request
                 setProgress(null)
 
                 if (error.response) {
+                    setErrors(error.response.data.errors ?? {});
                     // @ts-ignore
-                    setErrors(get(errors.response, 'data.errors', {}))
-                    // @ts-ignore
-                    mergedOptions.onCatch(errors);
-                } else {
-                    return Promise.reject(error)
+                    mergedOptions.onCatch(error.response);
+                    return error.response;
                 }
 
-                return error;
+                return Promise.reject(error);
             }).finally(() => {
                 // @ts-ignore
                 mergedOptions.onFinish();
