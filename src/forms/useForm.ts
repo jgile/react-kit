@@ -1,6 +1,5 @@
 import {useCallback, useEffect, useRef, useState} from 'react';
 import isEqual from 'lodash/isEqual';
-import get from 'lodash/get';
 import {default as Axios} from 'axios'
 import {hrefToUrl, mergeDataIntoQueryString, urlWithoutHash} from './url'
 import {Errors, Method, Progress, VisitParams,} from "./types";

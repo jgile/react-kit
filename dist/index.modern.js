@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import isEqual from 'lodash/isEqual';
-import get from 'lodash/get';
 import Axios from 'axios';
 import { stringify, parse } from 'qs';
 import deepmerge from 'deepmerge';
@@ -285,13 +284,14 @@ function useForm(args, options, requestOptions) {
         setProgress(null);
 
         if (error.response) {
-          setErrors(get(errors.response, 'data.errors', {}));
-          mergedOptions.onCatch(errors);
-        } else {
-          return Promise.reject(error);
+          var _error$response$data$;
+
+          setErrors((_error$response$data$ = error.response.data.errors) != null ? _error$response$data$ : {});
+          mergedOptions.onCatch(error.response);
+          return error.response;
         }
 
-        return error;
+        return Promise.reject(error);
       })["finally"](function () {
         mergedOptions.onFinish();
       });

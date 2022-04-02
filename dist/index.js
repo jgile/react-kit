@@ -3,7 +3,6 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 var React = require('react');
 var React__default = _interopDefault(React);
 var isEqual = _interopDefault(require('lodash/isEqual'));
-var get = _interopDefault(require('lodash/get'));
 var Axios = _interopDefault(require('axios'));
 var qs = require('qs');
 var deepmerge = _interopDefault(require('deepmerge'));
@@ -288,13 +287,14 @@ function useForm(args, options, requestOptions) {
         setProgress(null);
 
         if (error.response) {
-          setErrors(get(errors.response, 'data.errors', {}));
-          mergedOptions.onCatch(errors);
-        } else {
-          return Promise.reject(error);
+          var _error$response$data$;
+
+          setErrors((_error$response$data$ = error.response.data.errors) != null ? _error$response$data$ : {});
+          mergedOptions.onCatch(error.response);
+          return error.response;
         }
 
-        return error;
+        return Promise.reject(error);
       })["finally"](function () {
         mergedOptions.onFinish();
       });
