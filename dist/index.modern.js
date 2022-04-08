@@ -507,6 +507,24 @@ function useData() {
   };
 }
 
+function visit(method, href, data, options, requestOptions) {
+  if (data === void 0) {
+    data = {};
+  }
+
+  if (options === void 0) {
+    options = {};
+  }
+
+  if (requestOptions === void 0) {
+    requestOptions = {};
+  }
+
+  var form = useForm(data);
+  form.submit(method, href, options, requestOptions);
+  return form;
+}
+
 function Flex(props) {
   if (props === void 0) {
     props = {
@@ -666,5 +684,5 @@ function FlexItem(props) {
   }, props.children);
 }
 
-export { Flex, FlexItem, useData, useForm };
+export { Flex, FlexItem, useData, useForm, visit };
 //# sourceMappingURL=index.modern.js.map

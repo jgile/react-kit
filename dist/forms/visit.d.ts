@@ -1,5 +1,6 @@
-export default function visit(method: any, url: any, data: any, options: any, requestOptions: any): {
-    submit: (method: import("./types").Method, href: any, options?: object, requestOptions?: object) => Promise<import("axios").AxiosResponse<any, any>>;
+import { Method } from "./types";
+export default function visit(method: Method, href: any, data?: object, options?: object, requestOptions?: object): {
+    submit: (method: Method, href: any, options?: object, requestOptions?: object) => Promise<import("axios").AxiosResponse<any, any>>;
     data: object;
     errors: {};
     response: {};

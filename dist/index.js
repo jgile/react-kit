@@ -510,6 +510,24 @@ function useData() {
   };
 }
 
+function visit(method, href, data, options, requestOptions) {
+  if (data === void 0) {
+    data = {};
+  }
+
+  if (options === void 0) {
+    options = {};
+  }
+
+  if (requestOptions === void 0) {
+    requestOptions = {};
+  }
+
+  var form = useForm(data);
+  form.submit(method, href, options, requestOptions);
+  return form;
+}
+
 function Flex(props) {
   if (props === void 0) {
     props = {
@@ -673,4 +691,5 @@ exports.Flex = Flex;
 exports.FlexItem = FlexItem;
 exports.useData = useData;
 exports.useForm = useForm;
+exports.visit = visit;
 //# sourceMappingURL=index.js.map
