@@ -1,6 +1,6 @@
 {
     "name": "@jgile/react-kit",
-    "version": "1.1.15",
+    "version": "1.1.16",
     "author": "jgile",
     "license": "MIT",
     "repository": "jgile/new-react-kit",
@@ -20,8 +20,7 @@
         "test:watch": "react-scripts test --env=jsdom",
         "predeploy": "cd example && npm install && npm run build",
         "deploy": "gh-pages -d example/build",
-        "release": "release-it",
-        "go": "@build && "
+        "release": "release-it"
     },
     "peerDependencies": {
         "react": "^16.9.0 || ^17",
