@@ -3,6 +3,7 @@ export default function useForm(args?: object, options?: object, requestOptions?
     submit: (method: Method, href: any, options?: object, requestOptions?: object) => Promise<import("axios").AxiosResponse<any, any>>;
     data: object;
     errors: {};
+    response: {};
     hasErrors: boolean;
     processing: boolean;
     progress: null;

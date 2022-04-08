@@ -12,6 +12,7 @@ export default function useForm(args: object = {}, options: object = {}, request
     const [defaults, setDefaults] = useState(args)
     const [data, setData] = useState(args);
     const [errors, setErrors] = useState({});
+    const [response, setResponse] = useState({});
     const [hasErrors, setHasErrors] = useState(false)
     const [processing, setProcessing] = useState(false)
     const [progress, setProgress] = useState(null)
@@ -92,6 +93,7 @@ export default function useForm(args: object = {}, options: object = {}, request
                     const errors = response.data.errors || {}
                     setProcessing(false)
                     setProgress(null)
+                    setResponse(response.data || {})
                     setErrors(errors)
 
                     if (Object.keys(errors).length > 0) {
@@ -134,6 +136,7 @@ export default function useForm(args: object = {}, options: object = {}, request
         submit,
         data,
         errors,
+        response,
         hasErrors,
         processing,
         progress,
