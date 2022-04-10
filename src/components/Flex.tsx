@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 interface Keyable {
     [key: string]: any;
@@ -20,21 +21,7 @@ interface FlexProps {
     children: React.ReactNode
 }
 
-function Flex(props: FlexProps = {
-    vertical: false,
-    reverse: false,
-    right: false,
-    left: false,
-    bottom: false,
-    top: false,
-    yCenter: false,
-    xCenter: false,
-    center: false,
-    wrap: false,
-    between: false,
-    style: {},
-    children: null
-}) {
+function Flex(props: FlexProps) {
     const styles: Keyable = {
         display: 'flex', flexDirection: 'row', flexWrap: 'nowrap'
     };
@@ -108,10 +95,41 @@ function Flex(props: FlexProps = {
     }
 
     return (
-        <div style={{ ...styles, ...props.style }}>
+        <div style={{...styles, ...props.style}}>
             {props.children}
         </div>
     );
 }
+
+Flex.defaultProps = {
+    vertical: false,
+    reverse: false,
+    right: false,
+    left: false,
+    bottom: false,
+    top: false,
+    yCenter: false,
+    xCenter: false,
+    center: false,
+    wrap: false,
+    between: false,
+    style: {},
+    children: null
+};
+
+Flex.propTypes = {
+    vertical: PropTypes.bool,
+    reverse: PropTypes.bool,
+    right: PropTypes.bool,
+    left: PropTypes.bool,
+    bottom: PropTypes.bool,
+    top: PropTypes.bool,
+    yCenter: PropTypes.bool,
+    xCenter: PropTypes.bool,
+    center: PropTypes.bool,
+    wrap: PropTypes.bool,
+    between: PropTypes.bool,
+    style: PropTypes.object,
+};
 
 export default Flex;
