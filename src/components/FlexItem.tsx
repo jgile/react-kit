@@ -5,18 +5,18 @@ interface Keyable {
 }
 
 interface FlexItemProps {
-    flex: boolean
-    stretch: boolean
-    grow: boolean
-    shrink: boolean
-    first: boolean
-    right: boolean,
-    left: boolean,
-    center: boolean,
-    last: boolean,
-    nth: number | null,
-    style: Keyable | null,
-    children: React.ReactNode | null
+    flex?: boolean
+    stretch?: boolean
+    grow?: boolean
+    shrink?: boolean
+    first?: boolean
+    right?: boolean,
+    left?: boolean,
+    center?: boolean,
+    last?: boolean,
+    nth?: number | null,
+    style?: Keyable | null,
+    children?: React.ReactNode | null
 }
 
 function FlexItem(props: FlexItemProps = {
@@ -72,7 +72,7 @@ function FlexItem(props: FlexItemProps = {
     }
 
     return (
-        <div style={{ ...styles, ...props.style }}>
+        <div style={{...styles, ...props.style}}>
             {props.children}
         </div>
     );
