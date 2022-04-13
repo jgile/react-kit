@@ -20,7 +20,7 @@
         "test:watch": "react-scripts test --env=jsdom",
         "predeploy": "cd example && npm install && npm run build",
         "deploy": "gh-pages -d example/build",
-        "release": "release-it -- minor --ci"
+        "release": "release-it"
     },
     "peerDependencies": {
         "react": "^16.9.0 || ^17",
@@ -70,5 +70,18 @@
     },
     "files": [
         "dist"
-    ]
+    ],
+    "release-it": {
+        "git": {
+            "commit": true,
+            "tag": true,
+            "push": true
+        },
+        "github": {
+            "release": true
+        },
+        "npm": {
+            "publish": true
+        }
+    }
 }
