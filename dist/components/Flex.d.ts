@@ -18,7 +18,7 @@ interface FlexProps {
     style?: Keyable;
     children?: React.ReactNode;
 }
-declare function Flex(props: FlexProps): JSX.Element;
+declare function Flex(props?: FlexProps): JSX.Element;
 declare namespace Flex {
     var defaultProps: {
         vertical: boolean;

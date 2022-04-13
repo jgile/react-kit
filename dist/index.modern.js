@@ -1624,7 +1624,27 @@ if (process.env.NODE_ENV !== 'production') {
 }
 });
 
+var defaultProps = {
+  vertical: false,
+  reverse: false,
+  right: false,
+  left: false,
+  bottom: false,
+  top: false,
+  yCenter: false,
+  xCenter: false,
+  center: false,
+  wrap: false,
+  between: false,
+  style: {},
+  children: null
+};
+
 function Flex(props) {
+  if (props === void 0) {
+    props = defaultProps;
+  }
+
   var styles = {
     display: 'flex',
     flexDirection: 'row',
@@ -1704,21 +1724,7 @@ function Flex(props) {
   }, props.children);
 }
 
-Flex.defaultProps = {
-  vertical: false,
-  reverse: false,
-  right: false,
-  left: false,
-  bottom: false,
-  top: false,
-  yCenter: false,
-  xCenter: false,
-  center: false,
-  wrap: false,
-  between: false,
-  style: {},
-  children: null
-};
+Flex.defaultProps = defaultProps;
 Flex.propTypes = {
   vertical: propTypes.bool,
   reverse: propTypes.bool,

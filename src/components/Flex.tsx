@@ -21,7 +21,23 @@ interface FlexProps {
     children?: React.ReactNode
 }
 
-function Flex(props: FlexProps) {
+const defaultProps = {
+    vertical: false,
+    reverse: false,
+    right: false,
+    left: false,
+    bottom: false,
+    top: false,
+    yCenter: false,
+    xCenter: false,
+    center: false,
+    wrap: false,
+    between: false,
+    style: {},
+    children: null
+};
+
+function Flex(props: FlexProps = defaultProps) {
     const styles: Keyable = {
         display: 'flex', flexDirection: 'row', flexWrap: 'nowrap'
     };
@@ -101,21 +117,7 @@ function Flex(props: FlexProps) {
     );
 }
 
-Flex.defaultProps = {
-    vertical: false,
-    reverse: false,
-    right: false,
-    left: false,
-    bottom: false,
-    top: false,
-    yCenter: false,
-    xCenter: false,
-    center: false,
-    wrap: false,
-    between: false,
-    style: {},
-    children: null
-};
+Flex.defaultProps = defaultProps;
 
 Flex.propTypes = {
     vertical: PropTypes.bool,
