@@ -72,6 +72,13 @@
         "dist"
     ],
     "release-it": {
+        "hooks": {
+            "before:init": [
+                "npm run build",
+                "git add --all",
+                "git commit -m 'bump'"
+            ]
+        },
         "git": {
             "commit": true,
             "tag": true,
