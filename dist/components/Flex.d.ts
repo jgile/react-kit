@@ -1,9 +1,24 @@
-/// <reference types="react" />
+import React from 'react';
 import PropTypes from 'prop-types';
 interface Keyable {
     [key: string]: any;
 }
-declare function Flex(props: Keyable): JSX.Element;
+interface FlexProps {
+    vertical?: boolean;
+    reverse?: boolean;
+    right?: boolean;
+    left?: boolean;
+    bottom?: boolean;
+    top?: boolean;
+    yCenter?: boolean;
+    xCenter?: boolean;
+    center?: boolean;
+    wrap?: boolean;
+    between?: boolean;
+    style?: Keyable;
+    children?: React.ReactNode;
+}
+declare function Flex(props: FlexProps): JSX.Element;
 declare namespace Flex {
     var defaultProps: {
         vertical: boolean;
