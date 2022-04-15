@@ -16,23 +16,24 @@ function useProxy(args, computed) {
   }
 
   var state = React.useMemo(function () {
-    return valtio.proxy(args);
+    var tmpstate = valtio.proxy(args);
+
+    if (computed) {
+      React.useEffect(function () {
+        var comp = {};
+        forEach(computed, function (callback, name) {
+          comp[name] = function (get) {
+            return callback(get(tmpstate));
+          };
+        });
+        utils.derive(comp, {
+          proxy: tmpstate
+        });
+      }, [computed]);
+    }
+
+    return tmpstate;
   }, []);
-
-  if (computed) {
-    React.useEffect(function () {
-      var comp = {};
-      forEach(computed, function (callback, name) {
-        comp[name] = function (get) {
-          return callback(get(state));
-        };
-      });
-      utils.derive(comp, {
-        proxy: state
-      });
-    }, [computed]);
-  }
-
   var snap = valtio.useSnapshot(state);
   return {
     state: state,

@@ -8,21 +8,26 @@ interface Keyable {
 }
 
 export default function useProxy(args: Keyable = {}, computed?: Keyable) {
-    const state = useMemo(() => makeProxy(args), []);
+    const state = useMemo(() => {
+        let tmpstate = makeProxy(args);
 
-    if (computed) {
-        useEffect(() => {
-            const comp = {};
-            forEach(computed, (callback, name) => {
-                //@ts-ignore
-                comp[name] = (get) => {
-                    return callback(get(state));
-                }
-            });
+        if (computed) {
+            useEffect(() => {
+                const comp = {};
+                forEach(computed, (callback, name) => {
+                    //@ts-ignore
+                    comp[name] = (get) => {
+                        return callback(get(tmpstate));
+                    }
+                });
 
-            derive(comp, {proxy: state});
-        }, [computed]);
-    }
+                derive(comp, {proxy: tmpstate});
+            }, [computed]);
+        }
+
+        return tmpstate;
+    }, []);
+
 
     const snap = useSnapshot(state);
 

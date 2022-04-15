@@ -13,23 +13,24 @@ function useProxy(args, computed) {
   }
 
   var state = useMemo(function () {
-    return proxy(args);
+    var tmpstate = proxy(args);
+
+    if (computed) {
+      useEffect(function () {
+        var comp = {};
+        forEach(computed, function (callback, name) {
+          comp[name] = function (get) {
+            return callback(get(tmpstate));
+          };
+        });
+        derive(comp, {
+          proxy: tmpstate
+        });
+      }, [computed]);
+    }
+
+    return tmpstate;
   }, []);
-
-  if (computed) {
-    useEffect(function () {
-      var comp = {};
-      forEach(computed, function (callback, name) {
-        comp[name] = function (get) {
-          return callback(get(state));
-        };
-      });
-      derive(comp, {
-        proxy: state
-      });
-    }, [computed]);
-  }
-
   var snap = useSnapshot(state);
   return {
     state: state,
