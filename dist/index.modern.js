@@ -1,8 +1,30 @@
+import { proxy, useSnapshot } from 'valtio';
+import { derive } from 'valtio/utils';
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import isEqual from 'lodash/isEqual';
 import Axios from 'axios';
 import { stringify, parse } from 'qs';
 import deepmerge from 'deepmerge';
+
+function useProxy(args, computed) {
+  if (args === void 0) {
+    args = {};
+  }
+
+  var data = proxy(args);
+  var state = useSnapshot(data);
+
+  if (computed) {
+    derive(computed, {
+      proxy: data
+    });
+  }
+
+  return {
+    data: data,
+    state: state
+  };
+}
 
 function _extends() {
   _extends = Object.assign || function (target) {
@@ -1801,5 +1823,5 @@ function FlexItem(props) {
   }, props.children);
 }
 
-export { Flex, FlexItem, useData, useForm, visit };
+export { Flex, FlexItem, useData, useForm, useProxy, visit };
 //# sourceMappingURL=index.modern.js.map

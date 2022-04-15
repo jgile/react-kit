@@ -1,11 +1,33 @@
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
+var valtio = require('valtio');
+var utils = require('valtio/utils');
 var React = require('react');
 var React__default = _interopDefault(React);
 var isEqual = _interopDefault(require('lodash/isEqual'));
 var Axios = _interopDefault(require('axios'));
 var qs = require('qs');
 var deepmerge = _interopDefault(require('deepmerge'));
+
+function useProxy(args, computed) {
+  if (args === void 0) {
+    args = {};
+  }
+
+  var data = valtio.proxy(args);
+  var state = valtio.useSnapshot(data);
+
+  if (computed) {
+    utils.derive(computed, {
+      proxy: data
+    });
+  }
+
+  return {
+    data: data,
+    state: state
+  };
+}
 
 function _extends() {
   _extends = Object.assign || function (target) {
@@ -1808,5 +1830,6 @@ exports.Flex = Flex;
 exports.FlexItem = FlexItem;
 exports.useData = useData;
 exports.useForm = useForm;
+exports.useProxy = useProxy;
 exports.visit = visit;
 //# sourceMappingURL=index.js.map

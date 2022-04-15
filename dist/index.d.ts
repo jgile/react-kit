@@ -1,2 +1,2 @@
-export { useForm, useData, visit } from './forms';
+export { useForm, useData, useProxy, visit } from './forms';
 export { Flex, FlexItem } from './components';
