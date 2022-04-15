@@ -1,11 +1,13 @@
 import { proxy, useSnapshot } from 'valtio';
-import React, { useMemo, useRef, useState, useEffect, useCallback } from 'react';
+import { derive } from 'valtio/utils';
+import React, { useMemo, useEffect, useRef, useState, useCallback } from 'react';
+import forEach from 'lodash/forEach';
 import isEqual from 'lodash/isEqual';
 import Axios from 'axios';
 import { stringify, parse } from 'qs';
 import deepmerge from 'deepmerge';
 
-function useProxy(args) {
+function useProxy(args, computed) {
   if (args === void 0) {
     args = {};
   }
@@ -14,6 +16,17 @@ function useProxy(args) {
     return proxy(args);
   }, []);
   var snap = useSnapshot(state);
+
+  if (computed) {
+    useEffect(function () {
+      forEach(computed, function (callback, name) {
+      });
+      derive(computed, {
+        proxy: state
+      });
+    }, []);
+  }
+
   return {
     state: state,
     snap: snap
