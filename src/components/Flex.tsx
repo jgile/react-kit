@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 interface Keyable {
     [key: string]: any;
@@ -116,22 +115,5 @@ function Flex(props: FlexProps = defaultProps) {
         </div>
     );
 }
-
-Flex.defaultProps = defaultProps;
-
-Flex.propTypes = {
-    vertical: PropTypes.bool,
-    reverse: PropTypes.bool,
-    right: PropTypes.bool,
-    left: PropTypes.bool,
-    bottom: PropTypes.bool,
-    top: PropTypes.bool,
-    yCenter: PropTypes.bool,
-    xCenter: PropTypes.bool,
-    center: PropTypes.bool,
-    wrap: PropTypes.bool,
-    between: PropTypes.bool,
-    style: PropTypes.object,
-};
 
 export default Flex;
