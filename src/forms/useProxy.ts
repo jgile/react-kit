@@ -9,12 +9,10 @@ interface Keyable {
 
 export default function useProxy(args: Keyable = {}, computed?: Keyable) {
     const state = useMemo(() => makeProxy(args), []);
-    const snap = useSnapshot(state);
 
     if (computed) {
         useEffect(() => {
             const comp = {};
-
             forEach(computed, (callback, name) => {
                 //@ts-ignore
                 comp[name] = (get) => {
@@ -23,8 +21,10 @@ export default function useProxy(args: Keyable = {}, computed?: Keyable) {
             });
 
             derive(comp, {proxy: state});
-        }, []);
+        }, [computed]);
     }
+
+    const snap = useSnapshot(state);
 
     return {
         state,

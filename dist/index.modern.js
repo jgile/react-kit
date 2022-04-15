@@ -15,7 +15,6 @@ function useProxy(args, computed) {
   var state = useMemo(function () {
     return proxy(args);
   }, []);
-  var snap = useSnapshot(state);
 
   if (computed) {
     useEffect(function () {
@@ -28,9 +27,10 @@ function useProxy(args, computed) {
       derive(comp, {
         proxy: state
       });
-    }, []);
+    }, [computed]);
   }
 
+  var snap = useSnapshot(state);
   return {
     state: state,
     snap: snap
