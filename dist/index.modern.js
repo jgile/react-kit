@@ -11,17 +11,17 @@ function useProxy(args, computed) {
     args = {};
   }
 
-  var data = proxy(args);
-  var state = useSnapshot(data);
+  var proxy$1 = proxy(args);
+  var state = useSnapshot(proxy$1);
 
   if (computed) {
     derive(computed, {
-      proxy: data
+      proxy: proxy$1
     });
   }
 
   return {
-    data: data,
+    proxy: proxy$1,
     state: state
   };
 }

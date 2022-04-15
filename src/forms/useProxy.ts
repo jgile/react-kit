@@ -1,4 +1,4 @@
-import {proxy, useSnapshot} from 'valtio'
+import {proxy as makeProxy, useSnapshot} from 'valtio'
 import {derive} from 'valtio/utils'
 
 interface Keyable {
@@ -6,15 +6,15 @@ interface Keyable {
 }
 
 export default function useProxy(args: Keyable = {}, computed?: Keyable) {
-    const data = proxy(args);
-    const state = useSnapshot(data);
+    const proxy = makeProxy(args);
+    const state = useSnapshot(proxy);
 
     if (computed) {
-        derive(computed, {proxy: data})
+        derive(computed, {proxy: proxy})
     }
 
     return {
-        data,
+        proxy,
         state,
     }
 }

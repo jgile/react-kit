@@ -14,17 +14,17 @@ function useProxy(args, computed) {
     args = {};
   }
 
-  var data = valtio.proxy(args);
-  var state = valtio.useSnapshot(data);
+  var proxy = valtio.proxy(args);
+  var state = valtio.useSnapshot(proxy);
 
   if (computed) {
     utils.derive(computed, {
-      proxy: data
+      proxy: proxy
     });
   }
 
   return {
-    data: data,
+    proxy: proxy,
     state: state
   };
 }
