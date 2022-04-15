@@ -19,9 +19,13 @@ function useProxy(args, computed) {
 
   if (computed) {
     useEffect(function () {
+      var comp = {};
       forEach(computed, function (callback, name) {
+        comp[name] = function (get) {
+          return callback(get(state));
+        };
       });
-      derive(computed, {
+      derive(comp, {
         proxy: state
       });
     }, []);

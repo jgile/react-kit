@@ -22,9 +22,13 @@ function useProxy(args, computed) {
 
   if (computed) {
     React.useEffect(function () {
+      var comp = {};
       forEach(computed, function (callback, name) {
+        comp[name] = function (get) {
+          return callback(get(state));
+        };
       });
-      utils.derive(computed, {
+      utils.derive(comp, {
         proxy: state
       });
     }, []);

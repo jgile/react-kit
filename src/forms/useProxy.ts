@@ -22,7 +22,7 @@ export default function useProxy(args: Keyable = {}, computed?: Keyable) {
                 }
             });
 
-            derive(computed, {proxy: state});
+            derive(comp, {proxy: state});
         }, []);
     }
 
