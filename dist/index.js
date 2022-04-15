@@ -1,7 +1,6 @@
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
 var valtio = require('valtio');
-var utils = require('valtio/utils');
 var React = require('react');
 var React__default = _interopDefault(React);
 var isEqual = _interopDefault(require('lodash/isEqual'));
@@ -9,25 +8,18 @@ var Axios = _interopDefault(require('axios'));
 var qs = require('qs');
 var deepmerge = _interopDefault(require('deepmerge'));
 
-function useProxy(args, computed) {
+function useProxy(args) {
   if (args === void 0) {
     args = {};
   }
 
-  var proxy = React.useMemo(function () {
+  var state = React.useMemo(function () {
     return valtio.proxy(args);
   }, []);
-  var state = valtio.useSnapshot(proxy);
-
-  if (computed) {
-    utils.derive(computed, {
-      proxy: proxy
-    });
-  }
-
+  var snap = valtio.useSnapshot(state);
   return {
-    proxy: proxy,
-    state: state
+    state: state,
+    snap: snap
   };
 }
 
