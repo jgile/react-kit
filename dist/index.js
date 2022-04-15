@@ -14,7 +14,9 @@ function useProxy(args, computed) {
     args = {};
   }
 
-  var proxy = valtio.proxy(args);
+  var proxy = React.useMemo(function () {
+    return valtio.proxy(args);
+  }, []);
   var state = valtio.useSnapshot(proxy);
 
   if (computed) {
