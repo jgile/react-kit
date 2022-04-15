@@ -16,20 +16,18 @@ function useProxy(args, computed) {
   }
 
   var state = React.useMemo(function () {
+    var comp = {};
     var tmpstate = valtio.proxy(args);
 
     if (computed) {
-      React.useEffect(function () {
-        var comp = {};
-        forEach(computed, function (callback, name) {
-          comp[name] = function (get) {
-            return callback(get(tmpstate));
-          };
-        });
-        utils.derive(comp, {
-          proxy: tmpstate
-        });
-      }, [computed]);
+      forEach(computed, function (callback, name) {
+        comp[name] = function (get) {
+          return callback(get(tmpstate));
+        };
+      });
+      utils.derive(comp, {
+        proxy: tmpstate
+      });
     }
 
     return tmpstate;

@@ -1,6 +1,6 @@
 import { proxy, useSnapshot } from 'valtio';
 import { derive } from 'valtio/utils';
-import React, { useMemo, useEffect, useRef, useState, useCallback } from 'react';
+import React, { useMemo, useRef, useState, useEffect, useCallback } from 'react';
 import forEach from 'lodash/forEach';
 import isEqual from 'lodash/isEqual';
 import Axios from 'axios';
@@ -13,20 +13,18 @@ function useProxy(args, computed) {
   }
 
   var state = useMemo(function () {
+    var comp = {};
     var tmpstate = proxy(args);
 
     if (computed) {
-      useEffect(function () {
-        var comp = {};
-        forEach(computed, function (callback, name) {
-          comp[name] = function (get) {
-            return callback(get(tmpstate));
-          };
-        });
-        derive(comp, {
-          proxy: tmpstate
-        });
-      }, [computed]);
+      forEach(computed, function (callback, name) {
+        comp[name] = function (get) {
+          return callback(get(tmpstate));
+        };
+      });
+      derive(comp, {
+        proxy: tmpstate
+      });
     }
 
     return tmpstate;
