@@ -16,6 +16,7 @@ interface FlexProps {
     center?: boolean,
     wrap?: boolean,
     between?: boolean,
+    grow?: boolean,
     style?: Keyable,
     children?: React.ReactNode
 }
@@ -32,6 +33,7 @@ const defaultProps = {
     center: false,
     wrap: false,
     between: false,
+    grow: false,
     style: {},
     children: null
 };
@@ -99,6 +101,10 @@ function Flex(props: FlexProps = defaultProps) {
         if (props.yCenter || props.center) {
             styles.alignItems = 'center';
         }
+    }
+
+    if (props.grow) {
+        styles['flexGrow'] = 1;
     }
 
     if (props.between) {

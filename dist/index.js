@@ -17,20 +17,20 @@ function useProxy(args, computed) {
 
   var state = React.useMemo(function () {
     var comp = {};
-    var tmpstate = valtio.proxy(args);
+    var tmpState = valtio.proxy(args);
 
     if (computed) {
       forEach(computed, function (callback, name) {
         comp[name] = function (get) {
-          return callback(get(tmpstate));
+          return callback(get(tmpState));
         };
       });
       utils.derive(comp, {
-        proxy: tmpstate
+        proxy: tmpState
       });
     }
 
-    return tmpstate;
+    return tmpState;
   }, []);
   var snap = valtio.useSnapshot(state);
   return {
@@ -572,6 +572,7 @@ var defaultProps = {
   center: false,
   wrap: false,
   between: false,
+  grow: false,
   style: {},
   children: null
 };
@@ -645,6 +646,10 @@ function Flex(props) {
     if (props.yCenter || props.center) {
       styles.alignItems = 'center';
     }
+  }
+
+  if (props.grow) {
+    styles['flexGrow'] = 1;
   }
 
   if (props.between) {

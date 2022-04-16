@@ -14,6 +14,7 @@ interface FlexProps {
     center?: boolean;
     wrap?: boolean;
     between?: boolean;
+    grow?: boolean;
     style?: Keyable;
     children?: React.ReactNode;
 }
