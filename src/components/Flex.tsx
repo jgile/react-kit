@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface Keyable {
-    [key: string]: any;
+    [x: string]: any;
 }
 
 interface FlexProps {
@@ -18,106 +18,108 @@ interface FlexProps {
     between?: boolean,
     grow?: boolean,
     style?: Keyable,
-    children?: React.ReactNode
+    children?: React.ReactNode,
+    [x: string]: any;
 }
 
-const defaultProps = {
-    vertical: false,
-    reverse: false,
-    right: false,
-    left: false,
-    bottom: false,
-    top: false,
-    yCenter: false,
-    xCenter: false,
-    center: false,
-    wrap: false,
-    between: false,
-    grow: false,
-    style: {},
-    children: null
-};
-
-function Flex(props: FlexProps = defaultProps) {
+function Flex(
+    {
+        vertical = false,
+        reverse = false,
+        right = false,
+        left = false,
+        bottom = false,
+        top = false,
+        yCenter = false,
+        xCenter = false,
+        center = false,
+        wrap = false,
+        between = false,
+        grow = false,
+        style = {},
+        children = null,
+        ...rest
+    }: FlexProps
+) {
     const styles: Keyable = {
         display: 'flex', flexDirection: 'row', flexWrap: 'nowrap'
     };
 
-    if (props.vertical) {
+    if (vertical) {
         styles.flexDirection = 'column';
 
-        if (props.reverse) {
+        if (reverse) {
             styles.flexDirection = 'column-reverse';
         }
 
-        if (props.right) {
+        if (right) {
             styles.alignItems = 'flex-end';
         }
 
-        if (props.left) {
+        if (left) {
             styles.alignItems = 'flex-start';
         }
 
-        if (props.bottom) {
+        if (bottom) {
             styles.justifyContent = 'flex-end';
         }
 
-        if (props.top) {
+        if (top) {
             styles.justifyContent = 'flex-start';
         }
 
-        if (props.yCenter) {
+        if (yCenter) {
             styles.justifyContent = 'center';
         }
 
-        if (props.xCenter || props.center) {
+        if (xCenter || center) {
             styles.alignItems = 'center';
         }
     } else {
-        if (props.reverse) {
+        if (reverse) {
             styles.flexDirection = 'row-reverse';
         }
 
-        if (props.right) {
+        if (right) {
             styles.justifyContent = 'flex-end';
         }
 
-        if (props.left) {
+        if (left) {
             styles.justifyContent = 'flex-start';
         }
 
-        if (props.bottom) {
+        if (bottom) {
             styles.alignItems = 'flex-end';
         }
 
-        if (props.top) {
+        if (top) {
             styles.alignItems = 'flex-start';
         }
 
-        if (props.xCenter) {
+        if (xCenter) {
             styles.justifyContent = 'center';
         }
 
-        if (props.yCenter || props.center) {
+        if (yCenter || center) {
             styles.alignItems = 'center';
         }
     }
 
-    if (props.grow) {
+    if (grow) {
         styles['flexGrow'] = 1;
     }
 
-    if (props.between) {
+    if (between) {
         styles.justifyContent = 'space-between';
     }
 
-    if (props.wrap) {
+    if (wrap) {
         styles.flexWrap = 'wrap';
     }
 
     return (
-        <div style={{...styles, ...props.style}}>
-            {props.children}
+        <div {...rest} style={{...styles, ...style}}>
+            {children}
         </div>
     );
 }

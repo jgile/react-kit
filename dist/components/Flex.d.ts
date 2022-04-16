@@ -1,6 +1,6 @@
 import React from 'react';
 interface Keyable {
-    [key: string]: any;
+    [x: string]: any;
 }
 interface FlexProps {
     vertical?: boolean;
@@ -17,6 +17,7 @@ interface FlexProps {
     grow?: boolean;
     style?: Keyable;
     children?: React.ReactNode;
+    [x: string]: any;
 }
-declare function Flex(props?: FlexProps): JSX.Element;
+declare function Flex({ vertical, reverse, right, left, bottom, top, yCenter, xCenter, center, wrap, between, grow, style, children, ...rest }: FlexProps): JSX.Element;
 export default Flex;

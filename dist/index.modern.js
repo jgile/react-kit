@@ -54,6 +54,21 @@ function _extends() {
   return _extends.apply(this, arguments);
 }
 
+function _objectWithoutPropertiesLoose(source, excluded) {
+  if (source == null) return {};
+  var target = {};
+  var sourceKeys = Object.keys(source);
+  var key, i;
+
+  for (i = 0; i < sourceKeys.length; i++) {
+    key = sourceKeys[i];
+    if (excluded.indexOf(key) >= 0) continue;
+    target[key] = source[key];
+  }
+
+  return target;
+}
+
 var Method;
 
 (function (Method) {
@@ -557,27 +572,38 @@ function visit(method, href, data, options, requestOptions) {
   return form;
 }
 
-var defaultProps = {
-  vertical: false,
-  reverse: false,
-  right: false,
-  left: false,
-  bottom: false,
-  top: false,
-  yCenter: false,
-  xCenter: false,
-  center: false,
-  wrap: false,
-  between: false,
-  grow: false,
-  style: {},
-  children: null
-};
+var _excluded = ["vertical", "reverse", "right", "left", "bottom", "top", "yCenter", "xCenter", "center", "wrap", "between", "grow", "style", "children"];
 
-function Flex(props) {
-  if (props === void 0) {
-    props = defaultProps;
-  }
+function Flex(_ref) {
+  var _ref$vertical = _ref.vertical,
+      vertical = _ref$vertical === void 0 ? false : _ref$vertical,
+      _ref$reverse = _ref.reverse,
+      reverse = _ref$reverse === void 0 ? false : _ref$reverse,
+      _ref$right = _ref.right,
+      right = _ref$right === void 0 ? false : _ref$right,
+      _ref$left = _ref.left,
+      left = _ref$left === void 0 ? false : _ref$left,
+      _ref$bottom = _ref.bottom,
+      bottom = _ref$bottom === void 0 ? false : _ref$bottom,
+      _ref$top = _ref.top,
+      top = _ref$top === void 0 ? false : _ref$top,
+      _ref$yCenter = _ref.yCenter,
+      yCenter = _ref$yCenter === void 0 ? false : _ref$yCenter,
+      _ref$xCenter = _ref.xCenter,
+      xCenter = _ref$xCenter === void 0 ? false : _ref$xCenter,
+      _ref$center = _ref.center,
+      center = _ref$center === void 0 ? false : _ref$center,
+      _ref$wrap = _ref.wrap,
+      wrap = _ref$wrap === void 0 ? false : _ref$wrap,
+      _ref$between = _ref.between,
+      between = _ref$between === void 0 ? false : _ref$between,
+      _ref$grow = _ref.grow,
+      grow = _ref$grow === void 0 ? false : _ref$grow,
+      _ref$style = _ref.style,
+      style = _ref$style === void 0 ? {} : _ref$style,
+      _ref$children = _ref.children,
+      children = _ref$children === void 0 ? null : _ref$children,
+      rest = _objectWithoutPropertiesLoose(_ref, _excluded);
 
   var styles = {
     display: 'flex',
@@ -585,142 +611,157 @@ function Flex(props) {
     flexWrap: 'nowrap'
   };
 
-  if (props.vertical) {
+  if (vertical) {
     styles.flexDirection = 'column';
 
-    if (props.reverse) {
+    if (reverse) {
       styles.flexDirection = 'column-reverse';
     }
 
-    if (props.right) {
+    if (right) {
       styles.alignItems = 'flex-end';
     }
 
-    if (props.left) {
+    if (left) {
       styles.alignItems = 'flex-start';
     }
 
-    if (props.bottom) {
+    if (bottom) {
       styles.justifyContent = 'flex-end';
     }
 
-    if (props.top) {
+    if (top) {
       styles.justifyContent = 'flex-start';
     }
 
-    if (props.yCenter) {
+    if (yCenter) {
       styles.justifyContent = 'center';
     }
 
-    if (props.xCenter || props.center) {
+    if (xCenter || center) {
       styles.alignItems = 'center';
     }
   } else {
-    if (props.reverse) {
+    if (reverse) {
       styles.flexDirection = 'row-reverse';
     }
 
-    if (props.right) {
+    if (right) {
       styles.justifyContent = 'flex-end';
     }
 
-    if (props.left) {
+    if (left) {
       styles.justifyContent = 'flex-start';
     }
 
-    if (props.bottom) {
+    if (bottom) {
       styles.alignItems = 'flex-end';
     }
 
-    if (props.top) {
+    if (top) {
       styles.alignItems = 'flex-start';
     }
 
-    if (props.xCenter) {
+    if (xCenter) {
       styles.justifyContent = 'center';
     }
 
-    if (props.yCenter || props.center) {
+    if (yCenter || center) {
       styles.alignItems = 'center';
     }
   }
 
-  if (props.grow) {
+  if (grow) {
     styles['flexGrow'] = 1;
   }
 
-  if (props.between) {
+  if (between) {
     styles.justifyContent = 'space-between';
   }
 
-  if (props.wrap) {
+  if (wrap) {
     styles.flexWrap = 'wrap';
   }
 
-  return React.createElement("div", {
-    style: _extends({}, styles, props.style)
-  }, props.children);
+  return React.createElement("div", Object.assign({}, rest, {
+    style: _extends({}, styles, style)
+  }), children);
 }
 
-function FlexItem(props) {
-  if (props === void 0) {
-    props = {
-      flex: false,
-      right: false,
-      left: false,
-      shrink: false,
-      center: false,
-      stretch: false,
-      first: false,
-      last: false,
-      grow: false,
-      nth: null,
-      style: {},
-      children: null
-    };
-  }
+var _excluded$1 = ["flex", "right", "left", "shrink", "center", "stretch", "first", "last", "grow", "nth", "style", "children"];
+
+function FlexItem(_ref) {
+  var _ref$flex = _ref.flex,
+      flex = _ref$flex === void 0 ? false : _ref$flex,
+      _ref$right = _ref.right,
+      right = _ref$right === void 0 ? false : _ref$right,
+      _ref$left = _ref.left,
+      left = _ref$left === void 0 ? false : _ref$left,
+      _ref$shrink = _ref.shrink,
+      shrink = _ref$shrink === void 0 ? false : _ref$shrink,
+      _ref$center = _ref.center,
+      center = _ref$center === void 0 ? false : _ref$center,
+      _ref$stretch = _ref.stretch,
+      stretch = _ref$stretch === void 0 ? false : _ref$stretch,
+      _ref$first = _ref.first,
+      first = _ref$first === void 0 ? false : _ref$first,
+      _ref$last = _ref.last,
+      last = _ref$last === void 0 ? false : _ref$last,
+      _ref$grow = _ref.grow,
+      grow = _ref$grow === void 0 ? false : _ref$grow,
+      _ref$nth = _ref.nth,
+      nth = _ref$nth === void 0 ? null : _ref$nth,
+      _ref$style = _ref.style,
+      style = _ref$style === void 0 ? {} : _ref$style,
+      _ref$children = _ref.children,
+      children = _ref$children === void 0 ? null : _ref$children,
+      rest = _objectWithoutPropertiesLoose(_ref, _excluded$1);
 
   var styles = {};
 
-  if (props.flex) {
+  if (flex) {
     styles['display'] = 'flex';
   }
 
-  if (props.right) {
+  if (right) {
     styles['alignSelf'] = 'flex-end';
   }
 
-  if (props.left) {
+  if (left) {
     styles['alignSelf'] = 'flex-start';
   }
 
-  if (props.stretch) {
+  if (stretch) {
     styles['alignSelf'] = 'stretch';
   }
 
-  if (props.center) {
+  if (center) {
     styles['alignSelf'] = 'center';
   }
 
-  if (props.grow) {
+  if (grow) {
     styles['flexGrow'] = 1;
   }
 
-  if (props.shrink) {
+  if (shrink) {
     styles['flexShrink'] = 1;
   }
 
-  if (props.first) {
+  if (first) {
     styles['order'] = '-9999';
   }
 
-  if (props.nth) {
-    styles['order'] = props.nth;
+  if (last) {
+    styles['order'] = '9999';
   }
 
-  return React.createElement("div", {
-    style: _extends({}, styles, props.style)
-  }, props.children);
+  if (nth) {
+    styles['order'] = nth;
+  }
+
+  return React.createElement("div", Object.assign({}, rest, {
+    style: _extends({}, styles, style)
+  }), children);
 }
 
 export { Flex, FlexItem, useData, useForm, useProxy, visit };

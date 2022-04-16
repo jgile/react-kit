@@ -16,64 +16,72 @@ interface FlexItemProps {
     last?: boolean,
     nth?: number | null,
     style?: Keyable | null,
-    children?: React.ReactNode | null
+    children?: React.ReactNode | null,
+    [x: string]: any
 }
 
-function FlexItem(props: FlexItemProps = {
-    flex: false,
-    right: false,
-    left: false,
-    shrink: false,
-    center: false,
-    stretch: false,
-    first: false,
-    last: false,
-    grow: false,
-    nth: null,
-    style: {},
-    children: null
-}) {
+function FlexItem(
+    {
+        flex = false,
+        right = false,
+        left = false,
+        shrink = false,
+        center = false,
+        stretch = false,
+        first = false,
+        last = false,
+        grow = false,
+        nth = null,
+        style = {},
+        children = null,
+        ...rest
+    }: FlexItemProps
+) {
     const styles = {};
 
-    if (props.flex) {
+    if (flex) {
         styles['display'] = 'flex';
     }
 
-    if (props.right) {
+    if (right) {
         styles['alignSelf'] = 'flex-end';
     }
 
-    if (props.left) {
+    if (left) {
         styles['alignSelf'] = 'flex-start';
     }
 
-    if (props.stretch) {
+    if (stretch) {
         styles['alignSelf'] = 'stretch';
     }
 
-    if (props.center) {
+    if (center) {
         styles['alignSelf'] = 'center';
     }
 
-    if (props.grow) {
+    if (grow) {
         styles['flexGrow'] = 1;
     }
 
-    if (props.shrink) {
+    if (shrink) {
         styles['flexShrink'] = 1;
     }
 
-    if (props.first) {
+    if (first) {
         styles['order'] = '-9999';
     }
 
-    if (props.nth) {
-        styles['order'] = props.nth;
+    if (last) {
+        styles['order'] = '9999';
+    }
+
+    if (nth) {
+        styles['order'] = nth;
     }
 
     return (
-        <div style={{...styles, ...props.style}}>
-            {props.children}
+        <div {...rest} style={{...styles, ...style}}>
+            {children}
         </div>
     );
 }
