@@ -577,7 +577,7 @@ function visit(href, method, data, options, requestOptions) {
   var form = useForm(data);
   React.useEffect(function () {
     form.submit(method, href, options, requestOptions);
-  });
+  }, []);
   return form;
 }
 

@@ -7,7 +7,7 @@ export default function visit(href: any, method: Method = Method.GET, data: obje
 
     useEffect(() => {
         form.submit(method, href, options, requestOptions);
-    });
+    }, []);
 
     return form;
 }

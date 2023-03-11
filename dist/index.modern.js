@@ -574,7 +574,7 @@ function visit(href, method, data, options, requestOptions) {
   var form = useForm(data);
   useEffect(function () {
     form.submit(method, href, options, requestOptions);
-  });
+  }, []);
   return form;
 }
 
