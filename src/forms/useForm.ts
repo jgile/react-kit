@@ -152,7 +152,7 @@ export default function useForm<Args extends FormArgs, S, R>(args: Args = {} as 
         setRequestOptions(options: any = {}) {
             setDefaultRequestOptions(options);
         },
-        setData(key: ((data: any) => Args) | string | Args, value: any) {
+        setData(key: ((data: any) => Args) | string | Args, value?: any) {
             if (typeof key === 'string') {
                 if (value && value.target && value.target.value) {
                     value = value.target.value;
