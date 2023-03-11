@@ -554,7 +554,11 @@ function useData() {
   };
 }
 
-function visit(method, href, data, options, requestOptions) {
+function visit(href, method, data, options, requestOptions) {
+  if (method === void 0) {
+    method = Method.GET;
+  }
+
   if (data === void 0) {
     data = {};
   }
