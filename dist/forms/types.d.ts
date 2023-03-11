@@ -26,16 +26,16 @@ export declare type VisitParams = Partial<Visit & {
         (config: any): any;
     };
     onProgress: {
-        (progress: Progress): void;
+        (progress: Progress): any;
     };
     onFinish: {
-        (): void;
+        (): any;
     };
     onSuccess: {
-        (response: ResponseType): ResponseType;
+        (response: ResponseType): any;
     };
     onError: {
-        (errors: Errors): Errors;
+        (errors: Errors): any;
     };
 }>;
 export declare type PendingVisit = Visit & {

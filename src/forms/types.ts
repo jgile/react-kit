@@ -33,10 +33,10 @@ export type Visit = {
 export type VisitParams = Partial<Visit & {
     onCatch: { (errors: AxiosError): AxiosError },
     onStart: { (config: any): any },
-    onProgress: { (progress: Progress): void },
-    onFinish: { (): void },
-    onSuccess: { (response: ResponseType): ResponseType },
-    onError: { (errors: Errors): Errors }
+    onProgress: { (progress: Progress): any },
+    onFinish: { (): any },
+    onSuccess: { (response: ResponseType): any },
+    onError: { (errors: Errors): any }
 }>
 
 export type PendingVisit = Visit & {
