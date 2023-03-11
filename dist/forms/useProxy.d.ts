@@ -3,6 +3,8 @@ interface Keyable {
 }
 export default function useProxy(args?: Keyable, computed?: Keyable): {
     state: Keyable;
-    snap: any;
+    snap: {
+        readonly [x: string]: any;
+    };
 };
 export {};
