@@ -22,7 +22,7 @@ export default function useForm<Args extends FormArgs, S, R>(args: Args = {} as 
     const [recentlySuccessful, setRecentlySuccessful] = useState(false)
     const [defaultOptions, setDefaultOptions] = useState<S>(options);
     const [defaultRequestOptions, setDefaultRequestOptions] = useState<R>(requestOptions)
-    let transform = (data: Args) => data
+    let transform = (data: Args): Args => data
 
     useEffect(() => {
         //@ts-ignore

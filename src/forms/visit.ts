@@ -1,8 +1,8 @@
 import useForm from "./useForm";
-import {Method} from "./types";
+import {FormDataConvertible, Method} from "./types";
 import {useEffect} from "react";
 
-export default function visit(href: any, method: Method = Method.GET, data: object = {}, options: object = {}, requestOptions: object = {}) {
+export default function visit<T extends Record<string, FormDataConvertible>>(href: string | URL, method: Method = Method.GET, data: T = {} as T, options: object = {}, requestOptions: object = {}) {
     const form = useForm(data);
 
     useEffect(() => {
