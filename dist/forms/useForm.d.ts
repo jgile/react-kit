@@ -1,7 +1,7 @@
 import { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { RequestPayload, VisitParams } from "./types";
 export declare function isFormData(payload: RequestPayload): payload is FormData;
-export default function useForm<Args extends RequestPayload, S extends VisitParams, R extends AxiosRequestConfig>(args?: Args, formOptions?: S, requestOptions?: R): {
+export default function useForm<Args extends RequestPayload, S extends VisitParams, R extends AxiosRequestConfig>(args?: Args, requestOptions?: R, formOptions?: S): {
     submit: (requestOptions?: AxiosRequestConfig, options?: VisitParams) => Promise<AxiosResponse<any, any>>;
     data: Args;
     errors: {};

@@ -12,7 +12,11 @@ export function isFormData(payload: RequestPayload): payload is FormData {
     return typeof payload === 'object' && payload instanceof FormData;
 }
 
-export default function useForm<Args extends RequestPayload, S extends VisitParams, R extends AxiosRequestConfig>(args: Args = {} as Args, formOptions: S = {} as S, requestOptions: R = {} as R) {
+export default function useForm<Args extends RequestPayload, S extends VisitParams, R extends AxiosRequestConfig>(
+    args: Args = {} as Args,
+    requestOptions: R = {} as R,
+    formOptions: S = {} as S
+) {
     const isMounted = useRef(null)
     const [defaults, setDefaults] = useState(args)
     const [data, setData] = useState<Args>(args);

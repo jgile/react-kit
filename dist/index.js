@@ -169,17 +169,17 @@ function hasFiles(data) {
 function isFormData(payload) {
   return typeof payload === 'object' && payload instanceof FormData;
 }
-function useForm(args, formOptions, requestOptions) {
+function useForm(args, requestOptions, formOptions) {
   if (args === void 0) {
     args = {};
   }
 
-  if (formOptions === void 0) {
-    formOptions = {};
-  }
-
   if (requestOptions === void 0) {
     requestOptions = {};
+  }
+
+  if (formOptions === void 0) {
+    formOptions = {};
   }
 
   var isMounted = React.useRef(null);
