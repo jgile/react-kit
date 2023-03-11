@@ -136,7 +136,6 @@ export default function useForm<Args extends RequestPayload, S extends VisitPara
         });
     }, [data, defaultOptions, defaultRequestOptions]);
 
-
     return {
         submit,
         data,
