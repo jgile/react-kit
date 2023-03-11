@@ -448,6 +448,21 @@ function useForm(args, formOptions, requestOptions) {
         return newErrors;
       });
     },
+    bindField: function bindField(name, defaultValue) {
+      var _data$name;
+
+      if (defaultValue === void 0) {
+        defaultValue = null;
+      }
+
+      return {
+        name: name,
+        value: (_data$name = data[name]) != null ? _data$name : defaultValue,
+        onChange: function onChange(value) {
+          _setData(name, value);
+        }
+      };
+    },
     get: function get(requestOptions, options) {
       if (requestOptions === void 0) {
         requestOptions = {};

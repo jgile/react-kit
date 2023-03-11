@@ -20,6 +20,11 @@ export default function useForm<Args extends RequestPayload, S extends VisitPara
     reset(...fields: any): void;
     setError(key: any, value: any): void;
     clearErrors(...fields: any): void;
+    bindField(name: string, defaultValue?: any): {
+        name: string;
+        value: any;
+        onChange: (value: any) => void;
+    };
     get(requestOptions?: Partial<AxiosRequestConfig>, options?: Partial<VisitParams>): Promise<AxiosResponse<any, any>>;
     post(requestOptions?: Partial<AxiosRequestConfig>, options?: Partial<VisitParams>): Promise<AxiosResponse<any, any>>;
     put(requestOptions?: Partial<AxiosRequestConfig>, options?: Partial<VisitParams>): Promise<AxiosResponse<any, any>>;

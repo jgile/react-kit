@@ -216,6 +216,16 @@ export default function useForm<Args extends RequestPayload, S extends VisitPara
                 return newErrors
             })
         },
+        bindField(name: string, defaultValue: any = null) {
+            return {
+                name: name,
+                value: data[name] ?? defaultValue,
+                onChange: (value: any) => {
+                    // @ts-ignore
+                    setData(name, value);
+                },
+            }
+        },
         get(requestOptions: Partial<AxiosRequestConfig> = {}, options: Partial<VisitParams> = {}) {
             return submit(requestOptions, options);
         },
