@@ -61,7 +61,10 @@ export default function useForm(args: object = {}, options: object = {}, request
             transformedData = _data
         }
 
+
         const mergedConfig = {
+            //@ts-ignore
+            ...(window?.axios?.defaults ?? {}),
             method: method,
             url: urlWithoutHash(url).href,
             data: method === Method.GET ? {} : transformedData,
@@ -70,6 +73,8 @@ export default function useForm(args: object = {}, options: object = {}, request
                 'X-Requested-With': 'XMLHttpRequest',
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
+                //@ts-ignore
+                ...(window?.axios?.defaults?.headers ?? {}),
             },
             onUploadProgress: (progress: Progress) => {
                 if (data instanceof FormData) {
