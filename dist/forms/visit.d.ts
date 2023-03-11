@@ -10,7 +10,7 @@ export default function visit<T extends Record<string, FormDataConvertible>>(req
     }>) => Promise<import("axios").AxiosResponse<any, any>>;
     data: T;
     errors: {};
-    response: {};
+    response: import("axios").AxiosResponse<any, any> | null;
     hasErrors: boolean;
     processing: boolean;
     progress: null;

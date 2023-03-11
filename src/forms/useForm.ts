@@ -16,7 +16,7 @@ export default function useForm<Args extends RequestPayload, S extends VisitPara
     const [defaults, setDefaults] = useState(args)
     const [data, setData] = useState<Args>(args);
     const [errors, setErrors] = useState({});
-    const [response, setResponse] = useState({});
+    const [response, setResponse] = useState<AxiosResponse|null>(null);
     const [hasErrors, setHasErrors] = useState(false)
     const [processing, setProcessing] = useState(false)
     const [progress, setProgress] = useState(null)

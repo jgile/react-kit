@@ -5,7 +5,7 @@ export default function useForm<Args extends RequestPayload, S extends VisitPara
     submit: (requestOptions?: AxiosRequestConfig, options?: VisitParams) => Promise<AxiosResponse<any, any>>;
     data: Args;
     errors: {};
-    response: {};
+    response: AxiosResponse<any, any> | null;
     hasErrors: boolean;
     processing: boolean;
     progress: null;

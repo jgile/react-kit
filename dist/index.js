@@ -195,7 +195,7 @@ function useForm(args, options, requestOptions) {
       errors = _useState3[0],
       setErrors = _useState3[1];
 
-  var _useState4 = React.useState({}),
+  var _useState4 = React.useState(null),
       response = _useState4[0],
       setResponse = _useState4[1];
 
