@@ -1,6 +1,6 @@
 import {useCallback, useEffect, useRef, useState} from 'react';
 import isEqual from 'lodash/isEqual';
-import {default as Axios} from 'axios'
+import axios from 'axios'
 import {hrefToUrl, mergeDataIntoQueryString, urlWithoutHash} from './url'
 import {Errors, Method, Progress, VisitParams,} from "./types";
 import {AxiosError} from 'axios';
@@ -88,7 +88,7 @@ export default function useForm(args: object = {}, options: object = {}, request
 
         // @ts-ignore
         return Promise.resolve(mergedOptions.onStart(mergedConfig)).then((newConfig) => {
-            return Axios(newConfig ?? mergedConfig).then((response) => {
+            return axios(newConfig ?? mergedConfig).then((response) => {
                 if (isMounted.current) {
                     const errors = response.data.errors || {}
                     setProcessing(false)

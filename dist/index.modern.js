@@ -3,7 +3,7 @@ import { derive } from 'valtio/utils';
 import React, { useMemo, useRef, useState, useEffect, useCallback } from 'react';
 import forEach from 'lodash/forEach';
 import isEqual from 'lodash/isEqual';
-import Axios from 'axios';
+import axios from 'axios';
 import { stringify, parse } from 'qs';
 import deepmerge from 'deepmerge';
 
@@ -308,7 +308,7 @@ function useForm(args, options, requestOptions) {
     setWasSuccessful(false);
     setRecentlySuccessful(false);
     return Promise.resolve(mergedOptions.onStart(mergedConfig)).then(function (newConfig) {
-      return Axios(newConfig != null ? newConfig : mergedConfig).then(function (response) {
+      return axios(newConfig != null ? newConfig : mergedConfig).then(function (response) {
         if (isMounted.current) {
           var _errors = response.data.errors || {};
 

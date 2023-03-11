@@ -6,7 +6,7 @@ var React = require('react');
 var React__default = _interopDefault(React);
 var forEach = _interopDefault(require('lodash/forEach'));
 var isEqual = _interopDefault(require('lodash/isEqual'));
-var Axios = _interopDefault(require('axios'));
+var axios = _interopDefault(require('axios'));
 var qs = require('qs');
 var deepmerge = _interopDefault(require('deepmerge'));
 
@@ -311,7 +311,7 @@ function useForm(args, options, requestOptions) {
     setWasSuccessful(false);
     setRecentlySuccessful(false);
     return Promise.resolve(mergedOptions.onStart(mergedConfig)).then(function (newConfig) {
-      return Axios(newConfig != null ? newConfig : mergedConfig).then(function (response) {
+      return axios(newConfig != null ? newConfig : mergedConfig).then(function (response) {
         if (isMounted.current) {
           var _errors = response.data.errors || {};
 
