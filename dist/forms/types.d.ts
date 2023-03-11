@@ -1,16 +1,9 @@
-import { ResponseType, AxiosError } from 'axios';
+import { ResponseType, AxiosError, Method } from 'axios';
 export declare type GenericObject = {
     [key: string]: any;
 };
 export declare type Errors = Record<string, string>;
 export declare type FormDataConvertible = Array<FormDataConvertible> | Blob | FormDataEntryValue | Date | boolean | number | null;
-export declare enum Method {
-    GET = "get",
-    POST = "post",
-    PUT = "put",
-    PATCH = "patch",
-    DELETE = "delete"
-}
 export declare type RequestPayload = Record<string, FormDataConvertible> | FormData;
 export declare type Progress = ProgressEvent & {
     percentage: number;

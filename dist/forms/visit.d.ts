@@ -1,13 +1,13 @@
-import { FormDataConvertible, Method } from "./types";
-export default function visit<T extends Record<string, FormDataConvertible>>(href: string | URL, method?: Method, data?: T, options?: object, requestOptions?: object): {
-    submit: (method: Method, href: string | URL, options?: Partial<import("./types").Visit & {
+import { FormDataConvertible } from "./types";
+export default function visit<T extends Record<string, FormDataConvertible>>(requestOptions?: object, data?: T, options?: object): {
+    submit: (requestOptions?: import("axios").AxiosRequestConfig<any>, options?: Partial<import("./types").Visit & {
         onCatch: (errors: import("axios").AxiosError<any, any>) => import("axios").AxiosError<any, any>;
         onStart: (config: any) => any;
         onProgress: (progress: import("./types").Progress) => void;
         onFinish: () => void;
         onSuccess: (response: import("axios").ResponseType) => import("axios").ResponseType;
         onError: (errors: Record<string, string>) => Record<string, string>;
-    }>, requestOptions?: import("axios").AxiosRequestConfig<any>) => Promise<import("axios").AxiosResponse<any, any>>;
+    }>) => Promise<import("axios").AxiosResponse<any, any>>;
     data: T;
     errors: {};
     response: {};
@@ -25,9 +25,9 @@ export default function visit<T extends Record<string, FormDataConvertible>>(hre
     reset(...fields: any): void;
     setError(key: any, value: any): void;
     clearErrors(...fields: any): void;
-    get(url: any, options?: any, requestOptions?: any): Promise<import("axios").AxiosResponse<any, any>>;
-    post(url: any, options?: any, requestOptions?: any): Promise<import("axios").AxiosResponse<any, any>>;
-    put(url: any, options?: any, requestOptions?: any): Promise<import("axios").AxiosResponse<any, any>>;
-    patch(url: any, options?: any, requestOptions?: any): Promise<import("axios").AxiosResponse<any, any>>;
-    delete(url: any, options?: any, requestOptions?: any): Promise<import("axios").AxiosResponse<any, any>>;
+    get(requestOptions?: any, options?: any): Promise<import("axios").AxiosResponse<any, any>>;
+    post(options?: any, requestOptions?: any): Promise<import("axios").AxiosResponse<any, any>>;
+    put(options?: any, requestOptions?: any): Promise<import("axios").AxiosResponse<any, any>>;
+    patch(options?: any, requestOptions?: any): Promise<import("axios").AxiosResponse<any, any>>;
+    delete(options?: any, requestOptions?: any): Promise<import("axios").AxiosResponse<any, any>>;
 };

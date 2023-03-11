@@ -1,4 +1,4 @@
-import {ResponseType, AxiosError} from 'axios';
+import {ResponseType, AxiosError, Method} from 'axios';
 
 export type GenericObject = {
     [key: string]: any
@@ -14,14 +14,6 @@ export type FormDataConvertible =
     | boolean
     | number
     | null
-
-export enum Method {
-    GET = 'get',
-    POST = 'post',
-    PUT = 'put',
-    PATCH = 'patch',
-    DELETE = 'delete',
-}
 
 export type RequestPayload = Record<string, FormDataConvertible> | FormData
 

@@ -69,17 +69,11 @@ function _objectWithoutPropertiesLoose(source, excluded) {
   return target;
 }
 
-var Method;
-
-(function (Method) {
-  Method["GET"] = "get";
-  Method["POST"] = "post";
-  Method["PUT"] = "put";
-  Method["PATCH"] = "patch";
-  Method["DELETE"] = "delete";
-})(Method || (Method = {}));
-
 function hrefToUrl(href) {
+  if (href instanceof URL) {
+    return href;
+  }
+
   return new URL(href.toString(), window.location.toString());
 }
 function mergeDataIntoQueryString(method, href, data, qsArrayFormat) {
@@ -90,11 +84,11 @@ function mergeDataIntoQueryString(method, href, data, qsArrayFormat) {
   var hasHost = /^https?:\/\//.test(href.toString());
   var hasAbsolutePath = hasHost || href.toString().startsWith('/');
   var hasRelativePath = !hasAbsolutePath && !href.toString().startsWith('#') && !href.toString().startsWith('?');
-  var hasSearch = href.toString().includes('?') || method === Method.GET && Object.keys(data).length;
+  var hasSearch = href.toString().includes('?') || ['get', 'GET'].includes(method) && Object.keys(data).length;
   var hasHash = href.toString().includes('#');
   var url = new URL(href.toString(), 'http://localhost');
 
-  if (method === Method.GET && Object.keys(data).length) {
+  if (['get', 'GET'].includes(method) && Object.keys(data).length) {
     url.search = stringify(deepmerge(parse(url.search, {
       ignoreQueryPrefix: true
     }), data), {
@@ -240,18 +234,19 @@ function useForm(args, options, requestOptions) {
       isMounted.current = false;
     };
   }, []);
-  var submit = useCallback(function (method, href, options, requestOptions) {
+  var submit = useCallback(function (requestOptions, options) {
     var _window$axios$default, _window, _window$axios, _window$axios$default2, _window$axios$default3;
-
-    if (options === void 0) {
-      options = {};
-    }
 
     if (requestOptions === void 0) {
       requestOptions = {};
     }
 
-    var url = typeof href === 'string' ? hrefToUrl(href) : href;
+    if (options === void 0) {
+      options = {};
+    }
+
+    var url = hrefToUrl(requestOptions.url || '');
+    var method = requestOptions.method || 'get';
 
     var transformedData = _transform(data);
 
@@ -294,8 +289,8 @@ function useForm(args, options, requestOptions) {
     var mergedConfig = _extends({
       method: method,
       url: urlWithoutHash(url).href,
-      data: method === Method.GET ? {} : transformedData,
-      params: method === Method.GET ? transformedData : {},
+      data: ['get', 'GET'].includes(method) ? {} : transformedData,
+      params: ['get', 'GET'].includes(method) ? transformedData : {},
       headers: _extends({
         'X-Requested-With': 'XMLHttpRequest',
         'Content-Type': 'application/json',
@@ -453,18 +448,18 @@ function useForm(args, options, requestOptions) {
         return newErrors;
       });
     },
-    get: function get(url, options, requestOptions) {
-      if (options === void 0) {
-        options = {};
-      }
-
+    get: function get(requestOptions, options) {
       if (requestOptions === void 0) {
         requestOptions = {};
       }
 
-      return submit(Method.GET, url, options, requestOptions);
+      if (options === void 0) {
+        options = {};
+      }
+
+      return submit(requestOptions, options);
     },
-    post: function post(url, options, requestOptions) {
+    post: function post(options, requestOptions) {
       if (options === void 0) {
         options = {};
       }
@@ -473,9 +468,10 @@ function useForm(args, options, requestOptions) {
         requestOptions = {};
       }
 
-      return submit(Method.POST, url, options, requestOptions);
+      requestOptions.method = 'POST';
+      return submit(requestOptions, options);
     },
-    put: function put(url, options, requestOptions) {
+    put: function put(options, requestOptions) {
       if (options === void 0) {
         options = {};
       }
@@ -484,9 +480,10 @@ function useForm(args, options, requestOptions) {
         requestOptions = {};
       }
 
-      return submit(Method.PUT, url, options, requestOptions);
+      requestOptions.method = 'PUT';
+      return submit(requestOptions, options);
     },
-    patch: function patch(url, options, requestOptions) {
+    patch: function patch(options, requestOptions) {
       if (options === void 0) {
         options = {};
       }
@@ -495,9 +492,10 @@ function useForm(args, options, requestOptions) {
         requestOptions = {};
       }
 
-      return submit(Method.PATCH, url, options, requestOptions);
+      requestOptions.method = 'PATCH';
+      return submit(requestOptions, options);
     },
-    "delete": function _delete(url, options, requestOptions) {
+    "delete": function _delete(options, requestOptions) {
       if (options === void 0) {
         options = {};
       }
@@ -506,7 +504,8 @@ function useForm(args, options, requestOptions) {
         requestOptions = {};
       }
 
-      return submit(Method.DELETE, url, options, requestOptions);
+      requestOptions.method = 'DELETE';
+      return submit(requestOptions, options);
     }
   };
 }
@@ -559,9 +558,9 @@ function useData() {
   };
 }
 
-function visit(href, method, data, options, requestOptions) {
-  if (method === void 0) {
-    method = Method.GET;
+function visit(requestOptions, data, options) {
+  if (requestOptions === void 0) {
+    requestOptions = {};
   }
 
   if (data === void 0) {
@@ -572,13 +571,9 @@ function visit(href, method, data, options, requestOptions) {
     options = {};
   }
 
-  if (requestOptions === void 0) {
-    requestOptions = {};
-  }
-
   var form = useForm(data);
   useEffect(function () {
-    form.submit(method, href, options, requestOptions);
+    form.submit(requestOptions, options);
   }, []);
   return form;
 }

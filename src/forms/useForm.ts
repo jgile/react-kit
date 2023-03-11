@@ -2,7 +2,7 @@ import {useCallback, useEffect, useRef, useState} from 'react';
 import isEqual from 'lodash/isEqual';
 import axios, {AxiosRequestConfig, AxiosResponse} from 'axios'
 import {hrefToUrl, mergeDataIntoQueryString, urlWithoutHash} from './url'
-import {Errors, Method, Progress, RequestPayload, VisitParams} from "./types";
+import {Errors, Progress, RequestPayload, VisitParams} from "./types";
 import {AxiosError} from 'axios';
 import {objectToFormData} from "./formData";
 import {hasFiles} from "./files";
@@ -35,8 +35,9 @@ export default function useForm<Args extends RequestPayload, S extends VisitPara
         }
     }, [])
 
-    const submit = useCallback((method: Method, href: string | URL, options: VisitParams = {}, requestOptions: AxiosRequestConfig = {}) => {
-        let url = typeof href === 'string' ? hrefToUrl(href) : href
+    const submit = useCallback((requestOptions: AxiosRequestConfig = {}, options: VisitParams = {}) => {
+        let url: URL = hrefToUrl(requestOptions.url || '')
+        let method = requestOptions.method || 'get'
         let transformedData = transform(data);
 
         const mergedOptions: VisitParams = {
@@ -65,8 +66,8 @@ export default function useForm<Args extends RequestPayload, S extends VisitPara
         const mergedConfig = {
             method: method,
             url: urlWithoutHash(url).href,
-            data: method === Method.GET ? {} : transformedData,
-            params: method === Method.GET ? transformedData : {},
+            data: ['get', 'GET'].includes(method) ? {} : transformedData,
+            params: ['get', 'GET'].includes(method) ? transformedData : {},
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
                 'Content-Type': 'application/json',
@@ -215,20 +216,24 @@ export default function useForm<Args extends RequestPayload, S extends VisitPara
                 return newErrors
             })
         },
-        get(url: any, options: any = {}, requestOptions: any = {}) {
-            return submit(Method.GET, url, options, requestOptions)
+        get(requestOptions: any = {}, options: any = {}) {
+            return submit(requestOptions, options);
         },
-        post(url: any, options: any = {}, requestOptions: any = {}) {
-            return submit(Method.POST, url, options, requestOptions)
+        post(options: any = {}, requestOptions: any = {}) {
+            requestOptions.method = 'POST'
+            return submit(requestOptions, options)
         },
-        put(url: any, options: any = {}, requestOptions: any = {}) {
-            return submit(Method.PUT, url, options, requestOptions)
+        put(options: any = {}, requestOptions: any = {}) {
+            requestOptions.method = 'PUT'
+            return submit(requestOptions, options)
         },
-        patch(url: any, options: any = {}, requestOptions: any = {}) {
-            return submit(Method.PATCH, url, options, requestOptions)
+        patch(options: any = {}, requestOptions: any = {}) {
+            requestOptions.method = 'PATCH'
+            return submit(requestOptions, options)
         },
-        delete(url: any, options: any = {}, requestOptions: any = {}) {
-            return submit(Method.DELETE, url, options, requestOptions)
+        delete(options: any = {}, requestOptions: any = {}) {
+            requestOptions.method = 'DELETE'
+            return submit(requestOptions, options)
         }
     }
 }

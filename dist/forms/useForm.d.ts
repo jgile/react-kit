@@ -1,8 +1,8 @@
 import { AxiosRequestConfig, AxiosResponse } from 'axios';
-import { Method, RequestPayload, VisitParams } from "./types";
+import { RequestPayload, VisitParams } from "./types";
 export declare function isFormData(payload: RequestPayload): payload is FormData;
 export default function useForm<Args extends RequestPayload, S extends VisitParams, R extends AxiosRequestConfig>(args?: Args, options?: S, requestOptions?: R): {
-    submit: (method: Method, href: string | URL, options?: VisitParams, requestOptions?: AxiosRequestConfig) => Promise<AxiosResponse<any, any>>;
+    submit: (requestOptions?: AxiosRequestConfig, options?: VisitParams) => Promise<AxiosResponse<any, any>>;
     data: Args;
     errors: {};
     response: {};
@@ -20,9 +20,9 @@ export default function useForm<Args extends RequestPayload, S extends VisitPara
     reset(...fields: any): void;
     setError(key: any, value: any): void;
     clearErrors(...fields: any): void;
-    get(url: any, options?: any, requestOptions?: any): Promise<AxiosResponse<any, any>>;
-    post(url: any, options?: any, requestOptions?: any): Promise<AxiosResponse<any, any>>;
-    put(url: any, options?: any, requestOptions?: any): Promise<AxiosResponse<any, any>>;
-    patch(url: any, options?: any, requestOptions?: any): Promise<AxiosResponse<any, any>>;
-    delete(url: any, options?: any, requestOptions?: any): Promise<AxiosResponse<any, any>>;
+    get(requestOptions?: any, options?: any): Promise<AxiosResponse<any, any>>;
+    post(options?: any, requestOptions?: any): Promise<AxiosResponse<any, any>>;
+    put(options?: any, requestOptions?: any): Promise<AxiosResponse<any, any>>;
+    patch(options?: any, requestOptions?: any): Promise<AxiosResponse<any, any>>;
+    delete(options?: any, requestOptions?: any): Promise<AxiosResponse<any, any>>;
 };
