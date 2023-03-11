@@ -1,7 +1,8 @@
-import { FormDataConvertible, Method } from "./types";
+import { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { FormDataConvertible, Method, VisitParams } from "./types";
 declare type FormArgs = Record<string, FormDataConvertible>;
-export default function useForm<Args extends FormArgs, S, R>(args?: Args, options?: S, requestOptions?: R): {
-    submit: (method: Method, href: string | URL, options?: object, requestOptions?: object) => Promise<import("axios").AxiosResponse<any, any>>;
+export default function useForm<Args extends FormArgs, S extends VisitParams, R extends AxiosRequestConfig>(args?: Args, options?: S, requestOptions?: R): {
+    submit: (method: Method, href: string | URL, options?: VisitParams, requestOptions?: AxiosRequestConfig) => Promise<AxiosResponse<any, any>>;
     data: Args;
     errors: {};
     response: {};
@@ -19,10 +20,10 @@ export default function useForm<Args extends FormArgs, S, R>(args?: Args, option
     reset(...fields: any): void;
     setError(key: any, value: any): void;
     clearErrors(...fields: any): void;
-    get(url: any, options?: any, requestOptions?: any): Promise<import("axios").AxiosResponse<any, any>>;
-    post(url: any, options?: any, requestOptions?: any): Promise<import("axios").AxiosResponse<any, any>>;
-    put(url: any, options?: any, requestOptions?: any): Promise<import("axios").AxiosResponse<any, any>>;
-    patch(url: any, options?: any, requestOptions?: any): Promise<import("axios").AxiosResponse<any, any>>;
-    delete(url: any, options?: any, requestOptions?: any): Promise<import("axios").AxiosResponse<any, any>>;
+    get(url: any, options?: any, requestOptions?: any): Promise<AxiosResponse<any, any>>;
+    post(url: any, options?: any, requestOptions?: any): Promise<AxiosResponse<any, any>>;
+    put(url: any, options?: any, requestOptions?: any): Promise<AxiosResponse<any, any>>;
+    patch(url: any, options?: any, requestOptions?: any): Promise<AxiosResponse<any, any>>;
+    delete(url: any, options?: any, requestOptions?: any): Promise<AxiosResponse<any, any>>;
 };
 export {};

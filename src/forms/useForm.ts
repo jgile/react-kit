@@ -1,6 +1,6 @@
 import {useCallback, useEffect, useRef, useState} from 'react';
 import isEqual from 'lodash/isEqual';
-import axios from 'axios'
+import axios, {AxiosRequestConfig, AxiosResponse} from 'axios'
 import {hrefToUrl, mergeDataIntoQueryString, urlWithoutHash} from './url'
 import {Errors, FormDataConvertible, Method, Progress, VisitParams} from "./types";
 import {AxiosError} from 'axios';
@@ -9,7 +9,7 @@ import {hasFiles} from "./files";
 
 type FormArgs = Record<string, FormDataConvertible>
 
-export default function useForm<Args extends FormArgs, S, R>(args: Args = {} as Args, options: S = {} as S, requestOptions: R = {} as R) {
+export default function useForm<Args extends FormArgs, S extends VisitParams, R extends AxiosRequestConfig>(args: Args = {} as Args, options: S = {} as S, requestOptions: R = {} as R) {
     const isMounted = useRef(null)
     const [defaults, setDefaults] = useState(args)
     const [data, setData] = useState<Args>(args);
@@ -33,7 +33,7 @@ export default function useForm<Args extends FormArgs, S, R>(args: Args = {} as 
         }
     }, [])
 
-    const submit = useCallback((method: Method, href: string | URL, options: object = {}, requestOptions: object = {}) => {
+    const submit = useCallback((method: Method, href: string | URL, options: VisitParams = {}, requestOptions: AxiosRequestConfig = {}) => {
         let url = typeof href === 'string' ? hrefToUrl(href) : href
         let transformedData = transform(data);
 
@@ -42,7 +42,7 @@ export default function useForm<Args extends FormArgs, S, R>(args: Args = {} as 
             queryStringArrayFormat: 'brackets',
             onStart: (config: object) => config,
             onProgress: (progress: Progress) => progress,
-            onSuccess: (response: any) => response,
+            onSuccess: (response: AxiosResponse) => response,
             onCatch: (errors: AxiosError) => errors,
             onError: (errors: Errors) => errors,
             onFinish: () => ({}),

@@ -1,6 +1,13 @@
 import { FormDataConvertible, Method } from "./types";
 export default function visit<T extends Record<string, FormDataConvertible>>(href: string | URL, method?: Method, data?: T, options?: object, requestOptions?: object): {
-    submit: (method: Method, href: string | URL, options?: object, requestOptions?: object) => Promise<import("axios").AxiosResponse<any, any>>;
+    submit: (method: Method, href: string | URL, options?: Partial<import("./types").Visit & {
+        onCatch: (errors: import("axios").AxiosError<any, any>) => import("axios").AxiosError<any, any>;
+        onStart: (config: any) => any;
+        onProgress: (progress: import("./types").Progress) => void;
+        onFinish: () => void;
+        onSuccess: (response: import("axios").ResponseType) => import("axios").ResponseType;
+        onError: (errors: Record<string, string>) => Record<string, string>;
+    }>, requestOptions?: import("axios").AxiosRequestConfig<any>) => Promise<import("axios").AxiosResponse<any, any>>;
     data: T;
     errors: {};
     response: {};
