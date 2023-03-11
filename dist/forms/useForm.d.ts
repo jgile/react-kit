@@ -1,7 +1,7 @@
 import { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { RequestPayload, VisitParams } from "./types";
 export declare function isFormData(payload: RequestPayload): payload is FormData;
-export default function useForm<Args extends RequestPayload, S extends VisitParams, R extends AxiosRequestConfig>(args?: Args, options?: S, requestOptions?: R): {
+export default function useForm<Args extends RequestPayload, S extends VisitParams, R extends AxiosRequestConfig>(args?: Args, formOptions?: S, requestOptions?: R): {
     submit: (requestOptions?: AxiosRequestConfig, options?: VisitParams) => Promise<AxiosResponse<any, any>>;
     data: Args;
     errors: {};
@@ -20,9 +20,9 @@ export default function useForm<Args extends RequestPayload, S extends VisitPara
     reset(...fields: any): void;
     setError(key: any, value: any): void;
     clearErrors(...fields: any): void;
-    get(requestOptions?: any, options?: any): Promise<AxiosResponse<any, any>>;
-    post(options?: any, requestOptions?: any): Promise<AxiosResponse<any, any>>;
-    put(options?: any, requestOptions?: any): Promise<AxiosResponse<any, any>>;
-    patch(options?: any, requestOptions?: any): Promise<AxiosResponse<any, any>>;
-    delete(options?: any, requestOptions?: any): Promise<AxiosResponse<any, any>>;
+    get(requestOptions?: Partial<AxiosRequestConfig>, options?: Partial<VisitParams>): Promise<AxiosResponse<any, any>>;
+    post(requestOptions?: Partial<AxiosRequestConfig>, options?: Partial<VisitParams>): Promise<AxiosResponse<any, any>>;
+    put(requestOptions?: Partial<AxiosRequestConfig>, options?: Partial<VisitParams>): Promise<AxiosResponse<any, any>>;
+    patch(requestOptions?: Partial<AxiosRequestConfig>, options?: Partial<VisitParams>): Promise<AxiosResponse<any, any>>;
+    delete(requestOptions?: Partial<AxiosRequestConfig>, options?: Partial<VisitParams>): Promise<AxiosResponse<any, any>>;
 };

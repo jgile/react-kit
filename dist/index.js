@@ -168,13 +168,13 @@ function hasFiles(data) {
 function isFormData(payload) {
   return typeof payload === 'object' && payload instanceof FormData;
 }
-function useForm(args, options, requestOptions) {
+function useForm(args, formOptions, requestOptions) {
   if (args === void 0) {
     args = {};
   }
 
-  if (options === void 0) {
-    options = {};
+  if (formOptions === void 0) {
+    formOptions = {};
   }
 
   if (requestOptions === void 0) {
@@ -219,7 +219,7 @@ function useForm(args, options, requestOptions) {
       recentlySuccessful = _useState9[0],
       setRecentlySuccessful = _useState9[1];
 
-  var _useState10 = React.useState(options),
+  var _useState10 = React.useState(formOptions),
       defaultOptions = _useState10[0],
       setDefaultOptions = _useState10[1];
 
@@ -462,49 +462,49 @@ function useForm(args, options, requestOptions) {
 
       return submit(requestOptions, options);
     },
-    post: function post(options, requestOptions) {
-      if (options === void 0) {
-        options = {};
-      }
-
+    post: function post(requestOptions, options) {
       if (requestOptions === void 0) {
         requestOptions = {};
+      }
+
+      if (options === void 0) {
+        options = {};
       }
 
       requestOptions.method = 'POST';
       return submit(requestOptions, options);
     },
-    put: function put(options, requestOptions) {
-      if (options === void 0) {
-        options = {};
-      }
-
+    put: function put(requestOptions, options) {
       if (requestOptions === void 0) {
         requestOptions = {};
+      }
+
+      if (options === void 0) {
+        options = {};
       }
 
       requestOptions.method = 'PUT';
       return submit(requestOptions, options);
     },
-    patch: function patch(options, requestOptions) {
-      if (options === void 0) {
-        options = {};
-      }
-
+    patch: function patch(requestOptions, options) {
       if (requestOptions === void 0) {
         requestOptions = {};
+      }
+
+      if (options === void 0) {
+        options = {};
       }
 
       requestOptions.method = 'PATCH';
       return submit(requestOptions, options);
     },
-    "delete": function _delete(options, requestOptions) {
-      if (options === void 0) {
-        options = {};
-      }
-
+    "delete": function _delete(requestOptions, options) {
       if (requestOptions === void 0) {
         requestOptions = {};
+      }
+
+      if (options === void 0) {
+        options = {};
       }
 
       requestOptions.method = 'DELETE';

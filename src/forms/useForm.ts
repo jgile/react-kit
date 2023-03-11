@@ -11,7 +11,7 @@ export function isFormData(payload: RequestPayload): payload is FormData {
     return typeof payload === 'object' && payload instanceof FormData;
 }
 
-export default function useForm<Args extends RequestPayload, S extends VisitParams, R extends AxiosRequestConfig>(args: Args = {} as Args, options: S = {} as S, requestOptions: R = {} as R) {
+export default function useForm<Args extends RequestPayload, S extends VisitParams, R extends AxiosRequestConfig>(args: Args = {} as Args, formOptions: S = {} as S, requestOptions: R = {} as R) {
     const isMounted = useRef(null)
     const [defaults, setDefaults] = useState(args)
     const [data, setData] = useState<Args>(args);
@@ -22,7 +22,7 @@ export default function useForm<Args extends RequestPayload, S extends VisitPara
     const [progress, setProgress] = useState(null)
     const [wasSuccessful, setWasSuccessful] = useState(false)
     const [recentlySuccessful, setRecentlySuccessful] = useState(false)
-    const [defaultOptions, setDefaultOptions] = useState<S>(options);
+    const [defaultOptions, setDefaultOptions] = useState<S>(formOptions);
     const [defaultRequestOptions, setDefaultRequestOptions] = useState<R>(requestOptions)
     let transform = (data: Args): any => data
 
@@ -216,22 +216,22 @@ export default function useForm<Args extends RequestPayload, S extends VisitPara
                 return newErrors
             })
         },
-        get(requestOptions: any = {}, options: any = {}) {
+        get(requestOptions: Partial<AxiosRequestConfig> = {}, options: Partial<VisitParams> = {}) {
             return submit(requestOptions, options);
         },
-        post(options: any = {}, requestOptions: any = {}) {
+        post(requestOptions: Partial<AxiosRequestConfig> = {}, options: Partial<VisitParams> = {}) {
             requestOptions.method = 'POST'
             return submit(requestOptions, options)
         },
-        put(options: any = {}, requestOptions: any = {}) {
+        put(requestOptions: Partial<AxiosRequestConfig> = {}, options: Partial<VisitParams> = {}) {
             requestOptions.method = 'PUT'
             return submit(requestOptions, options)
         },
-        patch(options: any = {}, requestOptions: any = {}) {
+        patch(requestOptions: Partial<AxiosRequestConfig> = {}, options: Partial<VisitParams> = {}) {
             requestOptions.method = 'PATCH'
             return submit(requestOptions, options)
         },
-        delete(options: any = {}, requestOptions: any = {}) {
+        delete(requestOptions: Partial<AxiosRequestConfig> = {}, options: Partial<VisitParams> = {}) {
             requestOptions.method = 'DELETE'
             return submit(requestOptions, options)
         }

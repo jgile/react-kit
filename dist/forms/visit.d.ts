@@ -25,9 +25,44 @@ export default function visit<T extends Record<string, FormDataConvertible>>(req
     reset(...fields: any): void;
     setError(key: any, value: any): void;
     clearErrors(...fields: any): void;
-    get(requestOptions?: any, options?: any): Promise<import("axios").AxiosResponse<any, any>>;
-    post(options?: any, requestOptions?: any): Promise<import("axios").AxiosResponse<any, any>>;
-    put(options?: any, requestOptions?: any): Promise<import("axios").AxiosResponse<any, any>>;
-    patch(options?: any, requestOptions?: any): Promise<import("axios").AxiosResponse<any, any>>;
-    delete(options?: any, requestOptions?: any): Promise<import("axios").AxiosResponse<any, any>>;
+    get(requestOptions?: Partial<import("axios").AxiosRequestConfig<any>>, options?: Partial<Partial<import("./types").Visit & {
+        onCatch: (errors: import("axios").AxiosError<any, any>) => import("axios").AxiosError<any, any>;
+        onStart: (config: any) => any;
+        onProgress: (progress: import("./types").Progress) => void;
+        onFinish: () => void;
+        onSuccess: (response: import("axios").ResponseType) => import("axios").ResponseType;
+        onError: (errors: Record<string, string>) => Record<string, string>;
+    }>>): Promise<import("axios").AxiosResponse<any, any>>;
+    post(requestOptions?: Partial<import("axios").AxiosRequestConfig<any>>, options?: Partial<Partial<import("./types").Visit & {
+        onCatch: (errors: import("axios").AxiosError<any, any>) => import("axios").AxiosError<any, any>;
+        onStart: (config: any) => any;
+        onProgress: (progress: import("./types").Progress) => void;
+        onFinish: () => void;
+        onSuccess: (response: import("axios").ResponseType) => import("axios").ResponseType;
+        onError: (errors: Record<string, string>) => Record<string, string>;
+    }>>): Promise<import("axios").AxiosResponse<any, any>>;
+    put(requestOptions?: Partial<import("axios").AxiosRequestConfig<any>>, options?: Partial<Partial<import("./types").Visit & {
+        onCatch: (errors: import("axios").AxiosError<any, any>) => import("axios").AxiosError<any, any>;
+        onStart: (config: any) => any;
+        onProgress: (progress: import("./types").Progress) => void;
+        onFinish: () => void;
+        onSuccess: (response: import("axios").ResponseType) => import("axios").ResponseType;
+        onError: (errors: Record<string, string>) => Record<string, string>;
+    }>>): Promise<import("axios").AxiosResponse<any, any>>;
+    patch(requestOptions?: Partial<import("axios").AxiosRequestConfig<any>>, options?: Partial<Partial<import("./types").Visit & {
+        onCatch: (errors: import("axios").AxiosError<any, any>) => import("axios").AxiosError<any, any>;
+        onStart: (config: any) => any;
+        onProgress: (progress: import("./types").Progress) => void;
+        onFinish: () => void;
+        onSuccess: (response: import("axios").ResponseType) => import("axios").ResponseType;
+        onError: (errors: Record<string, string>) => Record<string, string>;
+    }>>): Promise<import("axios").AxiosResponse<any, any>>;
+    delete(requestOptions?: Partial<import("axios").AxiosRequestConfig<any>>, options?: Partial<Partial<import("./types").Visit & {
+        onCatch: (errors: import("axios").AxiosError<any, any>) => import("axios").AxiosError<any, any>;
+        onStart: (config: any) => any;
+        onProgress: (progress: import("./types").Progress) => void;
+        onFinish: () => void;
+        onSuccess: (response: import("axios").ResponseType) => import("axios").ResponseType;
+        onError: (errors: Record<string, string>) => Record<string, string>;
+    }>>): Promise<import("axios").AxiosResponse<any, any>>;
 };
