@@ -1,7 +1,7 @@
 import {FormDataConvertible} from './types'
 
-export function objectToFormData(
-    source: Record<string, FormDataConvertible>,
+export function objectToFormData<S extends Record<string, FormDataConvertible>>(
+    source: S,
     form: FormData = new FormData(),
     parentKey: string | null = null,
 ): FormData {

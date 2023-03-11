@@ -2,15 +2,17 @@ import {useCallback, useEffect, useRef, useState} from 'react';
 import isEqual from 'lodash/isEqual';
 import axios from 'axios'
 import {hrefToUrl, mergeDataIntoQueryString, urlWithoutHash} from './url'
-import {Errors, Method, Progress, VisitParams,} from "./types";
+import {Errors, FormDataConvertible, Method, Progress, VisitParams} from "./types";
 import {AxiosError} from 'axios';
 import {objectToFormData} from "./formData";
 import {hasFiles} from "./files";
 
-export default function useForm(args: object = {}, options: object = {}, requestOptions: object = {}) {
+type FormArgs = Record<string, FormDataConvertible>
+
+export default function useForm<Args extends FormArgs, S, R>(args: Args = {} as Args, options: S = {} as S, requestOptions: R = {} as R) {
     const isMounted = useRef(null)
     const [defaults, setDefaults] = useState(args)
-    const [data, setData] = useState(args);
+    const [data, setData] = useState<Args>(args);
     const [errors, setErrors] = useState({});
     const [response, setResponse] = useState({});
     const [hasErrors, setHasErrors] = useState(false)
@@ -18,9 +20,9 @@ export default function useForm(args: object = {}, options: object = {}, request
     const [progress, setProgress] = useState(null)
     const [wasSuccessful, setWasSuccessful] = useState(false)
     const [recentlySuccessful, setRecentlySuccessful] = useState(false)
-    const [defaultOptions, setDefaultOptions] = useState(options);
-    const [defaultRequestOptions, setDefaultRequestOptions] = useState(requestOptions)
-    let transform = (data: object) => data
+    const [defaultOptions, setDefaultOptions] = useState<S>(options);
+    const [defaultRequestOptions, setDefaultRequestOptions] = useState<R>(requestOptions)
+    let transform = (data: Args) => data
 
     useEffect(() => {
         //@ts-ignore
@@ -31,9 +33,9 @@ export default function useForm(args: object = {}, options: object = {}, request
         }
     }, [])
 
-    const submit = useCallback((method: Method, href: any, options: object = {}, requestOptions: object = {}) => {
+    const submit = useCallback((method: Method, href: string | URL, options: object = {}, requestOptions: object = {}) => {
         let url = typeof href === 'string' ? hrefToUrl(href) : href
-        let transformedData: object = transform(data);
+        let transformedData = transform(data);
 
         const mergedOptions: VisitParams = {
             forceFormData: false,
@@ -48,14 +50,12 @@ export default function useForm(args: object = {}, options: object = {}, request
             ...options
         };
 
-        //@ts-ignore
         if ((hasFiles(transformedData) || mergedOptions.forceFormData) && !(transformedData instanceof FormData)) {
             //@ts-ignore
             transformedData = objectToFormData(transformedData)
         }
 
         if (!(transformedData instanceof FormData)) {
-            //@ts-ignore
             const [_href, _data] = mergeDataIntoQueryString(method, url, transformedData, mergedOptions.queryStringArrayFormat)
             url = hrefToUrl(_href)
             transformedData = _data
@@ -184,6 +184,7 @@ export default function useForm(args: object = {}, options: object = {}, request
                     Object.keys(defaults)
                         .filter((key) => fields.includes(key))
                         .reduce((carry, key) => {
+                            //@ts-ignore
                             carry[key] = defaults[key]
                             return carry
                         }, {...data}),

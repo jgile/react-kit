@@ -1,8 +1,19 @@
 import {ResponseType, AxiosError} from 'axios';
 
+export type GenericObject = {
+    [key: string]: any
+}
+
 export type Errors = Record<string, string>
 
-export type FormDataConvertible = Array<FormDataConvertible> | Blob | FormDataEntryValue | Date | boolean | number | null
+export type FormDataConvertible =
+    Array<FormDataConvertible>
+    | Blob
+    | FormDataEntryValue
+    | Date
+    | boolean
+    | number
+    | null
 
 export enum Method {
     GET = 'get',
@@ -27,8 +38,6 @@ export type Visit = {
     queryStringArrayFormat: 'indices' | 'brackets',
 }
 
-// export type GlobalEventCallback<TEventName extends GlobalEventNames> = (...params: GlobalEventParameters<TEventName>) => GlobalEventResult<TEventName>
-
 export type VisitParams = Partial<Visit & {
     onCatch: { (errors: AxiosError): AxiosError },
     onStart: { (config: any): any },
@@ -38,13 +47,11 @@ export type VisitParams = Partial<Visit & {
     onError: { (errors: Errors): Errors }
 }>
 
-
 export type PendingVisit = Visit & {
     url: URL,
     completed: boolean,
     cancelled: boolean,
     interrupted: boolean,
 };
-
 
 export type InertiaAppResponse = Promise<{ head: string[], body: string } | void>

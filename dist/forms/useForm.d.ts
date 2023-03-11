@@ -1,7 +1,8 @@
-import { Method } from "./types";
-export default function useForm(args?: object, options?: object, requestOptions?: object): {
-    submit: (method: Method, href: any, options?: object, requestOptions?: object) => Promise<import("axios").AxiosResponse<any, any>>;
-    data: object;
+import { FormDataConvertible, Method } from "./types";
+declare type FormArgs = Record<string, FormDataConvertible>;
+export default function useForm<Args extends FormArgs, S, R>(args?: Args, options?: S, requestOptions?: R): {
+    submit: (method: Method, href: string | URL, options?: object, requestOptions?: object) => Promise<import("axios").AxiosResponse<any, any>>;
+    data: Args;
     errors: {};
     response: {};
     hasErrors: boolean;
@@ -24,3 +25,4 @@ export default function useForm(args?: object, options?: object, requestOptions?
     patch(url: any, options?: any, requestOptions?: any): Promise<import("axios").AxiosResponse<any, any>>;
     delete(url: any, options?: any, requestOptions?: any): Promise<import("axios").AxiosResponse<any, any>>;
 };
+export {};
