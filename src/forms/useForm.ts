@@ -2,14 +2,12 @@ import {useCallback, useEffect, useRef, useState} from 'react';
 import isEqual from 'lodash/isEqual';
 import axios, {AxiosRequestConfig, AxiosResponse} from 'axios'
 import {hrefToUrl, mergeDataIntoQueryString, urlWithoutHash} from './url'
-import {Errors, FormDataConvertible, Method, Progress, VisitParams} from "./types";
+import {Errors, Method, Progress, RequestPayload, VisitParams} from "./types";
 import {AxiosError} from 'axios';
 import {objectToFormData} from "./formData";
 import {hasFiles} from "./files";
 
-type FormArgs = Record<string, FormDataConvertible>
-
-export default function useForm<Args extends FormArgs, S extends VisitParams, R extends AxiosRequestConfig>(args: Args = {} as Args, options: S = {} as S, requestOptions: R = {} as R) {
+export default function useForm<Args extends RequestPayload, S extends VisitParams, R extends AxiosRequestConfig>(args: Args = {} as Args, options: S = {} as S, requestOptions: R = {} as R) {
     const isMounted = useRef(null)
     const [defaults, setDefaults] = useState(args)
     const [data, setData] = useState<Args>(args);
@@ -56,8 +54,10 @@ export default function useForm<Args extends FormArgs, S extends VisitParams, R 
         }
 
         if (!(transformedData instanceof FormData)) {
+            //@ts-ignore
             const [_href, _data] = mergeDataIntoQueryString(method, url, transformedData, mergedOptions.queryStringArrayFormat)
             url = hrefToUrl(_href)
+            //@ts-ignore
             transformedData = _data
         }
 

@@ -1,7 +1,6 @@
 import { AxiosRequestConfig, AxiosResponse } from 'axios';
-import { FormDataConvertible, Method, VisitParams } from "./types";
-declare type FormArgs = Record<string, FormDataConvertible>;
-export default function useForm<Args extends FormArgs, S extends VisitParams, R extends AxiosRequestConfig>(args?: Args, options?: S, requestOptions?: R): {
+import { Method, RequestPayload, VisitParams } from "./types";
+export default function useForm<Args extends RequestPayload, S extends VisitParams, R extends AxiosRequestConfig>(args?: Args, options?: S, requestOptions?: R): {
     submit: (method: Method, href: string | URL, options?: VisitParams, requestOptions?: AxiosRequestConfig) => Promise<AxiosResponse<any, any>>;
     data: Args;
     errors: {};
@@ -26,4 +25,3 @@ export default function useForm<Args extends FormArgs, S extends VisitParams, R 
     patch(url: any, options?: any, requestOptions?: any): Promise<AxiosResponse<any, any>>;
     delete(url: any, options?: any, requestOptions?: any): Promise<AxiosResponse<any, any>>;
 };
-export {};
