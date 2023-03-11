@@ -13,7 +13,7 @@ export default function useForm<Args extends FormArgs, S, R>(args?: Args, option
     isDirty: boolean;
     setOptions(options?: any): void;
     setRequestOptions(options?: any): void;
-    setData(key: any, value: any): void;
+    setData(key: string | Args | ((data: any) => Args), value: any): void;
     transform(callback: any): void;
     setDefaults(key: any, value: any): void;
     reset(...fields: any): void;

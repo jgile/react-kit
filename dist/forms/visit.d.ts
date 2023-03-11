@@ -12,7 +12,7 @@ export default function visit(href: any, method?: Method, data?: object, options
     isDirty: boolean;
     setOptions(options?: any): void;
     setRequestOptions(options?: any): void;
-    setData(key: any, value: any): void;
+    setData(key: string | Record<string, import("./types").FormDataConvertible> | ((data: any) => Record<string, import("./types").FormDataConvertible>), value: any): void;
     transform(callback: any): void;
     setDefaults(key: any, value: any): void;
     reset(...fields: any): void;
