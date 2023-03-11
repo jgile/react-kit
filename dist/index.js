@@ -171,6 +171,9 @@ function hasFiles(data) {
   });
 }
 
+function isFormData(payload) {
+  return typeof payload === 'object' && payload instanceof FormData;
+}
 function useForm(args, options, requestOptions) {
   if (args === void 0) {
     args = {};
@@ -278,7 +281,7 @@ function useForm(args, options, requestOptions) {
       }
     }, defaultOptions, options);
 
-    if ((hasFiles(transformedData) || mergedOptions.forceFormData) && !(transformedData instanceof FormData)) {
+    if ((hasFiles(transformedData) || mergedOptions.forceFormData) && !isFormData(transformedData)) {
       transformedData = objectToFormData(transformedData);
     }
 

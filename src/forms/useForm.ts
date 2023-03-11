@@ -7,6 +7,10 @@ import {AxiosError} from 'axios';
 import {objectToFormData} from "./formData";
 import {hasFiles} from "./files";
 
+export function isFormData(payload: RequestPayload): payload is FormData {
+    return typeof payload === 'object' && payload instanceof FormData;
+}
+
 export default function useForm<Args extends RequestPayload, S extends VisitParams, R extends AxiosRequestConfig>(args: Args = {} as Args, options: S = {} as S, requestOptions: R = {} as R) {
     const isMounted = useRef(null)
     const [defaults, setDefaults] = useState(args)
@@ -20,7 +24,7 @@ export default function useForm<Args extends RequestPayload, S extends VisitPara
     const [recentlySuccessful, setRecentlySuccessful] = useState(false)
     const [defaultOptions, setDefaultOptions] = useState<S>(options);
     const [defaultRequestOptions, setDefaultRequestOptions] = useState<R>(requestOptions)
-    let transform = (data: Args): Args => data
+    let transform = (data: Args): any => data
 
     useEffect(() => {
         //@ts-ignore
@@ -48,16 +52,13 @@ export default function useForm<Args extends RequestPayload, S extends VisitPara
             ...options
         };
 
-        if ((hasFiles(transformedData) || mergedOptions.forceFormData) && !(transformedData instanceof FormData)) {
-            //@ts-ignore
+        if ((hasFiles(transformedData) || mergedOptions.forceFormData) && !isFormData(transformedData)) {
             transformedData = objectToFormData(transformedData)
         }
 
         if (!(transformedData instanceof FormData)) {
-            //@ts-ignore
             const [_href, _data] = mergeDataIntoQueryString(method, url, transformedData, mergedOptions.queryStringArrayFormat)
             url = hrefToUrl(_href)
-            //@ts-ignore
             transformedData = _data
         }
 

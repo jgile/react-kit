@@ -1,6 +1,6 @@
-import {FormDataConvertible} from './types'
+import {FormDataConvertible, RequestPayload} from './types'
 
-export function objectToFormData<S extends Record<string, FormDataConvertible>>(
+export function objectToFormData<S extends RequestPayload>(
     source: S,
     form: FormData = new FormData(),
     parentKey: string | null = null,
@@ -9,6 +9,7 @@ export function objectToFormData<S extends Record<string, FormDataConvertible>>(
 
     for (const key in source) {
         if (Object.prototype.hasOwnProperty.call(source, key)) {
+            //@ts-ignore
             append(form, composeKey(parentKey, key), source[key])
         }
     }
