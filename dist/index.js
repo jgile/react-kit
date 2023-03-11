@@ -241,7 +241,7 @@ function useForm(args, options, requestOptions) {
     };
   }, []);
   var submit = React.useCallback(function (method, href, options, requestOptions) {
-    var _window$axios$default, _window, _window$axios, _window$axios$default2, _window2, _window2$axios, _window2$axios$defaul;
+    var _window$axios$default, _window, _window$axios, _window$axios$default2, _window$axios$default3;
 
     if (options === void 0) {
       options = {};
@@ -291,7 +291,7 @@ function useForm(args, options, requestOptions) {
       transformedData = _data;
     }
 
-    var mergedConfig = _extends({}, (_window$axios$default = (_window = window) === null || _window === void 0 ? void 0 : (_window$axios = _window.axios) === null || _window$axios === void 0 ? void 0 : _window$axios.defaults) != null ? _window$axios$default : {}, {
+    var mergedConfig = _extends({
       method: method,
       url: urlWithoutHash(url).href,
       data: method === Method.GET ? {} : transformedData,
@@ -300,7 +300,7 @@ function useForm(args, options, requestOptions) {
         'X-Requested-With': 'XMLHttpRequest',
         'Content-Type': 'application/json',
         'Accept': 'application/json'
-      }, (_window$axios$default2 = (_window2 = window) === null || _window2 === void 0 ? void 0 : (_window2$axios = _window2.axios) === null || _window2$axios === void 0 ? void 0 : (_window2$axios$defaul = _window2$axios.defaults) === null || _window2$axios$defaul === void 0 ? void 0 : _window2$axios$defaul.headers) != null ? _window$axios$default2 : {}),
+      }, (_window$axios$default = (_window = window) === null || _window === void 0 ? void 0 : (_window$axios = _window.axios) === null || _window$axios === void 0 ? void 0 : (_window$axios$default2 = _window$axios.defaults) === null || _window$axios$default2 === void 0 ? void 0 : (_window$axios$default3 = _window$axios$default2.headers) === null || _window$axios$default3 === void 0 ? void 0 : _window$axios$default3.common) != null ? _window$axios$default : {}),
       onUploadProgress: function onUploadProgress(progress) {
         if (data instanceof FormData) {
           progress.percentage = Math.round(progress.loaded / progress.total * 100);
