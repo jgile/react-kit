@@ -9,7 +9,6 @@ import {hasFiles} from "./files";
 
 type FormArgs = Record<string, FormDataConvertible>
 
-
 export default function useForm<Args extends FormArgs, S, R>(args: Args = {} as Args, options: S = {} as S, requestOptions: R = {} as R) {
     const isMounted = useRef(null)
     const [defaults, setDefaults] = useState(args)
