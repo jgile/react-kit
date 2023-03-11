@@ -1,5 +1,6 @@
 import {useCallback, useEffect, useRef, useState} from 'react';
 import isEqual from 'lodash/isEqual';
+import get from 'lodash/get';
 import axios, {AxiosRequestConfig, AxiosResponse} from 'axios'
 import {hrefToUrl, mergeDataIntoQueryString, urlWithoutHash} from './url'
 import {Errors, Progress, RequestPayload, VisitParams} from "./types";
@@ -164,6 +165,9 @@ export default function useForm<Args extends RequestPayload, S extends VisitPara
             } else {
                 setData(key)
             }
+        },
+        getData(key: string, defaultValue: any = null) {
+            return get(data, key, defaultValue);
         },
         transform(callback: any) {
             transform = callback

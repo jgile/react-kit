@@ -15,6 +15,7 @@ export default function useForm<Args extends RequestPayload, S extends VisitPara
     setOptions(options?: any): void;
     setRequestOptions(options?: any): void;
     setData(key: string | Args | ((data: any) => Args), value?: any): void;
+    getData(key: string, defaultValue?: any): any;
     transform(callback: any): void;
     setDefaults(key: any, value: any): void;
     reset(...fields: any): void;

@@ -3,6 +3,7 @@ import { derive } from 'valtio/utils';
 import React, { useMemo, useRef, useState, useEffect, useCallback } from 'react';
 import forEach from 'lodash/forEach';
 import isEqual from 'lodash/isEqual';
+import get from 'lodash/get';
 import axios from 'axios';
 import { stringify, parse } from 'qs';
 import deepmerge from 'deepmerge';
@@ -390,6 +391,13 @@ function useForm(args, formOptions, requestOptions) {
       } else {
         _setData(key);
       }
+    },
+    getData: function getData(key, defaultValue) {
+      if (defaultValue === void 0) {
+        defaultValue = null;
+      }
+
+      return get(data, key, defaultValue);
     },
     transform: function transform(callback) {
       _transform = callback;

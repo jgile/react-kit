@@ -6,6 +6,7 @@ var React = require('react');
 var React__default = _interopDefault(React);
 var forEach = _interopDefault(require('lodash/forEach'));
 var isEqual = _interopDefault(require('lodash/isEqual'));
+var get = _interopDefault(require('lodash/get'));
 var axios = _interopDefault(require('axios'));
 var qs = require('qs');
 var deepmerge = _interopDefault(require('deepmerge'));
@@ -393,6 +394,13 @@ function useForm(args, formOptions, requestOptions) {
       } else {
         _setData(key);
       }
+    },
+    getData: function getData(key, defaultValue) {
+      if (defaultValue === void 0) {
+        defaultValue = null;
+      }
+
+      return get(data, key, defaultValue);
     },
     transform: function transform(callback) {
       _transform = callback;
