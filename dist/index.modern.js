@@ -457,7 +457,8 @@ function useForm(args, requestOptions, formOptions) {
       });
     },
     bindField: function bindField(name, defaultValue) {
-      var _data$name;
+      var _data$name,
+          _this = this;
 
       if (defaultValue === void 0) {
         defaultValue = null;
@@ -467,7 +468,7 @@ function useForm(args, requestOptions, formOptions) {
         name: name,
         value: (_data$name = data[name]) != null ? _data$name : defaultValue,
         onChange: function onChange(value) {
-          _setData(name, value);
+          _this.setData(name, value);
         }
       };
     },

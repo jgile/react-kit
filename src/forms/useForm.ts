@@ -230,7 +230,7 @@ export default function useForm<Args extends RequestPayload, S extends VisitPara
                 value: data[name] ?? defaultValue,
                 onChange: (value: any) => {
                     // @ts-ignore
-                    setData(name, value);
+                    this.setData(name, value);
                 },
             }
         },
