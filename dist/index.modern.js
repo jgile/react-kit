@@ -585,17 +585,17 @@ function useData() {
   };
 }
 
-function visit(requestOptions, data, options) {
+function request(requestOptions, options, data) {
   if (requestOptions === void 0) {
     requestOptions = {};
   }
 
-  if (data === void 0) {
-    data = {};
-  }
-
   if (options === void 0) {
     options = {};
+  }
+
+  if (data === void 0) {
+    data = {};
   }
 
   var form = useForm(data);
@@ -603,6 +603,21 @@ function visit(requestOptions, data, options) {
     form.submit(requestOptions, options);
   }, []);
   return form;
+}
+function lazyRequest(requestOptions, options, data) {
+  if (requestOptions === void 0) {
+    requestOptions = {};
+  }
+
+  if (options === void 0) {
+    options = {};
+  }
+
+  if (data === void 0) {
+    data = {};
+  }
+
+  return useForm(data, requestOptions, options);
 }
 
 var _excluded = ["vertical", "reverse", "right", "left", "bottom", "top", "yCenter", "xCenter", "center", "wrap", "between", "grow", "style", "children"];
@@ -797,5 +812,5 @@ function FlexItem(_ref) {
   }), children);
 }
 
-export { Flex, FlexItem, useData, useForm, useProxy, visit };
+export { Flex, FlexItem, lazyRequest, request, useData, useForm, useProxy };
 //# sourceMappingURL=index.modern.js.map
