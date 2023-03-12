@@ -19,7 +19,7 @@ export default function visit<T extends Record<string, FormDataConvertible>>(req
     isDirty: boolean;
     setOptions(options?: any): void;
     setRequestOptions(options?: any): void;
-    setData(key: string | T | ((data: any) => T), value?: any): void;
+    setData: (key: string | T | ((data: any) => T), value?: any) => void;
     getData(key: string, defaultValue?: any): any;
     transform(callback: any): void;
     setDefaults(key: any, value: any): void;

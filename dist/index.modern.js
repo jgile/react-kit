@@ -3,7 +3,6 @@ import { derive } from 'valtio/utils';
 import React, { useMemo, useRef, useState, useEffect, useCallback } from 'react';
 import forEach from 'lodash/forEach';
 import isEqual from 'lodash/isEqual';
-import get from 'lodash/get';
 import axios from 'axios';
 import { stringify, parse } from 'qs';
 import deepmerge from 'deepmerge';
@@ -187,7 +186,7 @@ function useForm(args, requestOptions, formOptions) {
 
   var _useState2 = useState(args),
       data = _useState2[0],
-      _setData = _useState2[1];
+      setData = _useState2[1];
 
   var _useState3 = useState({}),
       errors = _useState3[0],
@@ -350,6 +349,25 @@ function useForm(args, requestOptions, formOptions) {
       });
     });
   }, [data, defaultOptions, defaultRequestOptions]);
+
+  var setDataFunction = function setDataFunction(key, value) {
+    if (typeof key === 'string') {
+      var _extends2;
+
+      if (value && value.target && value.target.value) {
+        value = value.target.value;
+      }
+
+      setData(_extends({}, data, (_extends2 = {}, _extends2[key] = value, _extends2)));
+    } else if (typeof key === 'function') {
+      setData(function (data) {
+        return key(data);
+      });
+    } else {
+      setData(key);
+    }
+  };
+
   return {
     submit: submit,
     data: data,
@@ -375,29 +393,15 @@ function useForm(args, requestOptions, formOptions) {
 
       setDefaultRequestOptions(options);
     },
-    setData: function setData(key, value) {
-      if (typeof key === 'string') {
-        var _extends2;
-
-        if (value && value.target && value.target.value) {
-          value = value.target.value;
-        }
-
-        _setData(_extends({}, data, (_extends2 = {}, _extends2[key] = value, _extends2)));
-      } else if (typeof key === 'function') {
-        _setData(function (data) {
-          return key(data);
-        });
-      } else {
-        _setData(key);
-      }
-    },
+    setData: setDataFunction,
     getData: function getData(key, defaultValue) {
+      var _data$key;
+
       if (defaultValue === void 0) {
         defaultValue = null;
       }
 
-      return get(data, key, defaultValue);
+      return (_data$key = data[key]) != null ? _data$key : defaultValue;
     },
     transform: function transform(callback) {
       _transform = callback;
@@ -421,9 +425,9 @@ function useForm(args, requestOptions, formOptions) {
       }
 
       if (fields.length === 0) {
-        _setData(defaults);
+        setData(defaults);
       } else {
-        _setData(Object.keys(defaults).filter(function (key) {
+        setData(Object.keys(defaults).filter(function (key) {
           return fields.includes(key);
         }).reduce(function (carry, key) {
           carry[key] = defaults[key];
@@ -457,8 +461,7 @@ function useForm(args, requestOptions, formOptions) {
       });
     },
     bindField: function bindField(name, defaultValue) {
-      var _data$name,
-          _this = this;
+      var _data$name;
 
       if (defaultValue === void 0) {
         defaultValue = null;
@@ -468,7 +471,7 @@ function useForm(args, requestOptions, formOptions) {
         name: name,
         value: (_data$name = data[name]) != null ? _data$name : defaultValue,
         onChange: function onChange(value) {
-          _this.setData(name, value);
+          setDataFunction(name, value);
         }
       };
     },

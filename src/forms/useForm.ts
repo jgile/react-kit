@@ -1,6 +1,5 @@
 import {useCallback, useEffect, useRef, useState} from 'react';
 import isEqual from 'lodash/isEqual';
-import get from 'lodash/get';
 import axios, {AxiosRequestConfig, AxiosResponse} from 'axios'
 import {hrefToUrl, mergeDataIntoQueryString, urlWithoutHash} from './url'
 import {Errors, Progress, RequestPayload, VisitParams} from "./types";
@@ -141,6 +140,19 @@ export default function useForm<Args extends RequestPayload, S extends VisitPara
         });
     }, [data, defaultOptions, defaultRequestOptions]);
 
+    const setDataFunction = (key: ((data: any) => Args) | string | Args, value?: any) => {
+        if (typeof key === 'string') {
+            if (value && value.target && value.target.value) {
+                value = value.target.value;
+            }
+            setData({...data, [key]: value})
+        } else if (typeof key === 'function') {
+            setData((data: any) => key(data))
+        } else {
+            setData(key)
+        }
+    };
+
     return {
         submit,
         data,
@@ -158,20 +170,9 @@ export default function useForm<Args extends RequestPayload, S extends VisitPara
         setRequestOptions(options: any = {}) {
             setDefaultRequestOptions(options);
         },
-        setData(key: ((data: any) => Args) | string | Args, value?: any) {
-            if (typeof key === 'string') {
-                if (value && value.target && value.target.value) {
-                    value = value.target.value;
-                }
-                setData({...data, [key]: value})
-            } else if (typeof key === 'function') {
-                setData((data: any) => key(data))
-            } else {
-                setData(key)
-            }
-        },
+        setData: setDataFunction,
         getData(key: string, defaultValue: any = null) {
-            return get(data, key, defaultValue);
+            return data[key] ?? defaultValue;
         },
         transform(callback: any) {
             transform = callback
@@ -230,7 +231,7 @@ export default function useForm<Args extends RequestPayload, S extends VisitPara
                 value: data[name] ?? defaultValue,
                 onChange: (value: any) => {
                     // @ts-ignore
-                    this.setData(name, value);
+                    setDataFunction(name, value);
                 },
             }
         },
