@@ -142,7 +142,7 @@ export default function useForm<Args extends RequestPayload, S extends VisitPara
 
     const setDataFunction = (key: ((data: any) => Args) | string | Args, value?: any) => {
         if (typeof key === 'string') {
-            if (value && value.target && value.target.value) {
+            if (value && value.target && typeof value.target.value !== 'undefined') {
                 value = value.target.value;
             }
             setData({...data, [key]: value})

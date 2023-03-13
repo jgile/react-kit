@@ -354,7 +354,7 @@ function useForm(args, requestOptions, formOptions) {
     if (typeof key === 'string') {
       var _extends2;
 
-      if (value && value.target && value.target.value) {
+      if (value && value.target && typeof value.target.value !== 'undefined') {
         value = value.target.value;
       }
 
