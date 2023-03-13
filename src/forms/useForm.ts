@@ -228,7 +228,7 @@ export default function useForm<Args extends RequestPayload, S extends VisitPara
         bindField(name: string, defaultValue: any = null) {
             return {
                 name: name,
-                value: data[name] ?? defaultValue,
+                value: typeof data[name] !== "undefined" ? data[name] : defaultValue,
                 onChange: (value: any) => {
                     // @ts-ignore
                     setDataFunction(name, value);

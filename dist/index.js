@@ -464,15 +464,13 @@ function useForm(args, requestOptions, formOptions) {
       });
     },
     bindField: function bindField(name, defaultValue) {
-      var _data$name;
-
       if (defaultValue === void 0) {
         defaultValue = null;
       }
 
       return {
         name: name,
-        value: (_data$name = data[name]) != null ? _data$name : defaultValue,
+        value: typeof data[name] !== "undefined" ? data[name] : defaultValue,
         onChange: function onChange(value) {
           setDataFunction(name, value);
         }
