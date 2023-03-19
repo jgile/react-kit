@@ -1,5 +1,7 @@
 import {useCallback, useEffect, useRef, useState} from 'react';
 import isEqual from 'lodash/isEqual';
+import get from 'lodash/get';
+import set from 'lodash/set';
 import axios, {AxiosRequestConfig, AxiosResponse} from 'axios'
 import {hrefToUrl, mergeDataIntoQueryString, urlWithoutHash} from './url'
 import {Errors, Progress, RequestPayload, VisitParams} from "./types";
@@ -141,16 +143,16 @@ export default function useForm<Args extends RequestPayload, S extends VisitPara
     }, [data, defaultOptions, defaultRequestOptions]);
 
     const setDataFunction = (key: ((data: any) => Args) | string | Args, value?: any) => {
+        let state = {...data};
         if (typeof key === 'string') {
             if (value && value.target && typeof value.target.value !== 'undefined') {
                 value = value.target.value;
             }
-            setData({...data, [key]: value})
+            set(state, key, value);
         } else if (typeof key === 'function') {
-            setData((data: any) => key(data))
-        } else {
-            setData(key)
+            state = key(data);
         }
+        setData(state)
     };
 
     return {
@@ -172,7 +174,7 @@ export default function useForm<Args extends RequestPayload, S extends VisitPara
         },
         setData: setDataFunction,
         getData(key: string, defaultValue: any = null) {
-            return data[key] ?? defaultValue;
+            return get(data, key, defaultValue)
         },
         transform(callback: any) {
             transform = callback
