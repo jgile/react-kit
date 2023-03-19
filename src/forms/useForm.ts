@@ -152,6 +152,7 @@ export default function useForm<Args extends RequestPayload, S extends VisitPara
         } else if (typeof key === 'function') {
             state = key(data);
         }
+
         setData(state)
     };
 
