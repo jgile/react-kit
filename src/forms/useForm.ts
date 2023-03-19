@@ -148,9 +148,12 @@ export default function useForm<Args extends RequestPayload, S extends VisitPara
             if (value && value.target && typeof value.target.value !== 'undefined') {
                 value = value.target.value;
             }
+
             set(state, key, value);
         } else if (typeof key === 'function') {
             state = key(data);
+        } else {
+            state = key;
         }
 
         setData(state)
