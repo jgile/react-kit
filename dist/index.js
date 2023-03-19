@@ -6,6 +6,8 @@ var React = require('react');
 var React__default = _interopDefault(React);
 var forEach = _interopDefault(require('lodash/forEach'));
 var isEqual = _interopDefault(require('lodash/isEqual'));
+var get = _interopDefault(require('lodash/get'));
+var set = _interopDefault(require('lodash/set'));
 var axios = _interopDefault(require('axios'));
 var qs = require('qs');
 var deepmerge = _interopDefault(require('deepmerge'));
@@ -354,21 +356,19 @@ function useForm(args, requestOptions, formOptions) {
   }, [data, defaultOptions, defaultRequestOptions]);
 
   var setDataFunction = function setDataFunction(key, value) {
-    if (typeof key === 'string') {
-      var _extends2;
+    var state = _extends({}, data);
 
+    if (typeof key === 'string') {
       if (value && value.target && typeof value.target.value !== 'undefined') {
         value = value.target.value;
       }
 
-      setData(_extends({}, data, (_extends2 = {}, _extends2[key] = value, _extends2)));
+      set(state, key, value);
     } else if (typeof key === 'function') {
-      setData(function (data) {
-        return key(data);
-      });
-    } else {
-      setData(key);
+      state = key(data);
     }
+
+    setData(state);
   };
 
   return {
@@ -398,13 +398,11 @@ function useForm(args, requestOptions, formOptions) {
     },
     setData: setDataFunction,
     getData: function getData(key, defaultValue) {
-      var _data$key;
-
       if (defaultValue === void 0) {
         defaultValue = null;
       }
 
-      return (_data$key = data[key]) != null ? _data$key : defaultValue;
+      return get(data, key, defaultValue);
     },
     transform: function transform(callback) {
       _transform = callback;

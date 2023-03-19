@@ -3,6 +3,8 @@ import { derive } from 'valtio/utils';
 import React, { useMemo, useRef, useState, useEffect, useCallback } from 'react';
 import forEach from 'lodash/forEach';
 import isEqual from 'lodash/isEqual';
+import get from 'lodash/get';
+import set from 'lodash/set';
 import axios from 'axios';
 import { stringify, parse } from 'qs';
 import deepmerge from 'deepmerge';
@@ -351,21 +353,19 @@ function useForm(args, requestOptions, formOptions) {
   }, [data, defaultOptions, defaultRequestOptions]);
 
   var setDataFunction = function setDataFunction(key, value) {
-    if (typeof key === 'string') {
-      var _extends2;
+    var state = _extends({}, data);
 
+    if (typeof key === 'string') {
       if (value && value.target && typeof value.target.value !== 'undefined') {
         value = value.target.value;
       }
 
-      setData(_extends({}, data, (_extends2 = {}, _extends2[key] = value, _extends2)));
+      set(state, key, value);
     } else if (typeof key === 'function') {
-      setData(function (data) {
-        return key(data);
-      });
-    } else {
-      setData(key);
+      state = key(data);
     }
+
+    setData(state);
   };
 
   return {
@@ -395,13 +395,11 @@ function useForm(args, requestOptions, formOptions) {
     },
     setData: setDataFunction,
     getData: function getData(key, defaultValue) {
-      var _data$key;
-
       if (defaultValue === void 0) {
         defaultValue = null;
       }
 
-      return (_data$key = data[key]) != null ? _data$key : defaultValue;
+      return get(data, key, defaultValue);
     },
     transform: function transform(callback) {
       _transform = callback;
