@@ -152,6 +152,7 @@ export default function useForm<Args extends RequestPayload, S extends VisitPara
                     value = value.target.value;
                 }
             }
+
             set(state, key, value);
         } else if (typeof key === 'function') {
             state = key(data);
