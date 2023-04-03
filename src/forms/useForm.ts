@@ -146,7 +146,11 @@ export default function useForm<Args extends RequestPayload, S extends VisitPara
         let state = {...data};
         if (typeof key === 'string') {
             if (value && value.target && typeof value.target.value !== 'undefined') {
-                value = value.target.value;
+                if (value.target.type === 'checkbox') {
+                    value = value.target.checked;
+                } else {
+                    value = value.target.value;
+                }
             }
 
             set(state, key, value);
