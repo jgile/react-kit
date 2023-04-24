@@ -3,7 +3,10 @@ export declare type GenericObject = {
     [key: string]: any;
 };
 export declare type Errors = Record<string, string>;
-export declare type FormDataConvertible = Array<FormDataConvertible> | Blob | FormDataEntryValue | Date | boolean | number | null;
+interface NestedObject {
+    [key: string]: any | NestedObject;
+}
+export declare type FormDataConvertible = Array<FormDataConvertible> | NestedObject | Blob | FormDataEntryValue | Date | boolean | number | null;
 export declare type RequestPayload = Record<string, FormDataConvertible> | FormData;
 export declare type Progress = ProgressEvent & {
     percentage: number;
@@ -48,3 +51,4 @@ export declare type InertiaAppResponse = Promise<{
     head: string[];
     body: string;
 } | void>;
+export {};

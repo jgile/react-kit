@@ -6,8 +6,13 @@ export type GenericObject = {
 
 export type Errors = Record<string, string>
 
+interface NestedObject {
+    [key: string]: any | NestedObject;
+}
+
 export type FormDataConvertible =
     Array<FormDataConvertible>
+    | NestedObject
     | Blob
     | FormDataEntryValue
     | Date

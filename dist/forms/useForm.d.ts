@@ -1,8 +1,11 @@
 import { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { RequestPayload, VisitParams } from "./types";
+interface NestedObject {
+    [key: string]: any | NestedObject;
+}
 export declare type UseFormObject = {
     submit: (requestOptions?: AxiosRequestConfig, options?: VisitParams) => Promise<unknown>;
-    data: any;
+    data: NestedObject;
     delete(requestOptions?: Partial<AxiosRequestConfig>, options?: Partial<VisitParams>): Promise<unknown>;
     put(requestOptions?: Partial<AxiosRequestConfig>, options?: Partial<VisitParams>): Promise<unknown>;
     patch(requestOptions?: Partial<AxiosRequestConfig>, options?: Partial<VisitParams>): Promise<unknown>;
@@ -33,3 +36,4 @@ export declare type UseFormObject = {
 };
 export declare function isFormData(payload: RequestPayload): payload is FormData;
 export default function useForm<Args extends RequestPayload, S extends VisitParams, R extends AxiosRequestConfig>(args?: Args, requestOptions?: R, formOptions?: S): UseFormObject;
+export {};

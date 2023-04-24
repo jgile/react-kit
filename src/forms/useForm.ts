@@ -9,9 +9,13 @@ import {AxiosError} from 'axios';
 import {objectToFormData} from "./formData";
 import {hasFiles} from "./files";
 
+interface NestedObject {
+    [key: string]: any | NestedObject;
+}
+
 export type UseFormObject = {
     submit: (requestOptions?: AxiosRequestConfig, options?: VisitParams) => Promise<unknown>;
-    data: any;
+    data: NestedObject;
     delete(requestOptions?: Partial<AxiosRequestConfig>, options?: Partial<VisitParams>): Promise<unknown>;
     put(requestOptions?: Partial<AxiosRequestConfig>, options?: Partial<VisitParams>): Promise<unknown>;
     patch(requestOptions?: Partial<AxiosRequestConfig>, options?: Partial<VisitParams>): Promise<unknown>;
